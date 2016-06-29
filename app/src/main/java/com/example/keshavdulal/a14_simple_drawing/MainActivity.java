@@ -1,83 +1,35 @@
 package com.example.keshavdulal.a14_simple_drawing;
 
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-        setContentView(new ViewWithRedDot(this));
-//        ViewWithRedDot myViewobj = new ViewWithRedDot(this);
+        setContentView(R.layout.activity_main);
+        final Button Rec = (Button)findViewById(R.id.button);
+
+        if(Rec!=null){
+            Rec.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    String s= Rec.getText().toString();
+//                    if(s=="RECORD")
+                    Rec.setText("STOP");
+//                    String sh= Rec.getText().toString();
+//                    if (sh=="STOP"){
+//                        Rec.setText("PLAY");
+//                    }
+                }
+            });
+        }
 
     }
 
-    public static class ViewWithRedDot extends View {
-        public ViewWithRedDot(Context context) {
-            super(context);
-        }
-
-        @Override
-        protected void onDraw(Canvas canvas) {
-            //super.onDraw(canvas);
-            //canvas.drawColor(Color.BLACK);          //BACKGROUND
-            Paint graphBoundaryObj = new Paint();     //Paint Object
-            graphBoundaryObj.setColor(Color.RED);
-            graphBoundaryObj.setStrokeWidth(7);
-
-            //canvas.drawCircle(canvas.getWidth() / 2, canvas.getHeight() / 2, canvas.getWidth() / 3, graphBoundaryObj);
-            //x,y,radius,paintobj
-
-            float OX = 0;
-            float OY= 900;
-
-            float AX = 1450;
-            float AY = 900;
-
-//            float BX = 0;
-//            float BY = 150;
-
-            float parallel_dist = 800;
-            float graph_height =1;
-            //OA
-            canvas.drawLine(OX,OY,AX,AY,graphBoundaryObj);
-            //OB
-            //canvas.drawLine(OX,OY,BX,BY,graphBoundaryObj);
-
-            //Line Parallel to OA
-            canvas.drawLine(OX,OY-parallel_dist,AX,AY-parallel_dist,graphBoundaryObj);
-            //Midline - Divider
-            graphBoundaryObj.setStrokeWidth(1);
-            canvas.drawLine(OX,OY-(parallel_dist/2),AX,AY-(parallel_dist/2),graphBoundaryObj);
-
-            //Vertical graphical line
-            Paint graphLinesObj = new Paint();        //GLO graph-lines-object
-            graphLinesObj.setColor(Color.BLACK);
-            //graphLinesObj.setStrokeWidth(1);
-
-//            canvas.drawLine(OX,OY,OX,OY-graph_height,graphLinesObj);
-           // int dir = 1;                //1-up 2-down
-
-            //Ups & downs Graph
-            int angle=0;
-            for(OX = 0; OX<1450;OX+=10){
-
-                graph_height = (float) (200*Math.sin(angle*3.141/180));
-                canvas.drawLine(OX,OY-(parallel_dist/2),OX,OY-graph_height-(parallel_dist/2),graphLinesObj);
-//
-                angle=angle+3;
-//
-
-            }
-
-
-        }
-    }
 }
