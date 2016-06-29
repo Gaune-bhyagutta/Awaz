@@ -1,37 +1,35 @@
 package com.example.keshavdulal.a14_simple_drawing;
 
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-        setContentView(new ViewWithRedDot(this));
-//        ViewWithRedDot myViewobj = new ViewWithRedDot(this);
+        setContentView(R.layout.activity_main);
+        final Button Rec = (Button)findViewById(R.id.button);
+
+        if(Rec!=null){
+            Rec.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    String s= Rec.getText().toString();
+//                    if(s=="RECORD")
+                    Rec.setText("STOP");
+//                    String sh= Rec.getText().toString();
+//                    if (sh=="STOP"){
+//                        Rec.setText("PLAY");
+//                    }
+                }
+            });
+        }
 
     }
 
-    public static class ViewWithRedDot extends View {
-        public ViewWithRedDot(Context context) {
-            super(context);
-        }
-
-        @Override
-        protected void onDraw(Canvas canvas) {
-            //super.onDraw(canvas);
-            canvas.drawColor(Color.BLACK);          //BACKGROUND
-            Paint circlePaintObj = new Paint();     //Paint Object
-            circlePaintObj.setColor(Color.RED);
-            canvas.drawCircle(canvas.getWidth() / 2, canvas.getHeight() / 2, canvas.getWidth() / 3, circlePaintObj);
-            //x,y,radius,paintobj
-        }
-    }
 }
