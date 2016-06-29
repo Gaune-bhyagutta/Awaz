@@ -45,12 +45,14 @@ public class MyFragment1 extends Fragment {
     }
 
     void getNames() {
-        nameList.add("DOG");
-        nameList.add("CAT");
-        nameList.add("LION");
-        nameList.add("TIGER");
-        nameList.add("COW");
-        nameList.add("BIRD");
+        nameList.add("lorem ipsum");
+        nameList.add("lorem ipsum");
+        nameList.add("lorem ipsum");
+        nameList.add("lorem ipsum");
+        nameList.add("lorem ipsum");
+        nameList.add("lorem ipsum");
+        nameList.add("lorem ipsum");
+        nameList.add("lorem ipsum");
 
 
     }
