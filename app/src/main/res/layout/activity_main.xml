@@ -11,14 +11,14 @@
 
 
     <fragment
-        android:name="com.example.keshavdulal.a14_simple_drawing.MyFragment"
+        android:name="com.example.keshavdulal.a14_simple_drawing.GraphFragment"
         android:layout_width="match_parent"
         android:layout_height="261dp"
         android:id="@+id/fragment"
         tools:layout="@layout/my_fragment" />
 
     <fragment
-        android:name="com.example.keshavdulal.a14_simple_drawing.MyFragment1"
+        android:name="com.example.keshavdulal.a14_simple_drawing.ListFragment"
         android:layout_width="match_parent"
         android:layout_height="261dp"
         android:id="@+id/fragment2"

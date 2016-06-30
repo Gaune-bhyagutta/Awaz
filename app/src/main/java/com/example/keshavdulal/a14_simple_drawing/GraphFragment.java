@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 /**
  * Created by imas on 6/28/16.
  */
-public class MyFragment extends Fragment{
+public class GraphFragment extends Fragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
