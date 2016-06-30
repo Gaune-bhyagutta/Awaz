@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">14-Simple-Drawing</string>
+    <string name="app_name">Awaz</string>
+    <string name="record_button_name">Record</string>
+    <string name="play_button_name">Play</string>
 </resources>
