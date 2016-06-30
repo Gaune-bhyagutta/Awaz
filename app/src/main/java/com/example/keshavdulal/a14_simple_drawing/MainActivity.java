@@ -45,7 +45,7 @@ public class MainActivity extends FragmentActivity {
         if(Rec!=null) {
             Rec.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v){
 
                     if (count==0){
 
