@@ -28,9 +28,9 @@ import java.util.Arrays;
 
 
 public class MainActivity extends FragmentActivity {
-    Boolean recording;
+    Boolean recording, playing;
     Button Rec, Play;
-    int count =0;
+    int count =0, count1=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class MainActivity extends FragmentActivity {
         Rec = (Button) findViewById(R.id.record);
         Play = (Button) findViewById(R.id.play);
 
-        //Play.setEnabled(false);
+        Play.setEnabled(false);
         if(Rec!=null) {
             Rec.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -79,10 +79,24 @@ public class MainActivity extends FragmentActivity {
             Play.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(count1 ==0){
+                        Rec.setEnabled(false);
+                        Play.setText("STOP");
+                        playing =true;
+                        playRecord();
+                        Toast.makeText(getApplicationContext(), "Playing audio", Toast.LENGTH_LONG).show();
 
-                    playRecord();
-                    Toast.makeText(getApplicationContext(), "Playing audio", Toast.LENGTH_LONG).show();
-                    //Rec.setEnabled(false);
+                        count1=1;
+                    }
+
+                    else{
+                        playing =false;
+                        Play.setText("PLAY");
+                        count1 =0;
+                        //Rec.setEnabled(true);
+
+                    }
+
 
                 }
             });
@@ -165,23 +179,26 @@ public class MainActivity extends FragmentActivity {
             DataInputStream dataInputStream = new DataInputStream(bufferedInputStream);
 
             int i = 0;
-            while(dataInputStream.available() > 0){
-                audioData[i] = dataInputStream.readShort();
-                i++;
+
+            while(playing) {
+                while (dataInputStream.available() > 0) {
+                    audioData[i] = dataInputStream.readShort();
+                    i++;
+                }
+
+                dataInputStream.close();
+
+                AudioTrack audioTrack = new AudioTrack(
+                        AudioManager.STREAM_MUSIC,
+                        11025,
+                        AudioFormat.CHANNEL_CONFIGURATION_MONO,
+                        AudioFormat.ENCODING_PCM_16BIT,
+                        bufferSizeInBytes,
+                        AudioTrack.MODE_STREAM);
+
+                audioTrack.play();
+                audioTrack.write(audioData, 0, bufferSizeInBytes);
             }
-
-            dataInputStream.close();
-
-            AudioTrack audioTrack = new AudioTrack(
-                    AudioManager.STREAM_MUSIC,
-                    11025,
-                    AudioFormat.CHANNEL_CONFIGURATION_MONO,
-                    AudioFormat.ENCODING_PCM_16BIT,
-                    bufferSizeInBytes,
-                    AudioTrack.MODE_STREAM);
-
-            audioTrack.play();
-            audioTrack.write(audioData, 0, bufferSizeInBytes);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
