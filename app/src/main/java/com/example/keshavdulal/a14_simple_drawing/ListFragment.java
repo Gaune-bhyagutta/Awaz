@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Created by imas on 6/28/16.
  */
 
-public class MyFragment1 extends Fragment {
+public class ListFragment extends Fragment {
     ArrayList<String> nameList;
     ListView list;
 

@@ -1,6 +1,5 @@
 package com.example.keshavdulal.a14_simple_drawing;
 
-import android.content.Intent;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioRecord;
@@ -11,9 +10,8 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.Toast;
-import android.widget.ToggleButton;
+
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -124,7 +122,7 @@ public class MainActivity extends FragmentActivity {
 
             while(recording){
                 int numberOfShort = audioRecord.read(audioData, 0, minBufferSize);
-                for(int i = 0; i < numberOfShort; i++){
+                 for(int i = 0; i < numberOfShort; i++){
 
                     //audioFloats[i] = ((float)Short.reverseBytes(audioData[i])/0x8000);
                     dataOutputStream.writeShort(audioData[i]);

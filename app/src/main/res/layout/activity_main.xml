@@ -11,7 +11,7 @@
 
 
     <fragment
-        android:name="com.example.keshavdulal.a14_simple_drawing.MyFragment"
+        android:name="com.example.keshavdulal.a14_simple_drawing.GraphFragment"
         android:layout_width="match_parent"
         android:layout_height="261dp"
         android:id="@+id/fragment"
@@ -19,6 +19,9 @@
         android:layout_alignParentTop="true"
         android:layout_above="@+id/button"
         android:layout_marginBottom="10dp" />
+
+
+
 
     <Button
         android:layout_width="wrap_content"
@@ -45,7 +48,7 @@
         android:layout_marginEnd="81dp"
         android:clickable="true" />
     <fragment
-        android:name="com.example.keshavdulal.a14_simple_drawing.MyFragment1"
+        android:name="com.example.keshavdulal.a14_simple_drawing.ListFragment"
         android:layout_width="match_parent"
         android:layout_height="261dp"
         android:id="@+id/fragment2"
@@ -53,5 +56,6 @@
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/button"
         android:layout_marginTop="10dp" />
+
 
 </RelativeLayout>
