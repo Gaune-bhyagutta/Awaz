@@ -50,7 +50,6 @@ public class MainActivity extends FragmentActivity {
                     if (count==0){
 
                     Rec.setText("STOP");
-
                     Thread recordThread = new Thread(new Runnable(){
                         @Override
                         public void run() {
