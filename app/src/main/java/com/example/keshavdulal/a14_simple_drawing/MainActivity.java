@@ -36,8 +36,8 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Rec = (Button) findViewById(R.id.button);
-        Play = (Button) findViewById(R.id.button2);
+        Rec = (Button) findViewById(R.id.record);
+        Play = (Button) findViewById(R.id.play);
 
         //Play.setEnabled(false);
         if(Rec!=null) {

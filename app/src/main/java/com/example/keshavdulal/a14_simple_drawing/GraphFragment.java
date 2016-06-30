@@ -20,7 +20,7 @@ public class GraphFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.my_fragment, container, false);
+        View view = inflater.inflate(R.layout.graph_fragment, container, false);
         LinearLayout linearLayout = (LinearLayout)view.findViewById(R.id.rect);
         linearLayout.addView(new ViewWithRedDot(getActivity()));
         return view;

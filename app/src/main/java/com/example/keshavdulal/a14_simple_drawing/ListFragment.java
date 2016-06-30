@@ -21,7 +21,7 @@ public class ListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.my_fragment1, container, false);
+        View view = inflater.inflate(R.layout.list_fragment, container, false);
         list = (ListView) view.findViewById(R.id.listView);
 
 
