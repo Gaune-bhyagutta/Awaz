@@ -20,7 +20,7 @@ public class GraphFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.my_fragment, container, false);
+        View view = inflater.inflate(R.layout.graph_fragment, container, false);
         LinearLayout linearLayout = (LinearLayout)view.findViewById(R.id.rect);
         linearLayout.addView(new ViewWithRedDot(getActivity()));
         return view;
@@ -34,9 +34,11 @@ public class GraphFragment extends Fragment{
 
         @Override
         protected void onDraw(Canvas canvas) {
-            //super.onDraw(canvas);
-            canvas.drawColor(Color.LTGRAY);          //BACKGROUND
-            Paint graphBoundaryObj = new Paint();     //Paint Object
+            super.onDraw(canvas);
+            //BACKGROUND
+            canvas.drawColor(Color.LTGRAY);
+            //Paint Object
+            Paint graphBoundaryObj = new Paint();
             graphBoundaryObj.setColor(Color.GRAY);
             graphBoundaryObj.setStrokeWidth(7);
 
