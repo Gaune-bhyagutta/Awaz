@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
  * Created by imas on 6/28/16.
  */
 public class GraphFragment extends Fragment{
-
+    public static  float graph_height;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -42,17 +42,18 @@ public class GraphFragment extends Fragment{
             graphBoundaryObj.setColor(Color.GRAY);
             graphBoundaryObj.setStrokeWidth(7);
 
-            float OX = 0;
-            float OY = canvas.getHeight()/2;
+            float X1 = 0;
+            float Y1 = canvas.getHeight()/2;
             float AX = canvas.getWidth();
             float AY = canvas.getHeight()/2;
+            float X2,Y2;
 
             float parallel_dist = 500;
-            float graph_height =1;
+           // graph_height =1;
 
             //Midline - Divider
             graphBoundaryObj.setStrokeWidth(2);
-            canvas.drawLine(OX,OY,AX,AY,graphBoundaryObj);
+            canvas.drawLine(X1,Y1,AX,AY,graphBoundaryObj);
 
             //Vertical graphical line
             Paint graphLinesObj = new Paint();        //GLO graph-lines-object
@@ -60,11 +61,18 @@ public class GraphFragment extends Fragment{
             graphLinesObj.setStrokeWidth(5);
 
             int angle=0;
-            for(OX = 0; OX<1450;OX+=5){
-                graph_height = (float) (100*(Math.sin(angle*3.141/180)+(Math.cos(angle*3.141/180))));
-                canvas.drawLine(OX,OY,OX,OY-graph_height,graphLinesObj);
-                angle=angle+3;
+           /* MainActivity mainActivity = new MainActivity();
+            short[] audioData = mainActivity.getAudioData();*/
+            for(X1 = 0; X1<100;X1+=5){
+                //invalidate();
+                X2=X1;
+                Y2=Y1-graph_height;
+                canvas.drawLine(X1,Y1,X2,Y2,graphLinesObj);
+                graph_height = ((float)MainActivity.temp)/50;
             }
+            postInvalidateDelayed(250);
+
         }
     }
 }
+

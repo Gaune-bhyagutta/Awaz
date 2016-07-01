@@ -27,10 +27,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity{
     Boolean recording;
     Button Rec, Play;
     int rec_btn_count = 0, play_btn_count =0;
+    short[] audioData;
+    public  static  int temp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,7 +180,7 @@ public class MainActivity extends FragmentActivity {
                     AudioFormat.ENCODING_PCM_16BIT);
 
             // The array short that will store the Audiio data that we get From the mic.
-            short[] audioData = new short[minBufferSize];
+            audioData = new short[minBufferSize];
 
             //Create a Object of the AudioRecord class with the required Samplig Frequency(44100 hz)
             AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
@@ -191,7 +193,7 @@ public class MainActivity extends FragmentActivity {
                 can be fetch from mic-buffer-our array of short(audioData)
              */
             audioRecord.startRecording();
-
+            //GraphFragment gF = new GraphFragment();
             // it means while the user have  not pressed the STOP Button
             while(recording){
 
@@ -207,7 +209,9 @@ public class MainActivity extends FragmentActivity {
                 for(int i = 0; i < numberOfShort; i++){
                     dataOutputStream.writeShort(audioData[i]); // Store in Sound.haha file as short-short-short--
                     dataOutputStream1.writeShort(audioData[i]);
-                    int temp = (int)audioData[i];//Convert the short to int to store in txt file
+
+                    temp = (int)audioData[i];//Convert the short to int to store in txt file
+                    //GraphFragment.graph_height=temp;
                     dataOutputStream2.writeInt(temp);//Store in Sound.txt as int-int-int--
                 }
 
@@ -236,7 +240,7 @@ public class MainActivity extends FragmentActivity {
         int shortSizeInBytes = Short.SIZE/Byte.SIZE;
 
         int bufferSizeInBytes = (int)(filePcm.length()/shortSizeInBytes);
-        short[] audioData = new short[bufferSizeInBytes];
+        audioData = new short[bufferSizeInBytes];
 
         try {
             InputStream inputStream = new FileInputStream(fileHaha);
@@ -289,6 +293,10 @@ public class MainActivity extends FragmentActivity {
             e.printStackTrace();
         }
     }//End of playRecord()
+    public  short[] getAudioData(){
+           return  audioData;
+    }
+    
 }//End of MainActivity
 
 
