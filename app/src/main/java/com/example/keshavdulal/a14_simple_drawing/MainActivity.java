@@ -1,5 +1,6 @@
 package com.example.keshavdulal.a14_simple_drawing;
 
+import android.graphics.Color;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioRecord;
@@ -8,10 +9,10 @@ import android.media.MediaRecorder;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -26,11 +27,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 
-
 public class MainActivity extends FragmentActivity {
     Boolean recording;
     Button Rec, Play;
-    int count =0;
+    int rec_btn_count = 0, play_btn_count =0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,32 +47,37 @@ public class MainActivity extends FragmentActivity {
                 @Override
                 public void onClick(View v){
 
-                    if (count==0){
+                    if (rec_btn_count == 0){
+                        //RECORD Button
+                        Log.d("VIVZ", "Clicked - Record");
+                        Rec.setText("STOP");
+                        Rec.setTextColor(Color.parseColor("#ff0000"));
+                        Play.setEnabled(false);
 
-                    Rec.setText("STOP");
-                    Thread recordThread = new Thread(new Runnable(){
-                        @Override
-                        public void run() {
-                            recording = true;
-                            startRecord();
-                        }
-                    }); // End of record Thread
-
-                    recordThread.start();
-                    Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
-                        count =1;
+                        Thread recordThread = new Thread(new Runnable(){
+                            @Override
+                            public void run() {
+                                recording = true;
+                                startRecord();
+                            }
+                        }); // End of record Thread
+                        recordThread.start();
+                        Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_SHORT).show();
+                        rec_btn_count =1;
                     }
 
-                    else{
+                    else if (rec_btn_count == 1){
+                        //STOP Button
+                        Log.d("VIVZ", "Clicked - Stop");
                         recording =false;
                         Rec.setText("RECORD");
-                        Toast.makeText(getApplicationContext(), "Audio recorded successfully",Toast.LENGTH_LONG).show();
-                        count=0;
+                        Rec.setTextColor(Color.parseColor("#000000"));
+                        Play.setEnabled(true);
+                        Toast.makeText(getApplicationContext(), "Audio recorded successfully",Toast.LENGTH_SHORT).show();
+                        rec_btn_count =0;
+
 
                     }
-
-
-
                 }
             });
         }// End of Record Button
@@ -83,9 +88,24 @@ public class MainActivity extends FragmentActivity {
                 @Override
                 public void onClick(View v) {
 
-                    playRecord();
-                    Toast.makeText(getApplicationContext(), "Playing audio", Toast.LENGTH_LONG).show();
-                    //Rec.setEnabled(false);
+                    if(play_btn_count == 0){
+                        //PLAY Buttton
+                        Log.d("VIVZ", "Clicked - PLAY");
+                        playRecord();
+                        Toast.makeText(getApplicationContext(), "Playing audio", Toast.LENGTH_SHORT).show();
+                        Play.setText("Stop");
+                        Play.setTextColor(Color.parseColor("#ff0000"));
+                        Rec.setEnabled(false);
+                        play_btn_count = 1;
+                    }
+
+                    else if (play_btn_count == 1){
+                        //Code to pause/stop the playback
+                        Play.setText("Play");
+                        Play.setTextColor(Color.parseColor("#00b900"));
+                        Rec.setEnabled(true);
+                        play_btn_count = 0;
+                    }
 
                 }
             });
@@ -95,6 +115,7 @@ public class MainActivity extends FragmentActivity {
 
 
     void startRecord(){
+        Log.d("VIVZ", "Thread - Start record");
         /* WHOLE PROCESS EXPLAINED IN BRIEF HERE:
             1.Create a file to store that data values that comes from the mic.
             2. Fix the bufferSize and AudioRecord Object.(Will be later in detail later).
@@ -153,7 +174,7 @@ public class MainActivity extends FragmentActivity {
                 based on our SAMPLING RATE (44100 hz or frame per second in our case)
              */
             int minBufferSize = AudioRecord.getMinBufferSize(44100,
-                    AudioFormat.CHANNEL_CONFIGURATION_MONO,
+                    AudioFormat.CHANNEL_IN_DEFAULT,
                     AudioFormat.ENCODING_PCM_16BIT);
 
             // The array short that will store the Audiio data that we get From the mic.
@@ -162,7 +183,7 @@ public class MainActivity extends FragmentActivity {
             //Create a Object of the AudioRecord class with the required Samplig Frequency(44100 hz)
             AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
                     44100,
-                    AudioFormat.CHANNEL_CONFIGURATION_MONO,
+                    AudioFormat.CHANNEL_IN_DEFAULT,
                     AudioFormat.ENCODING_PCM_16BIT,
                     minBufferSize);
 
@@ -183,12 +204,12 @@ public class MainActivity extends FragmentActivity {
                 /*This is part where we store that data to our 3 different files.
                    For now I have used (.haha) and (.txt)
                  */
-                 for(int i = 0; i < numberOfShort; i++){
-                     dataOutputStream.writeShort(audioData[i]); // Store in Sound.haha file as short-short-short--
-                     dataOutputStream1.writeShort(audioData[i]);
-                     int temp = (int)audioData[i];//Convert the short to int to store in txt file
-                     dataOutputStream2.writeInt(temp);//Store in Sound.txt as int-int-int--
-                 }
+                for(int i = 0; i < numberOfShort; i++){
+                    dataOutputStream.writeShort(audioData[i]); // Store in Sound.haha file as short-short-short--
+                    dataOutputStream1.writeShort(audioData[i]);
+                    int temp = (int)audioData[i];//Convert the short to int to store in txt file
+                    dataOutputStream2.writeInt(temp);//Store in Sound.txt as int-int-int--
+                }
 
             }
 
@@ -233,7 +254,7 @@ public class MainActivity extends FragmentActivity {
             AudioTrack audioTrack = new AudioTrack(
                     AudioManager.STREAM_MUSIC,
                     44100,
-                    AudioFormat.CHANNEL_CONFIGURATION_MONO,
+                    AudioFormat.CHANNEL_IN_DEFAULT,
                     AudioFormat.ENCODING_PCM_16BIT,
                     bufferSizeInBytes,
                     AudioTrack.MODE_STREAM);
@@ -241,13 +262,33 @@ public class MainActivity extends FragmentActivity {
             audioTrack.play();
             audioTrack.write(audioData, 0, bufferSizeInBytes);
 
+            //Playback Controls
+            if(audioTrack.getPlayState() == audioTrack.PLAYSTATE_PLAYING){
+                //Changes to button at the end of playback
+                Play.setText("Playing");
+                Play.setTextColor(Color.parseColor("#00b900"));
+                Rec.setEnabled(true);
+                play_btn_count = 0;
+
+            }
+            if(audioTrack.getPlayState() == audioTrack.PLAYSTATE_PAUSED){
+
+            }
+            if(audioTrack.getPlayState() == audioTrack.PLAYSTATE_STOPPED){
+                //Changes to button at the end of playback
+                Play.setText("Play");
+                //Green
+                //Play.setTextColor(Color.parseColor("#00b900"));
+                Rec.setEnabled(true);
+                play_btn_count = 0;
+            }
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }//End of playRecord()
-
 }//End of MainActivity
 
 

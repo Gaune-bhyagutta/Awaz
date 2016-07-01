@@ -16,7 +16,7 @@
             android:name="com.example.keshavdulal.a14_simple_drawing.GraphFragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:layout="@layout/my_fragment">
+            tools:layout="@layout/graph_fragment">
         </fragment>
     </LinearLayout>
 
@@ -49,7 +49,7 @@
             android:name="com.example.keshavdulal.a14_simple_drawing.ListFragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:layout="@layout/my_fragment1" />
+            tools:layout="@layout/file_list_fragment" />
     </LinearLayout>
 
 </LinearLayout>
