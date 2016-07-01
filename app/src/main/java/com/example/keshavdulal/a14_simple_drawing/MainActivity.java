@@ -68,6 +68,7 @@ public class MainActivity extends FragmentActivity {
                         count=0;
 
                     }
+                    Play.setEnabled(true);
 
 
 
@@ -93,10 +94,10 @@ public class MainActivity extends FragmentActivity {
                         playing =false;
                         Play.setText("PLAY");
                         count1 =0;
-                        //Rec.setEnabled(true);
+
 
                     }
-
+                    Rec.setEnabled(true);
 
                 }
             });
@@ -123,7 +124,7 @@ public class MainActivity extends FragmentActivity {
 
             short[] audioData = new short[minBufferSize];
 
-            //float[] audioFloats = new float[audioData.length];
+            float[] audioFloats = new float[audioData.length];
 
 
             AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
@@ -138,14 +139,8 @@ public class MainActivity extends FragmentActivity {
                 int numberOfShort = audioRecord.read(audioData, 0, minBufferSize);
                  for(int i = 0; i < numberOfShort; i++){
 
-                    //audioFloats[i] = ((float)Short.reverseBytes(audioData[i])/0x8000);
+                    audioFloats[i] = ((float)Short.reverseBytes(audioData[i])/0x8000);
                     dataOutputStream.writeShort(audioData[i]);
-
-//                    s[i]=Float.toString(audioFloats[i]);
-//                    out = new OutputStreamWriter(openFileOutput(STORETEXT, 0));
-//
-//                    out.write(s[i]);*/
-
 
                 }
 
@@ -154,10 +149,23 @@ public class MainActivity extends FragmentActivity {
             audioRecord.stop();
 
 
-            System.out.println("audio float: "+ Arrays.toString(audioData));
+            System.out.println("audio float: "+ Arrays.toString(audioFloats));
             dataOutputStream.close();
 
+            /** FFT calculation part **/
 
+            float[] fft_input = new float[8];
+            for(int i=0;i<8;i++){
+                fft_input[i] = audioFloats[i];
+            }
+            FFT fft_object= new FFT(fft_input);
+
+            Complex[] x = fft_object.makepowerof2(fft_input);
+            Complex[] y = fft_object.fft(x);
+            System.out.print("FFT output: ");
+            fft_object.print(y);
+            double[] z = fft_object.absolute_value(y);
+            System.out.println("absolute value: "+ Arrays.toString(z));
 
         } catch (IOException e) {
             e.printStackTrace();

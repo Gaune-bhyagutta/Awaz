@@ -49,17 +49,12 @@ public class GraphFragment extends Fragment{
             float AX = 1450;
             float AY = 560;
 
-//            float BX = 0;
-//            float BY = 150;
-
             float parallel_dist = 500;
             float graph_height =1;
-            //OA
-            canvas.drawLine(OX,OY,AX,AY,graphBoundaryObj);
-            //OB
-            //canvas.drawLine(OX,OY,BX,BY,graphBoundaryObj);
 
-            //Line Parallel to OA
+            canvas.drawLine(OX,OY,AX,AY,graphBoundaryObj);
+
+
             canvas.drawLine(OX,OY-parallel_dist,AX,AY-parallel_dist,graphBoundaryObj);
             //Midline - Divider
             graphBoundaryObj.setStrokeWidth(2);
@@ -73,17 +68,15 @@ public class GraphFragment extends Fragment{
 //            canvas.drawLine(OX,OY,OX,OY-graph_height,graphLinesObj);
             // int dir = 1;                //1-up 2-down
 
-            //Ups & downs Graph
+
             int angle=0;
             for(OX = 0; OX<1450;OX+=5){
 
                 graph_height = (float) (100*(Math.sin(angle*3.141/180)+(Math.cos(angle*3.141/180))));
                 canvas.drawLine(OX,OY-(parallel_dist/2),OX,OY-graph_height-(parallel_dist/2),graphLinesObj);
-//
                 angle=angle+5;
-//
-
             }
+
 
 
         }
