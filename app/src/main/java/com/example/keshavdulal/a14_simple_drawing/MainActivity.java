@@ -177,10 +177,10 @@ public class MainActivity extends FragmentActivity {
                     AudioFormat.CHANNEL_IN_DEFAULT,
                     AudioFormat.ENCODING_PCM_16BIT);
 
-            // The array short that will store the Audiio data that we get From the mic.
+            // The array short that will store the Audio data that we get From the mic.
             short[] audioData = new short[minBufferSize];
-
-            //Create a Object of the AudioRecord class with the required Samplig Frequency(44100 hz)
+            float[] audioFloats = new float[audioData.length];
+            //Create a Object of the AudioRecord class with the required Sampling Frequency(44100 hz)
             AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
                     44100,
                     AudioFormat.CHANNEL_IN_DEFAULT,
@@ -208,6 +208,7 @@ public class MainActivity extends FragmentActivity {
                     dataOutputStream.writeShort(audioData[i]); // Store in Sound.haha file as short-short-short--
                     dataOutputStream1.writeShort(audioData[i]);
                     int temp = (int)audioData[i];//Convert the short to int to store in txt file
+                    audioFloats[i] = ((float)Short.reverseBytes(audioData[i])/0x8000);
                     dataOutputStream2.writeInt(temp);//Store in Sound.txt as int-int-int--
                 }
 
@@ -216,6 +217,23 @@ public class MainActivity extends FragmentActivity {
             audioRecord.stop();
 
             System.out.println("Audio Data: "+ Arrays.toString(audioData));
+
+            /** FFT calculation part **/
+
+//            float[] fft_input = new float[8];
+//            for(int i=0;i<8;i++){
+//                fft_input[i] = audioFloats[i];
+//            }
+//            FFT fft_object= new FFT(fft_input);
+            FFT fft_object= new FFT(audioFloats);
+
+            Complex[] x = fft_object.makepowerof2(audioFloats);
+            Complex[] y = fft_object.fft(x);
+            System.out.print("FFT output: ");
+            fft_object.print(y);
+            double[] z = fft_object.absolute_value(y);
+            System.out.println("absolute value: "+ Arrays.toString(z));
+
             dataOutputStream.close();
             dataOutputStream1.close();
             dataOutputStream2.close();
