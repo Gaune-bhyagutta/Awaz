@@ -1,61 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="#7470be"
-    android:weightSum="1">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/biggestLayout"
+    android:orientation="vertical">
 
-
-
-    <fragment
-        android:name="com.example.keshavdulal.a14_simple_drawing.GraphFragment"
-        android:layout_width="match_parent"
-        android:layout_height="261dp"
-        android:id="@+id/fragment"
-        tools:layout="@layout/my_fragment"
-        android:layout_alignParentTop="true"
-        android:layout_above="@+id/button"
-        android:layout_marginBottom="10dp" />
-
-
-
-
-    <Button
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="RECORD"
-        android:id="@+id/button"
-        android:background="#aeb7d2"
-        android:textColor="#bf050b"
-        android:layout_marginStart="76dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true"
-        android:clickable="true"
-        android:contextClickable="false" />
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:id="@+id/graphLayout">
+        <fragment
+            android:name="com.example.keshavdulal.a14_simple_drawing.GraphFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:layout="@layout/graph_fragment">
+        </fragment>
+    </LinearLayout>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="PLAY"
-        android:id="@+id/button2"
-        android:background="#aeb7d2"
-        android:textColor="#bf050b"
-        android:layout_above="@+id/fragment2"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="81dp"
-        android:clickable="true" />
-    <fragment
-        android:name="com.example.keshavdulal.a14_simple_drawing.ListFragment"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="261dp"
-        android:id="@+id/fragment2"
-        tools:layout="@layout/my_fragment1"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/button"
-        android:layout_marginTop="10dp" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/buttonsLayout"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/rec"
+            android:text="@string/record_button_name"
+            android:layout_weight="1"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/play"
+            android:text="@string/play_button_name" />
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:id="@+id/listLayout">
+        <fragment
+            android:name="com.example.keshavdulal.a14_simple_drawing.ListFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:layout="@layout/file_list_fragment" />
+    </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>
