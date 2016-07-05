@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ public class GraphFragment extends Fragment{
         View view = inflater.inflate(R.layout.graph_fragment, container, false);
         LinearLayout linearLayout = (LinearLayout)view.findViewById(R.id.rect);
         linearLayout.addView(new myGraphView(getActivity()));
+        Log.d("VIVZ", "Linear Layout - "+linearLayout.getHeight());
         return view;
     }
 
@@ -55,9 +57,11 @@ public class GraphFragment extends Fragment{
             float AX = canvas.getWidth();
             float AY = canvas.getHeight()/2;
             float graph_height;
-            float hp_avg = 22000;
+            float hp_avg = 44100;
             float height_processor = 0;
-            float x = hp_avg/(canvas.getHeight()/2);
+            float x = hp_avg/(canvas.getHeight()/5000);
+            //Log.d("VIVZ", "Canvas.getHeight = "+canvas.getHeight());
+            //Height = 1118
 
             //Midline - Divider
             graphBoundaryObj.setStrokeWidth(2);
@@ -77,8 +81,8 @@ public class GraphFragment extends Fragment{
                 graph_height = height_processor/x;
                 canvas.drawLine(OX,OY,OX,OY-graph_height,graphLinesObj);
             }
-            //invalidate();
-            postInvalidateDelayed(100);
+            invalidate();
+            //postInvalidateDelayed(100);
         }
     }
 //    void fine_tune(Canvas canvas){}

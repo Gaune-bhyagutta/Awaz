@@ -30,6 +30,7 @@ import java.io.OutputStream;
 import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = MainActivity.class.getSimpleName();
     //Fragment
     Boolean recording;
     Button Rec, Play;
@@ -55,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
 
                     if (rec_btn_count == 0){
                         //RECORD Button
+                        Log.d(TAG, "onClick: ");
+
                         Log.d("VIVZ", "Clicked - Record");
                         Rec.setText("STOP");
                         Rec.setTextColor(Color.parseColor("#ff0000"));
