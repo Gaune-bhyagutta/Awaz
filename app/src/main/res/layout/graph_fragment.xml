@@ -5,17 +5,16 @@
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-   >
+    >
 
     <LinearLayout
-android:layout_width="fill_parent"
-android:layout_height="fill_parent"
-android:layout_alignParentTop="true"
-android:layout_centerHorizontal="true"
-android:layout_marginTop="51dp"
-android:background="#444"
-android:id="@+id/rect"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="#444"
+        android:id="@+id/rect"
         android:orientation="vertical">
 
-</LinearLayout>
-    </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>
