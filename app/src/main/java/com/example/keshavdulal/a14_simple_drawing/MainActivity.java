@@ -210,22 +210,15 @@ public class MainActivity extends AppCompatActivity {
 
             System.out.println("Audio Data: "+ Arrays.toString(audioData));
 
-            /** FFT calculation part **/
+            /** Fft calculation part **/
 
 //            float[] fft_input = new float[8];
 //            for(int i=0;i<8;i++){
 //                fft_input[i] = audioFloats[i];
 //            }
-//            FFT fft_object= new FFT(fft_input);
-            FFT fft_object= new FFT(audioFloats);
 
-            Complex[] x = fft_object.makepowerof2(audioFloats);
-            Complex[] y = fft_object.fft(x);
-            System.out.print("FFT output: ");
-            fft_object.print(y);
-            double[] z = fft_object.absolute_value(y);
-            System.out.println("absolute value: "+ Arrays.toString(z));
-
+            double[] fftAbsoluteOutput= FftOutput.callMainFft(audioFloats);
+            System.out.println("absolute value: "+ Arrays.toString(fftAbsoluteOutput));
             dataOutputStream.close();
 
         } catch (IOException e) {
