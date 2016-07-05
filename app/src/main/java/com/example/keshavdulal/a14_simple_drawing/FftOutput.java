@@ -2,20 +2,16 @@ package com.example.keshavdulal.a14_simple_drawing;
 
 //
 /**
- * Radix-2 FFT implementation
+ * Radix-2 FftOutput implementation
  Here the input to the fft is a real number and output is complex number
  */
 
-public class FFT {
+public class FftOutput {
 
     private final float[] ax;
 
-    public FFT(float[] ax) {
+    public FftOutput(float[] ax) {
         this.ax = ax;
-        //    Complex[] x = makepowerof2(ax);
-//        print(x);
-//        Complex[] y = fft(x);
-//        print(y);
     }
 
     public static Complex[] makepowerof2(float[] ax) {
@@ -59,7 +55,7 @@ public class FFT {
     public static Complex[] fft(Complex[] x) {
         int N = x.length;
         if (N == 1) return new Complex[] { x[0] };
-        // Splitting the odd and even terms for calculation of FFT
+        // Splitting the odd and even terms for calculation of FftOutput
         // fft of even terms
         Complex[] even = new Complex[N/2];
         for (int k = 0; k < N/2; k++) {
