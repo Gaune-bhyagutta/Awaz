@@ -174,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
             // The array short that will store the Audio data that we get From the mic.
             short[] audioData = new short[minBufferSize];
 
+            float[] audioFloats = new float[audioData.length];
             //Create a Object of the AudioRecord class with the required Sampling Frequency(44100 hz)
             AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
                     44100,
@@ -198,12 +199,34 @@ public class MainActivity extends AppCompatActivity {
                  */
                 for (int i = 0; i < numberOfShort; i++) {
                     dataOutputStream.writeShort(audioData[i]); // Store in Sound.haha file as short-short-short--
-                    temp = (int) audioData[i];//Convert the short to int to store in txt file
+
+                    int temp = (int)audioData[i];//Convert the short to int to store in txt file
+                    audioFloats[i] = ((float)Short.reverseBytes(audioData[i])/0x8000);
+                }
+
             }
-        }
-        audioRecord.stop();
-        System.out.println("Audio Data: " + Arrays.toString(audioData));
-        dataOutputStream.close();
+
+            audioRecord.stop();
+
+            System.out.println("Audio Data: "+ Arrays.toString(audioData));
+
+            /** FFT calculation part **/
+
+//            float[] fft_input = new float[8];
+//            for(int i=0;i<8;i++){
+//                fft_input[i] = audioFloats[i];
+//            }
+//            FFT fft_object= new FFT(fft_input);
+            FFT fft_object= new FFT(audioFloats);
+
+            Complex[] x = fft_object.makepowerof2(audioFloats);
+            Complex[] y = fft_object.fft(x);
+            System.out.print("FFT output: ");
+            fft_object.print(y);
+            double[] z = fft_object.absolute_value(y);
+            System.out.println("absolute value: "+ Arrays.toString(z));
+
+            dataOutputStream.close();
 
         } catch (IOException e) {
             e.printStackTrace();
