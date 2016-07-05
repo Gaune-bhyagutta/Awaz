@@ -9,7 +9,7 @@ package com.example.keshavdulal.a14_simple_drawing;
 
 public class FftOutput {
 
-    public static Complex[] makepowerof2(float[] input) {
+    public static Complex[] makePowerOf2(float[] input) {
         int length =input.length;
         int N=length;
         // checking if length is a power of 2 or not
@@ -96,7 +96,7 @@ public class FftOutput {
     }
 
     public static double[] callMainFft(float[] input){
-        Complex[] fftInput = makepowerof2(input);// for zero padding if it is not a power of 2
+        Complex[] fftInput = makePowerOf2(input);// for zero padding if it is not a power of 2
         Complex[] fftOutput = fft(fftInput);
        // System.out.print("FftOutput output: ");
         //print(y);
