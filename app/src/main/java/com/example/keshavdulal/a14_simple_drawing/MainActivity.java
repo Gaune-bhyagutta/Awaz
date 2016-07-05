@@ -141,7 +141,7 @@ public class MainActivity extends FragmentActivity {
          */
 
 
-        File filePcm = new File(Environment.getExternalStorageDirectory(),"Sound.pcm");
+        File filePcm = new File(Environment.getExternalStorageDirectory(),"Sound.pcm"); //Constructs a new file using the specified directory and name.
         File fileHaha = new File(Environment.getExternalStorageDirectory(),"Sound.haha");
         File fileTxt = new File(Environment.getExternalStorageDirectory(),"Sound.txt");
        /*  -Above Three are Three different files as discussed above. In first two the files we pass the Array of short as the data
@@ -151,7 +151,7 @@ public class MainActivity extends FragmentActivity {
 */
 
         try {
-            filePcm.createNewFile();
+            filePcm.createNewFile();//Creates a new, empty file on the file system according to the path information stored in this file.
             fileHaha.createNewFile();
             fileTxt.createNewFile();
 
