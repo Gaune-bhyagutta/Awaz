@@ -1,6 +1,7 @@
 package com.example.keshavdulal.a14_simple_drawing;
 
 //
+
 /**
  * Radix-2 FftOutput implementation
  Here the input to the fft is a real number and output is complex number
@@ -8,93 +9,99 @@ package com.example.keshavdulal.a14_simple_drawing;
 
 public class FftOutput {
 
-    private final float[] ax;
+    public static Complex[] makepowerof2(float[] input) {
+        int length =input.length;
+        int N=length;
+        // checking if length is a power of 2 or not
+        int flag=0;// flag to check if the length of the array is a power of 2 or not
+                    // flag = 0 initially
 
-    public FftOutput(float[] ax) {
-        this.ax = ax;
-    }
+        for(int i=0 ; i<N;i++){
+            if (N%2==0){N=N/2;}
 
-    public static Complex[] makepowerof2(float[] ax) {
-        int N=ax.length;
-        int M=N;
-        // checking if N is a power of 2 or not
-        int s=0;
-        for(int i=0 ; i<M;i++){
-            if (M%2==0){M=M/2;}
-
-            else if (M%2!=0){s=1;}
+            else if (N%2!=0){flag=1;}// when the value of length is not a power of 2 set flag =1
         }
 
-        if(s==1){// if N is not a power of 2
-            int N1 = 1;
-            while(N1 < N)
-            {N1*=2;}
+        if(flag==1){// if length is not a power of 2
+            int newLength = 1;
+            while(newLength < length)//calculating the value of new length to a closest value i.e the power of 2
+            {newLength*=2;}
 
-            Complex[] x = new Complex[N1];
+            Complex[] x = new Complex[newLength];// making an array of newLength
 
-            for (int i = 0; i < N; i++) {
-                x[i] =new Complex(ax[i],0);
+            for (int i = 0; i < length; i++) {
+                x[i] =new Complex(input[i],0);// till the value of previous length the input is converted to complex number
             }
 
-            for (int i =N ; i < N1; i++) {// zero padding till the number is power of 2
+            for (int i =length ; i < newLength; i++) {// zero padding till the number is power of 2 (from previous length to new length
                 x[i] =new Complex(0,0);
             }
             return x;
         }
 
-        else{// when N is already a power of 2
-            Complex[] x = new Complex[N];
+        else{// when length is already a power of 2 where flag =0
+            Complex[] x = new Complex[length];
 
-            for (int i = 0; i < N; i++) {
-                x[i] =new Complex(ax[i],0);
+            for (int i = 0; i < length; i++) {
+                x[i] =new Complex(input[i],0);
             }
             return x;
         }
     }
 
-    public static Complex[] fft(Complex[] x) {
-        int N = x.length;
-        if (N == 1) return new Complex[] { x[0] };
-        // Splitting the odd and even terms for calculation of FftOutput
+    public static Complex[] fft(Complex[] complexInput) {
+        int length = complexInput.length;
+        if (length == 1) return new Complex[] { complexInput[0] };
+        // Splitting the odd and even terms for calculation of Fft
         // fft of even terms
-        Complex[] even = new Complex[N/2];
-        for (int k = 0; k < N/2; k++) {
-            even[k] = x[2*k];
+        Complex[] even = new Complex[length/2];
+        for (int i = 0; i < length/2; i++) {
+            even[i] = complexInput[2*i];
         }
-        Complex[] q = fft(even);
+        Complex[] fftEven = fft(even);// recursively calling the method fft to calculate the fft value for the even terms
 
         // fft of odd terms
         Complex[] odd  = even;
-        for (int k = 0; k < N/2; k++) {
-            odd[k] = x[2*k + 1];
+        for (int i = 0; i < length/2; i++) {
+            odd[i] = complexInput[2*i + 1];
         }
-        Complex[] r = fft(odd);
+        Complex[] fftOdd = fft(odd);//recursively calling method fft to calculate the fft value for odd terms
 
         // combine
-        Complex[] y = new Complex[N];
-        for (int k = 0; k < N/2; k++) {
-            double kth = -2 * k * Math.PI / N;
+        Complex[] y = new Complex[length];
+        for (int i = 0; i < length/2; i++) {
+            double kth = -2 * i * Math.PI / length;
             Complex wk = new Complex(Math.cos(kth), Math.sin(kth));
-            y[k] = q[k].plus(wk.times(r[k]));
-            y[k + N/2] = q[k].minus(wk.times(r[k]));
+            y[i] = fftEven[i].plus(wk.times(fftOdd[i]));
+            y[i + length/2] = fftEven[i].minus(wk.times(fftOdd[i]));
         }
         return y;
     }
 
-    public static double[] absolute_value(Complex[] x){
-        double[] a = new double[x.length];
-        for(int i=0; i<x.length;i++){
-            a[i]= x[i].abs();
+    public static double[] absoluteValue(Complex[] complexInput){//Calculating the absolute value for the complex number array
+        double[] absoluteValue = new double[complexInput.length];
+        for(int i=0; i<complexInput.length;i++){
+            absoluteValue[i]= complexInput[i].abs();//calling abs method of Complex class
         }
-        return a;
+        return absoluteValue;
     }
 
-    public static void print(Complex[] x) {
+    public static void print(Complex[] complexInput) {// for printing the complex number
 
-        for (int i = 0; i < x.length; i++) {
-            String a= x[i].toString();
-            System.out.print(a+" , ");
+        for (int i = 0; i < complexInput.length; i++) {
+            String toString= complexInput[i].toString();//calling toString method of Complex class to print the complex number
+            System.out.print(toString+" , ");
         }
         System.out.println();
+    }
+
+    public static double[] callMainFft(float[] input){
+        Complex[] fftInput = makepowerof2(input);// for zero padding if it is not a power of 2
+        Complex[] fftOutput = fft(fftInput);
+       // System.out.print("FftOutput output: ");
+        //print(y);
+        double[] absValue = absoluteValue(fftOutput);
+        //System.out.println("absolute value: "+ Arrays.toString(z));
+        return absValue;
     }
 }

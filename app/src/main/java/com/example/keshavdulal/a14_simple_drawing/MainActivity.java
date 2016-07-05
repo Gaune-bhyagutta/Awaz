@@ -218,22 +218,15 @@ public class MainActivity extends FragmentActivity {
 
             System.out.println("Audio Data: "+ Arrays.toString(audioData));
 
-            /** FftOutput calculation part **/
+            /** Fft calculation part **/
 
 //            float[] fft_input = new float[8];
 //            for(int i=0;i<8;i++){
 //                fft_input[i] = audioFloats[i];
 //            }
-//            FftOutput fftOutput_object= new FftOutput(fft_input);
-            FftOutput fftOutput_object = new FftOutput(audioFloats);
 
-            Complex[] x = fftOutput_object.makepowerof2(audioFloats);
-            Complex[] y = fftOutput_object.fft(x);
-            System.out.print("FftOutput output: ");
-            fftOutput_object.print(y);
-            double[] z = fftOutput_object.absolute_value(y);
-            System.out.println("absolute value: "+ Arrays.toString(z));
-
+            double[] fftAbsoluteOutput= FftOutput.callMainFft(audioFloats);
+            System.out.println("absolute value: "+ Arrays.toString(fftAbsoluteOutput));
             dataOutputStream.close();
             dataOutputStream1.close();
             dataOutputStream2.close();
