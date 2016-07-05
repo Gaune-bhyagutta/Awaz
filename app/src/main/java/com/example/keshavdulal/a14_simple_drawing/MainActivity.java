@@ -9,6 +9,8 @@ import android.media.MediaRecorder;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -27,16 +29,21 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends AppCompatActivity {
+    private static final String TAG = MainActivity.class.getSimpleName();
+    //Fragment
     Boolean recording;
     Button Rec, Play;
     int rec_btn_count = 0, play_btn_count =0;
+    public static int temp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle("Awazz");
+        //Fixed - Missing APP Name
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         Rec = (Button) findViewById(R.id.rec);
         Play = (Button) findViewById(R.id.play);
 
@@ -49,6 +56,8 @@ public class MainActivity extends FragmentActivity {
 
                     if (rec_btn_count == 0){
                         //RECORD Button
+                        Log.d(TAG, "onClick: ");
+
                         Log.d("VIVZ", "Clicked - Record");
                         Rec.setText("STOP");
                         Rec.setTextColor(Color.parseColor("#ff0000"));
@@ -114,7 +123,7 @@ public class MainActivity extends FragmentActivity {
     }// End of onCreate()
 
 
-    void startRecord(){
+    void startRecord() {
         Log.d("VIVZ", "Thread - Start record");
         /* WHOLE PROCESS EXPLAINED IN BRIEF HERE:
             1.Create a file to store that data values that comes from the mic.
@@ -141,9 +150,7 @@ public class MainActivity extends FragmentActivity {
          */
 
 
-        File filePcm = new File(Environment.getExternalStorageDirectory(),"Sound.pcm");
-        File fileHaha = new File(Environment.getExternalStorageDirectory(),"Sound.haha");
-        File fileTxt = new File(Environment.getExternalStorageDirectory(),"Sound.txt");
+        File filePcm = new File(Environment.getExternalStorageDirectory(), "Sound.pcm");
        /*  -Above Three are Three different files as discussed above. In first two the files we pass the Array of short as the data
             to be stored and similarly fetch the data in same way.This is to that the extension does not effect.
            -And the Third kind of file stores tha data in integer form and has extension .txt so that text Editor(UFT-8) can
@@ -152,38 +159,26 @@ public class MainActivity extends FragmentActivity {
 
         try {
             filePcm.createNewFile();
-            fileHaha.createNewFile();
-            fileTxt.createNewFile();
 
             // Mechanism to store fetch data from mic and store it.
-            OutputStream outputStream = new FileOutputStream(fileHaha);
+            OutputStream outputStream = new FileOutputStream(filePcm);
             BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
             DataOutputStream dataOutputStream = new DataOutputStream(bufferedOutputStream);
-
-            // Mechanism to store fetch data from mic and store it.
-            OutputStream outputStream1 = new FileOutputStream(filePcm);
-            BufferedOutputStream bufferedOutputStream1 = new BufferedOutputStream(outputStream1);
-            DataOutputStream dataOutputStream1 = new DataOutputStream(bufferedOutputStream1);
-
-            // Mechanism to store fetch data from mic and store it.
-            OutputStream outputStream2 = new FileOutputStream(fileTxt);
-            BufferedOutputStream bufferedOutputStream2 = new BufferedOutputStream(outputStream2);
-            DataOutputStream dataOutputStream2 = new DataOutputStream(bufferedOutputStream2);
-
             /*Call the static class of Audio Record to get the Buffer size in Byte that can handle the Audio data values
                 based on our SAMPLING RATE (44100 hz or frame per second in our case)
              */
             int minBufferSize = AudioRecord.getMinBufferSize(44100,
-                    AudioFormat.CHANNEL_IN_DEFAULT,
+                    AudioFormat.CHANNEL_IN_MONO,
                     AudioFormat.ENCODING_PCM_16BIT);
 
             // The array short that will store the Audio data that we get From the mic.
             short[] audioData = new short[minBufferSize];
+
             float[] audioFloats = new float[audioData.length];
             //Create a Object of the AudioRecord class with the required Sampling Frequency(44100 hz)
             AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
                     44100,
-                    AudioFormat.CHANNEL_IN_DEFAULT,
+                    AudioFormat.CHANNEL_IN_MONO,
                     AudioFormat.ENCODING_PCM_16BIT,
                     minBufferSize);
 
@@ -193,8 +188,7 @@ public class MainActivity extends FragmentActivity {
             audioRecord.startRecording();
 
             // it means while the user have  not pressed the STOP Button
-            while(recording){
-
+            while (recording) {
                 /* numberOfShort=minBufferSize/2
                    Actually what is happening is the minBufferSize(8 bit Buffer) is being converted to numberOfShort(16 bit buffer)
                    AND THE MOST IMPORTANT PART IS HERE:- The actual value is being store here in the audioData array.
@@ -202,14 +196,12 @@ public class MainActivity extends FragmentActivity {
                 int numberOfShort = audioRecord.read(audioData, 0, minBufferSize);
 
                 /*This is part where we store that data to our 3 different files.
-                   For now I have used (.haha) and (.txt)
                  */
-                for(int i = 0; i < numberOfShort; i++){
+                for (int i = 0; i < numberOfShort; i++) {
                     dataOutputStream.writeShort(audioData[i]); // Store in Sound.haha file as short-short-short--
-                    dataOutputStream1.writeShort(audioData[i]);
+
                     int temp = (int)audioData[i];//Convert the short to int to store in txt file
                     audioFloats[i] = ((float)Short.reverseBytes(audioData[i])/0x8000);
-                    dataOutputStream2.writeInt(temp);//Store in Sound.txt as int-int-int--
                 }
 
             }
@@ -235,32 +227,25 @@ public class MainActivity extends FragmentActivity {
             System.out.println("absolute value: "+ Arrays.toString(z));
 
             dataOutputStream.close();
-            dataOutputStream1.close();
-            dataOutputStream2.close();
-
-
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     //Start of playRecord()
     void playRecord(){
 
         File filePcm = new File(Environment.getExternalStorageDirectory(), "Sound.pcm");
-        File fileHaha = new File(Environment.getExternalStorageDirectory(), "Sound.haha");
         int shortSizeInBytes = Short.SIZE/Byte.SIZE;
 
         int bufferSizeInBytes = (int)(filePcm.length()/shortSizeInBytes);
         short[] audioData = new short[bufferSizeInBytes];
 
         try {
-            InputStream inputStream = new FileInputStream(fileHaha);
+            InputStream inputStream = new FileInputStream(filePcm);
             BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
             DataInputStream dataInputStream = new DataInputStream(bufferedInputStream);
-
             int i = 0;
             while(dataInputStream.available() > 0){
                 audioData[i] = dataInputStream.readShort();
@@ -272,7 +257,7 @@ public class MainActivity extends FragmentActivity {
             AudioTrack audioTrack = new AudioTrack(
                     AudioManager.STREAM_MUSIC,
                     44100,
-                    AudioFormat.CHANNEL_IN_DEFAULT,
+                    AudioFormat.CHANNEL_IN_MONO,
                     AudioFormat.ENCODING_PCM_16BIT,
                     bufferSizeInBytes,
                     AudioTrack.MODE_STREAM);
