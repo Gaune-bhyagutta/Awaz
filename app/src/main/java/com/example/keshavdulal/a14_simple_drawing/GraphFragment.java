@@ -76,7 +76,7 @@ public class GraphFragment extends Fragment{
                 height_processor = 0;
                 //float [] height_processor = new float[hp_avg];
                 for (int j = 0; j < hp_avg; j++){
-                    height_processor += (float) MainActivity.temp;
+                    height_processor += (float) AudioRecordClass.valueToGraph();
                 }
                 graph_height = height_processor/x;
                 canvas.drawLine(OX,OY,OX,OY-graph_height,graphLinesObj);
