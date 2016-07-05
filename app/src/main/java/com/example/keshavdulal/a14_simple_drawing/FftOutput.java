@@ -70,10 +70,10 @@ public class FftOutput {
         // combine
         Complex[] y = new Complex[length];
         for (int i = 0; i < length/2; i++) {
-            double kth = -2 * i * Math.PI / length;
-            Complex wk = new Complex(Math.cos(kth), Math.sin(kth));
-            y[i] = fftEven[i].plus(wk.times(fftOdd[i]));
-            y[i + length/2] = fftEven[i].minus(wk.times(fftOdd[i]));
+            double kn = -2 * i * Math.PI / length;
+            Complex twiddleFactor = new Complex(Math.cos(kn), Math.sin(kn));// calculating twiddle factor Wn^k= e^(j*2*pi*k/N) = cos(2*pi*k/N)-i*sin(2*pi*k/N)
+            y[i] = fftEven[i].plus(twiddleFactor.times(fftOdd[i]));
+            y[i + length/2] = fftEven[i].minus(twiddleFactor.times(fftOdd[i]));
         }
         return y;
     }
