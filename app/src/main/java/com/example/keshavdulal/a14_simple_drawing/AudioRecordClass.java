@@ -131,6 +131,16 @@ public class AudioRecordClass {
             dataOutputStream2.close();
 
 
+/*
+            Complex[] x =FftOutput.makePowerOf2();
+            Complex[] y = FftOutput.fft(x);
+            System.out.print("FFT output: ");
+            FftOutput.print(y);
+            double[] z = FftOutput.absolute_value(y);
+            System.out.println("absolute value: "+ Arrays.toString(z));*/
+
+
+
 
         } catch (IOException e) {
             e.printStackTrace();
