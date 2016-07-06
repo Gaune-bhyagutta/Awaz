@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     //Fragment
@@ -22,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -39,9 +39,12 @@ public class MainActivity extends AppCompatActivity {
         //Fixed - Missing APP Name
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle("Awazz");
+
         Rec = (Button) findViewById(R.id.rec);
         Play = (Button) findViewById(R.id.play);
 
+        //Play.setEnabled(false);
         // Start of Record Button
         if(Rec!=null) {
             Rec.setOnClickListener(new View.OnClickListener() {
@@ -50,9 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
                     if (rec_btn_count == 0){
                         //RECORD Button
-                        Log.d(TAG, "onClick: ");
-
-                        Log.d(TAG, "Clicked - Record");
+                        Log.d("VIVZ", "Clicked - Record");
                         Rec.setText("STOP");
                         Rec.setTextColor(Color.parseColor("#ff0000"));
                         Play.setEnabled(false);
@@ -60,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
                         Thread recordThread = new Thread(new Runnable(){
                             @Override
                             public void run() {
-                                Log.d(TAG, "Start Recording");
                                 AudioRecordClass.startRecord();
                             }
                         }); // End of record Thread
@@ -71,8 +71,8 @@ public class MainActivity extends AppCompatActivity {
 
                     else if (rec_btn_count == 1){
                         //STOP Button
-                        AudioRecordClass.stopRecording();
-                        Log.d(TAG, "Clicked - Stop");
+                        Log.d("VIVZ", "Clicked - Stop");
+                        AudioRecordClass.stopRecord();
                         Rec.setText("RECORD");
                         Rec.setTextColor(Color.parseColor("#000000"));
                         Play.setEnabled(true);
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
                     if(play_btn_count == 0){
                         //PLAY Buttton
-                        Log.d(TAG, "Clicked - PLAY");
+                        Log.d("VIVZ", "Clicked - PLAY");
                         AudioPlayClass.playRecord();
                         Toast.makeText(getApplicationContext(), "Playing audio", Toast.LENGTH_SHORT).show();
                         Play.setText("Stop");
@@ -116,8 +116,4 @@ public class MainActivity extends AppCompatActivity {
 
     }// End of onCreate()
 
-
-
 }//End of MainActivity
-
-

@@ -6,18 +6,18 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+/**
+ * Created by imas on 6/28/16.
+ */
 public class GraphFragment extends Fragment{
 
-//    @Override
-//    public OnActivityCreated(){
-//
-//    }
+    public static  float graph_height;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -32,29 +32,17 @@ public class GraphFragment extends Fragment{
         LinearLayout linearLayout = (LinearLayout)view.findViewById(R.id.rect);
         linearLayout.addView(new myGraphView(getActivity()));
        // Log.d("VIVZ", "Linear Layout - "+linearLayout.getHeight());
-
     }
 
     public static class myGraphView extends View {
         public myGraphView(Context context) {
+
             super(context);
         }
 
         @Override
-        protected void onDraw(final Canvas canvas) {
+        protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
-            //Sine Height for demo
-            //graph_height = (float) (100*(Math.sin(angle*3.141/180)+(Math.cos(angle*3.141/180))));
-            //Random Graph Demo
-            //graph_height = (float) (500 * Math.random());
-            //graph_height = (float) MainActivity.temp;
-            //angle=angle+3;
-//            Thread height_generator = new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    fine_tune();
-//                }
-//            });
             //BACKGROUND
             canvas.drawColor(Color.LTGRAY);
             //Paint Object
@@ -62,43 +50,36 @@ public class GraphFragment extends Fragment{
             graphBoundaryObj.setColor(Color.GRAY);
             graphBoundaryObj.setStrokeWidth(7);
 
-            float OX = 0;
-            float OY = canvas.getHeight()/2;
+            float X1 = 0;
+            float Y1 = canvas.getHeight()/2;
             float AX = canvas.getWidth();
             float AY = canvas.getHeight()/2;
-            float graph_height;
-            float hp_avg = 2200;
-            float height_processor = 0;
+            float X2,Y2;
 
-            float x =(canvas.getHeight()/2)/32768;
-
-            //Log.d("VIVZ", "Canvas.getHeight = "+canvas.getHeight());
-            //Height = 1118
+            float parallel_dist = 500;
+            // graph_height =1;
 
             //Midline - Divider
             graphBoundaryObj.setStrokeWidth(2);
-            canvas.drawLine(OX,OY,AX,AY,graphBoundaryObj);
+            canvas.drawLine(X1,Y1,AX,AY,graphBoundaryObj);
 
             //Vertical graphical line
             Paint graphLinesObj = new Paint();        //GLO graph-lines-object
-            graphLinesObj.setColor(Color.RED);
-            graphLinesObj.setStrokeWidth(1);
+            graphLinesObj.setColor(Color.GRAY);
+            graphLinesObj.setStrokeWidth(5);
 
-            for(OX = 0; OX<canvas.getWidth();OX++){
-                height_processor = 0;
-                //float [] height_processor = new float[hp_avg];
-                for (int j = 0; j < hp_avg; j++){
-                    height_processor += (float) AudioRecordClass.audioValueToGraph;
-                   //Log.d("GraphFragment", String.valueOf(AudioRecordClass.audioValueToGraph));
-                }
-                graph_height = height_processor*x;
-                //Log.d("VIVZ", String.valueOf(graph_height));
-
-                canvas.drawLine(OX,OY,OX,OY-graph_height,graphLinesObj);
+            int angle=0;
+           /* MainActivity mainActivity = new MainActivity();
+            short[] audioData = mainActivity.getAudioData();*/
+            for(X1 = 0; X1<100;X1+=5){
+                //invalidate();
+                X2=X1;
+                Y2=Y1-graph_height;
+                canvas.drawLine(X1,Y1,X2,Y2,graphLinesObj);
+                graph_height = ((float)AudioRecordClass.temp)/50;
             }
-            invalidate();
-            //postInvalidateDelayed(100);
+            postInvalidateDelayed(250);
+
         }
     }
-//    void fine_tune(Canvas canvas){}
 }
