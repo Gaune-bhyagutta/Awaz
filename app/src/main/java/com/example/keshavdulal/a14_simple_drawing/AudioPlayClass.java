@@ -15,23 +15,25 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Created by amitgupta on 7/5/2016.
+ * Created by amitgupta on 7/6/2016.
  */
 public class AudioPlayClass {
 
     //Start of playRecord()
-    public  static  void playRecord(){
+    public  static void playRecord(){
 
         File filePcm = new File(Environment.getExternalStorageDirectory(), "Sound.pcm");
+        File fileHaha = new File(Environment.getExternalStorageDirectory(), "Sound.haha");
         int shortSizeInBytes = Short.SIZE/Byte.SIZE;
 
         int bufferSizeInBytes = (int)(filePcm.length()/shortSizeInBytes);
         short[] audioData = new short[bufferSizeInBytes];
 
         try {
-            InputStream inputStream = new FileInputStream(filePcm);
+            InputStream inputStream = new FileInputStream(fileHaha);
             BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
             DataInputStream dataInputStream = new DataInputStream(bufferedInputStream);
+
             int i = 0;
             while(dataInputStream.available() > 0){
                 audioData[i] = dataInputStream.readShort();
@@ -43,7 +45,7 @@ public class AudioPlayClass {
             AudioTrack audioTrack = new AudioTrack(
                     AudioManager.STREAM_MUSIC,
                     44100,
-                    AudioFormat.CHANNEL_IN_MONO,
+                    AudioFormat.CHANNEL_IN_DEFAULT,
                     AudioFormat.ENCODING_PCM_16BIT,
                     bufferSizeInBytes,
                     AudioTrack.MODE_STREAM);
@@ -57,5 +59,4 @@ public class AudioPlayClass {
             e.printStackTrace();
         }
     }//End of playRecord()
-
-}//END
+}
