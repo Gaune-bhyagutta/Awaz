@@ -15,14 +15,14 @@ import java.io.OutputStream;
 import java.util.Arrays;
 
 /**
- * Created by amitgupta on 7/5/2016.
+ * Created by amitgupta on 7/6/2016.
  */
 public class AudioRecordClass {
 
-    private static boolean recording=true;
-    public static int audioValueToGraph;
+    public  static int temp;
+    public static Boolean recording = true;
 
-    public static void startRecord() {
+    public static void startRecord(){
         Log.d("VIVZ", "Thread - Start record");
         /* WHOLE PROCESS EXPLAINED IN BRIEF HERE:
             1.Create a file to store that data values that comes from the mic.
@@ -49,43 +49,49 @@ public class AudioRecordClass {
          */
 
 
-
-        File filePcm = new File(Environment.getExternalStorageDirectory(),"Sound.pcm"); //Constructs a new file using the specified directory and name.
-        /*File fileHaha = new File(Environment.getExternalStorageDirectory(),"Sound.haha");
-        File fileTxt = new File(Environment.getExternalStorageDirectory(),"Sound.txt");*/
-        /*  -Above Three are Three different files as discussed above. In first two the files we pass the Array of short as the data
+        File filePcm = new File(Environment.getExternalStorageDirectory(),"Sound.pcm");
+        File fileHaha = new File(Environment.getExternalStorageDirectory(),"Sound.haha");
+        File fileTxt = new File(Environment.getExternalStorageDirectory(),"Sound.txt");
+       /*  -Above Three are Three different files as discussed above. In first two the files we pass the Array of short as the data
             to be stored and similarly fetch the data in same way.This is to that the extension does not effect.
            -And the Third kind of file stores tha data in integer form and has extension .txt so that text Editor(UFT-8) can
             open and understahnd and show the data.PLEASE, NOTE THAT EXTENSION DOES AFFECT HERE.
 */
 
         try {
-
-            filePcm.createNewFile();//Creates a new, empty file on the file system according to the path information stored in this file.
-           /* fileHaha.createNewFile();
-            fileTxt.createNewFile();*/
-
-
+            filePcm.createNewFile();
+            fileHaha.createNewFile();
+            fileTxt.createNewFile();
 
             // Mechanism to store fetch data from mic and store it.
-            OutputStream outputStream = new FileOutputStream(filePcm);
+            OutputStream outputStream = new FileOutputStream(fileHaha);
             BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
             DataOutputStream dataOutputStream = new DataOutputStream(bufferedOutputStream);
+
+            // Mechanism to store fetch data from mic and store it.
+            OutputStream outputStream1 = new FileOutputStream(filePcm);
+            BufferedOutputStream bufferedOutputStream1 = new BufferedOutputStream(outputStream1);
+            DataOutputStream dataOutputStream1 = new DataOutputStream(bufferedOutputStream1);
+
+            // Mechanism to store fetch data from mic and store it.
+            OutputStream outputStream2 = new FileOutputStream(fileTxt);
+            BufferedOutputStream bufferedOutputStream2 = new BufferedOutputStream(outputStream2);
+            DataOutputStream dataOutputStream2 = new DataOutputStream(bufferedOutputStream2);
+
             /*Call the static class of Audio Record to get the Buffer size in Byte that can handle the Audio data values
                 based on our SAMPLING RATE (44100 hz or frame per second in our case)
              */
             int minBufferSize = AudioRecord.getMinBufferSize(44100,
-                    AudioFormat.CHANNEL_IN_MONO,
+                    AudioFormat.CHANNEL_IN_DEFAULT,
                     AudioFormat.ENCODING_PCM_16BIT);
 
-            // The array short that will store the Audio data that we get From the mic.
+            // The array short that will store the Audiio data that we get From the mic.
             short[] audioData = new short[minBufferSize];
 
-            float[] audioFloats = new float[audioData.length];
-            //Create a Object of the AudioRecord class with the required Sampling Frequency(44100 hz)
+            //Create a Object of the AudioRecord class with the required Samplig Frequency(44100 hz)
             AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
                     44100,
-                    AudioFormat.CHANNEL_IN_MONO,
+                    AudioFormat.CHANNEL_IN_DEFAULT,
                     AudioFormat.ENCODING_PCM_16BIT,
                     minBufferSize);
 
@@ -93,9 +99,10 @@ public class AudioRecordClass {
                 can be fetch from mic-buffer-our array of short(audioData)
              */
             audioRecord.startRecording();
-
+            //GraphFragment gF = new GraphFragment();
             // it means while the user have  not pressed the STOP Button
-            while (recording) {
+            while(recording){
+
                 /* numberOfShort=minBufferSize/2
                    Actually what is happening is the minBufferSize(8 bit Buffer) is being converted to numberOfShort(16 bit buffer)
                    AND THE MOST IMPORTANT PART IS HERE:- The actual value is being store here in the audioData array.
@@ -103,53 +110,45 @@ public class AudioRecordClass {
                 int numberOfShort = audioRecord.read(audioData, 0, minBufferSize);
 
                 /*This is part where we store that data to our 3 different files.
+                   For now I have used (.haha) and (.txt)
                  */
-                for (int i = 0; i < numberOfShort; i++) {
+                for(int i = 0; i < numberOfShort; i++){
                     dataOutputStream.writeShort(audioData[i]); // Store in Sound.haha file as short-short-short--
+                    dataOutputStream1.writeShort(audioData[i]);
 
-                    audioValueToGraph= (int)audioData[i];//Convert the short to int to store in txt file
-                    audioFloats[i] = ((float)Short.reverseBytes(audioData[i])/0x8000);
-                    System.out.println(audioValueToGraph);
+                    temp = (int)audioData[i];//Convert the short to int to store in txt file
+                    //GraphFragment.graph_height=temp;
+                    dataOutputStream2.writeInt(temp);//Store in Sound.txt as int-int-int--
                 }
 
             }
 
             audioRecord.stop();
-            dataOutputStream.close();
 
             System.out.println("Audio Data: "+ Arrays.toString(audioData));
+            dataOutputStream.close();
+            dataOutputStream1.close();
+            dataOutputStream2.close();
 
-            /** FFT calculation part **/
 
-//            float[] fft_input = new float[8];
-//            for(int i=0;i<8;i++){
-//                fft_input[i] = audioFloats[i];
-//            }
-//            FFT fft_object= new FFT(fft_input);
-            FFT fft_object= new FFT(audioFloats);
-
-            Complex[] x = fft_object.makepowerof2(audioFloats);
-            Complex[] y = fft_object.fft(x);
+/*
+            Complex[] x =FftOutput.makePowerOf2();
+            Complex[] y = FftOutput.fft(x);
             System.out.print("FFT output: ");
-            fft_object.print(y);
-            double[] z = fft_object.absolute_value(y);
-            System.out.println("absolute value: "+ Arrays.toString(z));
+            FftOutput.print(y);
+            double[] z = FftOutput.absolute_value(y);
+            System.out.println("absolute value: "+ Arrays.toString(z));*/
+
 
 
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }//END of StartRecord()
 
-    // Start of StopRecording()
-    public static void stopRecording(){
-        recording =false;
-    }//End of StopRecording()
+    }
 
-    //Start of valueToGraph()
-    public static  int valueToGraph(){
-        return audioValueToGraph;
-    }//END of valueToGraph()
-
+    public  static  void stopRecord(){
+        recording = false;
+    }
 }
