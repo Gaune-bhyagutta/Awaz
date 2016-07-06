@@ -126,9 +126,9 @@ public class AudioRecordClass {
 //                fft_input[i] = audioFloats[i];
 //            }
 //            FFT fft_object= new FFT(fft_input);
-            FFT fft_object= new FFT(audioFloats);
+            FftOutput fft_object= new FftOutput(audioFloats);
 
-            Complex[] x = fft_object.makepowerof2(audioFloats);
+            Complex[] x = fft_object.makePowerOf2(audioFloats);
             Complex[] y = fft_object.fft(x);
             System.out.print("FFT output: ");
             fft_object.print(y);
