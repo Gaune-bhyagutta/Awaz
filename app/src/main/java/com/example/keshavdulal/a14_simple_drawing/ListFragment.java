@@ -10,7 +10,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class ListFragment extends Fragment {
+public class ListFragment extends android.support.v4.app.Fragment {
 
     ArrayList<String> nameList;
     ListView list;

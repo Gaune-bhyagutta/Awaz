@@ -14,15 +14,25 @@ import android.widget.LinearLayout;
 
 public class GraphFragment extends Fragment{
 
+//    @Override
+//    public OnActivityCreated(){
+//
+//    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.graph_fragment, container, false);
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState){
         LinearLayout linearLayout = (LinearLayout)view.findViewById(R.id.rect);
         linearLayout.addView(new myGraphView(getActivity()));
-        Log.d("VIVZ", "Linear Layout - "+linearLayout.getHeight());
-        return view;
+       // Log.d("VIVZ", "Linear Layout - "+linearLayout.getHeight());
+
     }
 
     public static class myGraphView extends View {
@@ -59,7 +69,9 @@ public class GraphFragment extends Fragment{
             float graph_height;
             float hp_avg = 2200;
             float height_processor = 0;
-            float x = hp_avg/(canvas.getHeight()/2);
+
+            float x =(canvas.getHeight()/2)/32768;
+
             //Log.d("VIVZ", "Canvas.getHeight = "+canvas.getHeight());
             //Height = 1118
 
@@ -76,9 +88,12 @@ public class GraphFragment extends Fragment{
                 height_processor = 0;
                 //float [] height_processor = new float[hp_avg];
                 for (int j = 0; j < hp_avg; j++){
-                    height_processor += (float) MainActivity.temp;
+                    height_processor += (float) AudioRecordClass.audioValueToGraph;
+                   //Log.d("GraphFragment", String.valueOf(AudioRecordClass.audioValueToGraph));
                 }
-                graph_height = height_processor/x;
+                graph_height = height_processor*x;
+                //Log.d("VIVZ", String.valueOf(graph_height));
+
                 canvas.drawLine(OX,OY,OX,OY-graph_height,graphLinesObj);
             }
             invalidate();
