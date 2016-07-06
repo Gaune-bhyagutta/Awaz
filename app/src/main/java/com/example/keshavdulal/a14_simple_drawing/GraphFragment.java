@@ -59,7 +59,9 @@ public class GraphFragment extends Fragment{
             float graph_height;
             float hp_avg = 2200;
             float height_processor = 0;
+
             float x =(canvas.getHeight()/2)/32768;
+
             //Log.d("VIVZ", "Canvas.getHeight = "+canvas.getHeight());
             //Height = 1118
 
