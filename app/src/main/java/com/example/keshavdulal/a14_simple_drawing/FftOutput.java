@@ -79,8 +79,9 @@ public class FftOutput {
     }
 
     public static double[] absoluteValue(Complex[] complexInput){//Calculating the absolute value for the complex number array
-        double[] absoluteValue = new double[complexInput.length];
-        for(int i=0; i<complexInput.length;i++){
+        int l = complexInput.length/2;
+        double[] absoluteValue = new double[l];
+        for(int i=0; i<l;i++){
             absoluteValue[i]= complexInput[i].abs();//calling abs method of Complex class
         }
         return absoluteValue;

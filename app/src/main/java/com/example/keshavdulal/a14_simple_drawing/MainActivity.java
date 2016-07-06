@@ -219,6 +219,12 @@ public class MainActivity extends AppCompatActivity {
 
             double[] fftAbsoluteOutput= FftOutput.callMainFft(audioFloats);
             System.out.println("absolute value: "+ Arrays.toString(fftAbsoluteOutput));
+            double[] frequency = FrequencyValue.getFrequency(fftAbsoluteOutput);
+            System.out.println("Frequency value: "+ Arrays.toString(frequency));
+
+
+            System.out.println(fftAbsoluteOutput.length);
+            System.out.println(frequency.length);
             dataOutputStream.close();
 
         } catch (IOException e) {
