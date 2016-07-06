@@ -20,9 +20,9 @@ import java.util.Arrays;
 public class AudioRecordClass {
 
     private static boolean recording=true;
-    int valueToGraph;
+    public static int audioValueToGraph;
 
-    static void startRecord() {
+    public static void startRecord() {
         Log.d("VIVZ", "Thread - Start record");
         /* WHOLE PROCESS EXPLAINED IN BRIEF HERE:
             1.Create a file to store that data values that comes from the mic.
@@ -51,8 +51,8 @@ public class AudioRecordClass {
 
 
         File filePcm = new File(Environment.getExternalStorageDirectory(),"Sound.pcm"); //Constructs a new file using the specified directory and name.
-        File fileHaha = new File(Environment.getExternalStorageDirectory(),"Sound.haha");
-        File fileTxt = new File(Environment.getExternalStorageDirectory(),"Sound.txt");
+        /*File fileHaha = new File(Environment.getExternalStorageDirectory(),"Sound.haha");
+        File fileTxt = new File(Environment.getExternalStorageDirectory(),"Sound.txt");*/
         /*  -Above Three are Three different files as discussed above. In first two the files we pass the Array of short as the data
             to be stored and similarly fetch the data in same way.This is to that the extension does not effect.
            -And the Third kind of file stores tha data in integer form and has extension .txt so that text Editor(UFT-8) can
@@ -62,8 +62,8 @@ public class AudioRecordClass {
         try {
 
             filePcm.createNewFile();//Creates a new, empty file on the file system according to the path information stored in this file.
-            fileHaha.createNewFile();
-            fileTxt.createNewFile();
+           /* fileHaha.createNewFile();
+            fileTxt.createNewFile();*/
 
 
 
@@ -107,13 +107,15 @@ public class AudioRecordClass {
                 for (int i = 0; i < numberOfShort; i++) {
                     dataOutputStream.writeShort(audioData[i]); // Store in Sound.haha file as short-short-short--
 
-                    int temp = (int)audioData[i];//Convert the short to int to store in txt file
+                    audioValueToGraph= (int)audioData[i];//Convert the short to int to store in txt file
                     audioFloats[i] = ((float)Short.reverseBytes(audioData[i])/0x8000);
+                    System.out.println(audioValueToGraph);
                 }
 
             }
 
             audioRecord.stop();
+            dataOutputStream.close();
 
             System.out.println("Audio Data: "+ Arrays.toString(audioData));
 
@@ -133,12 +135,12 @@ public class AudioRecordClass {
             double[] z = fft_object.absolute_value(y);
             System.out.println("absolute value: "+ Arrays.toString(z));
 
-            dataOutputStream.close();
+
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }//END of StartRecord()
 
     // Start of StopRecording()
     public static void stopRecording(){
@@ -147,7 +149,7 @@ public class AudioRecordClass {
 
     //Start of valueToGraph()
     public static  int valueToGraph(){
-        return valueToGraph();
+        return audioValueToGraph;
     }//END of valueToGraph()
 
 }

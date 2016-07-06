@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
                         Thread recordThread = new Thread(new Runnable(){
                             @Override
                             public void run() {
+                                Log.d(TAG, "Start Recording");
                                 AudioRecordClass.startRecord();
                             }
                         }); // End of record Thread
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
                     else if (rec_btn_count == 1){
                         //STOP Button
+                        AudioRecordClass.stopRecording();
                         Log.d(TAG, "Clicked - Stop");
                         Rec.setText("RECORD");
                         Rec.setTextColor(Color.parseColor("#000000"));
@@ -111,7 +113,6 @@ public class MainActivity extends AppCompatActivity {
         }//End of Play Button
 
     }// End of onCreate()
-
 
 }//End of MainActivity
 
