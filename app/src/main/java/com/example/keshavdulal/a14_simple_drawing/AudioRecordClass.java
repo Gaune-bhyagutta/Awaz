@@ -24,6 +24,7 @@ public class AudioRecordClass {
 
     public static void startRecord() {
         Log.d("VIVZ", "Thread - Start record");
+
         /* WHOLE PROCESS EXPLAINED IN BRIEF HERE:
             1.Create a file to store that data values that comes from the mic.
             2. Fix the bufferSize and AudioRecord Object.(Will be later in detail later).
@@ -109,7 +110,7 @@ public class AudioRecordClass {
 
                     audioValueToGraph= (int)audioData[i];//Convert the short to int to store in txt file
                     audioFloats[i] = ((float)Short.reverseBytes(audioData[i])/0x8000);
-                    System.out.println(audioValueToGraph);
+                    System.out.println("Audio value to Graph"+audioValueToGraph);
                 }
 
             }
@@ -126,14 +127,14 @@ public class AudioRecordClass {
 //                fft_input[i] = audioFloats[i];
 //            }
 //            FFT fft_object= new FFT(fft_input);
-            FftOutput fft_object= new FftOutput(audioFloats);
-
-            Complex[] x = fft_object.makePowerOf2(audioFloats);
-            Complex[] y = fft_object.fft(x);
+            //FftOutput fft_object= new FftOutput(audioFloats);
+/*
+            Complex[] x = FftOutput.makePowerOf2(audioFloats);
+            Complex[] y = FftOutput.fft(x);
             System.out.print("FFT output: ");
-            fft_object.print(y);
-            double[] z = fft_object.absolute_value(y);
-            System.out.println("absolute value: "+ Arrays.toString(z));
+            FftOutput.print(y);
+            //double[] z = FftOutput.absolute_value(y);
+            //System.out.println("absolute value: "+ Arrays.toString(z));*/
 
 
 
