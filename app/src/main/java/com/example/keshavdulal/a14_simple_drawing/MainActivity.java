@@ -45,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
     Boolean isRecording = false;
     Boolean isPlaying = false;
     public static int temp;
+    public static int temp1;
+
+    public static int state=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
                     audioPlayClass = new AudioPlayClass();
                     if(play_btn_count == 0){
                         //PLAY Buttton
+                        state =1;
                         Log.d("VIVZ", "Clicked - PLAY");
                         isPlaying = true;
                         audioPlayClass.execute();
