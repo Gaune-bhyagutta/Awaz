@@ -71,12 +71,12 @@ public class GraphFragment extends Fragment{
             int angle=0;
            /* MainActivity mainActivity = new MainActivity();
             short[] audioData = mainActivity.getAudioData();*/
-            for(X1 = 0; X1<100;X1+=5){
+            for(X1 = 0; X1<canvas.getWidth();X1+=5){
                 //invalidate();
                 X2=X1;
                 Y2=Y1-graph_height;
                 canvas.drawLine(X1,Y1,X2,Y2,graphLinesObj);
-                graph_height = ((float)AudioRecordClass.temp)/50;
+                graph_height = ((float) MainActivity.temp)/50;
             }
             postInvalidateDelayed(250);
 
