@@ -1,44 +1,46 @@
 package com.example.keshavdulal.a14_simple_drawing;
 
+
 import android.graphics.Color;
-import android.media.AudioFormat;
-import android.media.AudioManager;
-import android.media.AudioRecord;
-import android.media.AudioTrack;
-import android.media.MediaRecorder;
-import android.os.Environment;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Arrays;
 
-public class MainActivity extends FragmentActivity{
-    //Boolean recording;
+public class MainActivity extends AppCompatActivity {
+    private static final String TAG = MainActivity.class.getSimpleName();
+    //Fragment
     Button Rec, Play;
     int rec_btn_count = 0, play_btn_count =0;
-    //short[] audioData;
-    //public  static  int temp;
+    GraphFragment graphFragment = new GraphFragment();
+    ListFragment listFragment = new ListFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.graphLayout, graphFragment," ");
+        fragmentTransaction.commit();
+
+        FragmentManager fragmentManager1 = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction1 = fragmentManager1.beginTransaction();
+        fragmentTransaction1.add(R.id.listLayout, listFragment," ");
+        fragmentTransaction1.commit();
+
+        //Fixed - Missing APP Name
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         setTitle("Awazz");
+
         Rec = (Button) findViewById(R.id.rec);
         Play = (Button) findViewById(R.id.play);
 

@@ -22,6 +22,7 @@ public class AudioRecordClass {
     public  static int temp;
     public static Boolean recording = true;
 
+
     public static void startRecord(){
         Log.d("VIVZ", "Thread - Start record");
         /* WHOLE PROCESS EXPLAINED IN BRIEF HERE:
@@ -85,8 +86,9 @@ public class AudioRecordClass {
                     AudioFormat.CHANNEL_IN_DEFAULT,
                     AudioFormat.ENCODING_PCM_16BIT);
 
-            // The array short that will store the Audiio data that we get From the mic.
+            // The array short that will store the Audio data that we get From the mic.
             short[] audioData = new short[minBufferSize];
+            float[] audioFloats= new float[audioData.length];
 
             //Create a Object of the AudioRecord class with the required Samplig Frequency(44100 hz)
             AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
@@ -118,29 +120,31 @@ public class AudioRecordClass {
 
                     temp = (int)audioData[i];//Convert the short to int to store in txt file
                     //GraphFragment.graph_height=temp;
+                    audioFloats[i] = ((float)Short.reverseBytes(audioData[i])/0x8000);
                     dataOutputStream2.writeInt(temp);//Store in Sound.txt as int-int-int--
                 }
 
             }
 
+            /** FFT calculation part **/
+
+//            float[] fft_input = new float[8];
+//            for(int i=0;i<8;i++){
+//                fft_input[i] = audioFloats[i];
+//            }
+//            FFT fft_object= new FFT(fft_input);
+            double[] fftAbsoluteOutput= FftOutput.callMainFft(audioFloats);
+            System.out.println("absolute value: "+ Arrays.toString(fftAbsoluteOutput));
+            double[] frequency = FrequencyValue.getFrequency(fftAbsoluteOutput);
+            System.out.println("Frequency value: "+ Arrays.toString(frequency));
+            System.out.println(fftAbsoluteOutput.length);
+            System.out.println(frequency.length);
             audioRecord.stop();
 
             System.out.println("Audio Data: "+ Arrays.toString(audioData));
             dataOutputStream.close();
             dataOutputStream1.close();
             dataOutputStream2.close();
-
-
-/*
-            Complex[] x =FftOutput.makePowerOf2();
-            Complex[] y = FftOutput.fft(x);
-            System.out.print("FFT output: ");
-            FftOutput.print(y);
-            double[] z = FftOutput.absolute_value(y);
-            System.out.println("absolute value: "+ Arrays.toString(z));*/
-
-
-
 
         } catch (IOException e) {
             e.printStackTrace();

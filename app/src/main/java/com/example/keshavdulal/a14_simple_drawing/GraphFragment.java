@@ -15,19 +15,27 @@ import android.widget.LinearLayout;
  * Created by imas on 6/28/16.
  */
 public class GraphFragment extends Fragment{
+
     public static  float graph_height;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.graph_fragment, container, false);
-        LinearLayout linearLayout = (LinearLayout)view.findViewById(R.id.rect);
-        linearLayout.addView(new ViewWithRedDot(getActivity()));
+
         return view;
     }
 
-    public static class ViewWithRedDot extends View {
-        public ViewWithRedDot(Context context) {
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState){
+        LinearLayout linearLayout = (LinearLayout)view.findViewById(R.id.rect);
+        linearLayout.addView(new myGraphView(getActivity()));
+       // Log.d("VIVZ", "Linear Layout - "+linearLayout.getHeight());
+    }
+
+    public static class myGraphView extends View {
+        public myGraphView(Context context) {
 
             super(context);
         }
