@@ -3,7 +3,9 @@ package com.example.keshavdulal.a14_simple_drawing;
 
 import android.graphics.Color;
 import android.media.AudioFormat;
+import android.media.AudioManager;
 import android.media.AudioRecord;
+import android.media.AudioTrack;
 import android.media.MediaRecorder;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,11 +19,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 
@@ -34,7 +41,9 @@ public class MainActivity extends AppCompatActivity {
     GraphFragment graphFragment = new GraphFragment();
     ListFragment listFragment = new ListFragment();
     AudioRecordClass audioRecordClass;
+    AudioPlayClass audioPlayClass;
     Boolean isRecording = false;
+    Boolean isPlaying = false;
     public static int temp;
 
     @Override
@@ -102,11 +111,12 @@ public class MainActivity extends AppCompatActivity {
             Play.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    audioPlayClass = new AudioPlayClass();
                     if(play_btn_count == 0){
                         //PLAY Buttton
                         Log.d("VIVZ", "Clicked - PLAY");
-                        AudioPlayClass.playRecord();
+                        isPlaying = true;
+                        audioPlayClass.execute();
                         Toast.makeText(getApplicationContext(), "Playing audio", Toast.LENGTH_SHORT).show();
                         Play.setText("Stop");
                         Play.setTextColor(Color.parseColor("#ff0000"));
@@ -116,7 +126,9 @@ public class MainActivity extends AppCompatActivity {
 
                     else if (play_btn_count == 1){
                         //Code to pause/stop the playback
+                        isPlaying = false;
                         Play.setText("Play");
+                        Toast.makeText(getApplicationContext(), "Stopping audio", Toast.LENGTH_SHORT).show();
                         Play.setTextColor(Color.parseColor("#00b900"));
                         Rec.setEnabled(true);
                         play_btn_count = 0;
@@ -272,4 +284,66 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public class AudioPlayClass extends AsyncTask<Void,Void,Void>{
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            playRecord();
+            return null;
+        }
+
+        //Start of playRecord()
+        public void playRecord(){
+
+            File filePcm = new File(Environment.getExternalStorageDirectory(), "Sound.pcm");
+            File fileHaha = new File(Environment.getExternalStorageDirectory(), "Sound.haha");
+            int shortSizeInBytes = Short.SIZE/Byte.SIZE;
+
+            int bufferSizeInBytes = (int)(filePcm.length()/shortSizeInBytes);
+            short[] audioData = new short[bufferSizeInBytes];
+
+
+
+            try {
+                InputStream inputStream = new FileInputStream(fileHaha);
+                BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+                DataInputStream dataInputStream = new DataInputStream(bufferedInputStream);
+                AudioTrack audioTrack = new AudioTrack(
+                        AudioManager.STREAM_MUSIC,
+                        44100,
+                        AudioFormat.CHANNEL_IN_DEFAULT,
+                        AudioFormat.ENCODING_PCM_16BIT,
+                        bufferSizeInBytes,
+                        AudioTrack.MODE_STREAM);
+
+                audioTrack.play();
+                while(isPlaying) {
+                    while (dataInputStream.available() > 0) {
+                        int i = 0;
+                        while (dataInputStream.available() > 0 && i < audioData.length) {
+                            audioData[i] = dataInputStream.readShort();
+                            i++;
+                        }
+                        audioTrack.write(audioData, 0, bufferSizeInBytes);
+                    }
+                }
+                audioTrack.pause();
+                audioTrack.flush();
+                dataInputStream.close();
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }//End of playRecord()
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            Play.setText("Play");
+            Play.setTextColor(Color.parseColor("#00b900"));
+            Rec.setEnabled(true);
+            play_btn_count = 0;
+        }
+    }
 }//End of MainActivity
