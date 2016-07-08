@@ -13,6 +13,4 @@ public class FrequencyValue{
         return frequency;
     }
 
-
-
 }

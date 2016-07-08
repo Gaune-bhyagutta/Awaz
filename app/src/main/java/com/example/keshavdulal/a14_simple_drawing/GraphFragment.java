@@ -16,6 +16,9 @@ import android.widget.LinearLayout;
  */
 public class GraphFragment extends Fragment{
 
+    //For Log.d();
+    private static final String TAG = GraphFragment.class.getSimpleName();
+
     public static  float graph_height;
 
     @Override
@@ -31,7 +34,7 @@ public class GraphFragment extends Fragment{
     public void onViewCreated(View view, Bundle savedInstanceState){
         LinearLayout linearLayout = (LinearLayout)view.findViewById(R.id.rect);
         linearLayout.addView(new myGraphView(getActivity()));
-       // Log.d("VIVZ", "Linear Layout - "+linearLayout.getHeight());
+
     }
 
     public static class myGraphView extends View {
@@ -68,17 +71,32 @@ public class GraphFragment extends Fragment{
             graphLinesObj.setColor(Color.GRAY);
             graphLinesObj.setStrokeWidth(5);
 
-            int angle=0;
-           /* MainActivity mainActivity = new MainActivity();
-            short[] audioData = mainActivity.getAudioData();*/
-            for(X1 = 0; X1<canvas.getWidth();X1+=5){
-                //invalidate();
-                X2=X1;
-                Y2=Y1-graph_height;
-                canvas.drawLine(X1,Y1,X2,Y2,graphLinesObj);
-                graph_height = ((float) MainActivity.temp)/50;
+
+
+            if(MainActivity.getPlaystate()==1) {
+                for (X1 = 0; X1 < canvas.getWidth(); X1 += 5) {
+                    //invalidate();
+                    X2 = X1;
+                    Y2 = Y1 - graph_height;
+                    canvas.drawLine(X1, Y1, X2, Y2, graphLinesObj);
+
+                    graph_height = ((float) MainActivity.AudioPlayClass.playValueToGraph()) / 50;
+
+                }
+                postInvalidateDelayed(250);
             }
-            postInvalidateDelayed(250);
+
+            else {
+                for (X1 = 0; X1 < canvas.getWidth(); X1 += 5) {
+
+                    X2 = X1;
+                    Y2 = Y1 - graph_height;
+                    canvas.drawLine(X1, Y1, X2, Y2, graphLinesObj);
+
+                    graph_height = ((float) MainActivity.AudioRecordClass.recordValueToGraph()) / 50;
+                }
+                postInvalidateDelayed(250);
+            }
 
         }
     }
