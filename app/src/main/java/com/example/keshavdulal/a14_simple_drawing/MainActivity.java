@@ -284,17 +284,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public class AudioPlayClass extends AsyncTask<Void,Void,Void>{
-
+    public class AudioPlayClass extends AsyncTask<Void,Void,Boolean>{
+        Boolean sucessfull;
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected Boolean doInBackground(Void... voids) {
+            sucessfull = false;
+            Log.d("VIVZ", "doInBackground");
             playRecord();
-            return null;
+            Log.d("VIVZ", "end of doInBackground");
+            return sucessfull;
         }
 
         //Start of playRecord()
         public void playRecord(){
 
+            Log.d("VIVZ", "playRecord()");
             File filePcm = new File(Environment.getExternalStorageDirectory(), "Sound.pcm");
             File fileHaha = new File(Environment.getExternalStorageDirectory(), "Sound.haha");
             int shortSizeInBytes = Short.SIZE/Byte.SIZE;
@@ -317,33 +321,45 @@ public class MainActivity extends AppCompatActivity {
                         AudioTrack.MODE_STREAM);
 
                 audioTrack.play();
-                while(isPlaying) {
-                    while (dataInputStream.available() > 0) {
+
+                    while (isPlaying && dataInputStream.available() > 0) {
                         int i = 0;
                         while (dataInputStream.available() > 0 && i < audioData.length) {
                             audioData[i] = dataInputStream.readShort();
                             i++;
+
                         }
                         audioTrack.write(audioData, 0, bufferSizeInBytes);
+
                     }
-                }
+
                 audioTrack.pause();
                 audioTrack.flush();
                 dataInputStream.close();
-
+                sucessfull=true;
+                Log.d("VIVZ", "end of playrecord()");
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
+            }finally {
+
             }
         }//End of playRecord()
 
         @Override
-        protected void onPostExecute(Void aVoid) {
+        protected void onProgressUpdate(Void... values) {
+            Log.d("VIVZ", "onProgressUpdate");
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aVoid) {
             Play.setText("Play");
             Play.setTextColor(Color.parseColor("#00b900"));
             Rec.setEnabled(true);
             play_btn_count = 0;
+           Log.d("VIVZ", "onPostExecute");
+
         }
     }
 }//End of MainActivity
