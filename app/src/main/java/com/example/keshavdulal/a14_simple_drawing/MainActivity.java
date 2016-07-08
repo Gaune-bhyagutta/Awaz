@@ -245,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
 //            Call the static class of Audio Record to get the Buffer size in Byte that can handle the Audio data values
 //                based on our SAMPLING RATE (44100 hz or frame per second in our case)
                 int minBufferSize = AudioRecord.getMinBufferSize(44100,
-                        AudioFormat.CHANNEL_IN_DEFAULT,
+                        AudioFormat.CHANNEL_IN_MONO,
                         AudioFormat.ENCODING_PCM_16BIT);
 
                 // The array short that will store the Audio data that we get From the mic.
@@ -255,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
                 //Create a Object of the AudioRecord class with the required Samplig Frequency(44100 hz)
                 AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
                         44100,
-                        AudioFormat.CHANNEL_IN_DEFAULT,
+                        AudioFormat.CHANNEL_IN_MONO,
                         AudioFormat.ENCODING_PCM_16BIT,
                         minBufferSize);
 
@@ -305,69 +305,104 @@ public class MainActivity extends AppCompatActivity {
     }//End of AudioRecordClass
 
 
-    public static class AudioPlayClass extends AsyncTask<Void,Void,Void>{
-
+    public static class AudioPlayClass extends AsyncTask<Void,Void,Boolean>{
+        Boolean sucessfull;
         private static int playValueToGraph;
 
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected Boolean doInBackground(Void... voids) {
+            sucessfull = false;
+            Log.d("TAG", "doInBackground");
             playRecord();
-            return null;
+            Log.d("TAG", "end of doInBackground");
+            return sucessfull;
         }
 
         //Start of playRecord()
         public void playRecord(){
 
+            Log.d("TAG", "playRecord()");
             File filePcm = new File(Environment.getExternalStorageDirectory(), "Sound.pcm");
             //File fileHaha = new File(Environment.getExternalStorageDirectory(), "Sound.haha");
-            int shortSizeInBytes = Short.SIZE/Byte.SIZE;
+            //int shortSizeInBytes = Short.SIZE/Byte.SIZE;
 
-            final int bufferSizeInBytes = (int)(filePcm.length()/shortSizeInBytes);
-            final short[] audioData = new short[bufferSizeInBytes];
+            int minBuffersize = AudioTrack.getMinBufferSize(44100,
+                    AudioFormat.CHANNEL_OUT_MONO,
+                    AudioFormat.ENCODING_PCM_16BIT);
+
+            int bufferSizeInBytes = (int)(filePcm.length()*2);
+            short[] audioData = new short[bufferSizeInBytes/4];
 
 
-
+            InputStream inputStream = null;
+            BufferedInputStream bufferedInputStream = null;
+            DataInputStream dataInputStream = null;
+            AudioTrack audioTrack = null;
             try {
-                InputStream inputStream = new FileInputStream(filePcm);
-                BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-                DataInputStream dataInputStream = new DataInputStream(bufferedInputStream);
 
-                final AudioTrack audioTrack = new AudioTrack(
+                inputStream = new FileInputStream(filePcm);
+                bufferedInputStream = new BufferedInputStream(inputStream);
+                dataInputStream = new DataInputStream(bufferedInputStream);
+                audioTrack = new AudioTrack(
+
                         AudioManager.STREAM_MUSIC,
                         44100,
-                        AudioFormat.CHANNEL_IN_DEFAULT,
+                        AudioFormat.CHANNEL_OUT_MONO,
                         AudioFormat.ENCODING_PCM_16BIT,
-                        bufferSizeInBytes,
+                        minBuffersize,
                         AudioTrack.MODE_STREAM);
 
                 audioTrack.play();
-                while(isPlaying) {
-                    while (dataInputStream.available() > 0) {
+
+                    while (isPlaying && dataInputStream.available() > 0) {
                         int i = 0;
-                        while (dataInputStream.available() > 0 && i < audioData.length) {
+                        while (i < audioData.length) {
                             audioData[i] = dataInputStream.readShort();
                             playValueToGraph=audioData[i];
                             i++;
+
                         }
-                        //For Playing
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                audioTrack.write(audioData, 0, bufferSizeInBytes);
-                            }
-                        }).start();
-                        //For Graph
+
+                        audioTrack.write(audioData, 0, bufferSizeInBytes/4);
+
 
                     }
-                }
+
                 audioTrack.pause();
                 audioTrack.flush();
-                dataInputStream.close();
+                audioTrack.stop();
 
+                sucessfull=true;
+                Log.d("TAG", "end of playrecord()");
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
+            }finally {
+                if (dataInputStream!=null){
+                    try {
+                        dataInputStream.close();
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                }
+                if(bufferedInputStream!=null){
+                    try {
+                        bufferedInputStream.close();
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                }
+                if (inputStream!=null){
+                    try {
+                        inputStream.close();
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                }
+                if (audioTrack!=null) {
+                    audioTrack.release();
+                }
             }
         }//End of playRecord()
 
@@ -376,12 +411,20 @@ public class MainActivity extends AppCompatActivity {
             return playValueToGraph;
         }
 
+
+        protected void onProgressUpdate(Void... values) {
+            Log.d("TAG", "onProgressUpdate");
+        }
+
         @Override
-        protected void onPostExecute(Void aVoid) {
+        protected void onPostExecute(Boolean aVoid) {
             play.setText("Play");
             play.setTextColor(Color.parseColor("#00b900"));
             record.setEnabled(true);
-            play_btn_count = 1;
+            play_btn_count = 0;
+           Log.d("TAG", "onPostExecute");
+
+
         }
     }//End of AudioPlay
 
