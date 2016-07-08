@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
                 based on our SAMPLING RATE (44100 hz or frame per second in our case)
              */
                 int minBufferSize = AudioRecord.getMinBufferSize(44100,
-                        AudioFormat.CHANNEL_IN_DEFAULT,
+                        AudioFormat.CHANNEL_IN_MONO,
                         AudioFormat.ENCODING_PCM_16BIT);
 
                 // The array short that will store the Audio data that we get From the mic.
@@ -220,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
                 //Create a Object of the AudioRecord class with the required Samplig Frequency(44100 hz)
                 AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
                         44100,
-                        AudioFormat.CHANNEL_IN_DEFAULT,
+                        AudioFormat.CHANNEL_IN_MONO,
                         AudioFormat.ENCODING_PCM_16BIT,
                         minBufferSize);
 
@@ -303,28 +303,30 @@ public class MainActivity extends AppCompatActivity {
             File fileHaha = new File(Environment.getExternalStorageDirectory(), "Sound.haha");
             int shortSizeInBytes = Short.SIZE/Byte.SIZE;
 
-            int bufferSizeInBytes = (int)(filePcm.length()/shortSizeInBytes);
-            short[] audioData = new short[bufferSizeInBytes];
+            int bufferSizeInBytes = (int)(filePcm.length()*2);
+            short[] audioData = new short[bufferSizeInBytes/4];
 
-
-
+            InputStream inputStream = null;
+            BufferedInputStream bufferedInputStream = null;
+            DataInputStream dataInputStream = null;
+            AudioTrack audioTrack = null;
             try {
-                InputStream inputStream = new FileInputStream(fileHaha);
-                BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-                DataInputStream dataInputStream = new DataInputStream(bufferedInputStream);
-                AudioTrack audioTrack = new AudioTrack(
+                inputStream = new FileInputStream(fileHaha);
+                bufferedInputStream = new BufferedInputStream(inputStream);
+                dataInputStream = new DataInputStream(bufferedInputStream);
+                audioTrack = new AudioTrack(
                         AudioManager.STREAM_MUSIC,
                         44100,
-                        AudioFormat.CHANNEL_IN_DEFAULT,
+                        AudioFormat.CHANNEL_OUT_MONO,
                         AudioFormat.ENCODING_PCM_16BIT,
                         bufferSizeInBytes,
                         AudioTrack.MODE_STREAM);
-
+                int avai;
                 audioTrack.play();
 
                     while (isPlaying && dataInputStream.available() > 0) {
                         int i = 0;
-                        while (dataInputStream.available() > 0 && i < audioData.length) {
+                        while (i < audioData.length) {
                             audioData[i] = dataInputStream.readShort();
                             i++;
 
@@ -335,7 +337,8 @@ public class MainActivity extends AppCompatActivity {
 
                 audioTrack.pause();
                 audioTrack.flush();
-                dataInputStream.close();
+                audioTrack.stop();
+
                 sucessfull=true;
                 Log.d("VIVZ", "end of playrecord()");
             } catch (FileNotFoundException e) {
@@ -343,7 +346,30 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }finally {
-
+                if (dataInputStream!=null){
+                    try {
+                        dataInputStream.close();
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                }
+                if(bufferedInputStream!=null){
+                    try {
+                        bufferedInputStream.close();
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                }
+                if (inputStream!=null){
+                    try {
+                        inputStream.close();
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                }
+                if (audioTrack!=null) {
+                    audioTrack.release();
+                }
             }
         }//End of playRecord()
 
