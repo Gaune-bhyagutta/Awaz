@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private static Button record;
     private static Button play;
     private int rec_btn_count = 1;
-    private static int play_btn_count =1;
+    private static int play_btn_count = 1;
     private static int playState=0; // is 1 when play button is pressed
     private static Boolean isRecording = false;
     private static Boolean isPlaying = false;
@@ -406,7 +406,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }//End of playRecord()
 
-        //Start of
+        //Start of playValueToGraph
         public static int playValueToGraph(){
             return playValueToGraph;
         }
@@ -421,7 +421,7 @@ public class MainActivity extends AppCompatActivity {
             play.setText("Play");
             play.setTextColor(Color.parseColor("#00b900"));
             record.setEnabled(true);
-            play_btn_count = 0;
+            play_btn_count = 1;
            Log.d("TAG", "onPostExecute");
 
 
