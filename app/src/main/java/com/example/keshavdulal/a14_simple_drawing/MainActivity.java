@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     AudioPlayClass audioPlayClass;
     Boolean isRecording = false;
     Boolean isPlaying = false;
-    public static int temp;
+    //public static int temp;
     public static int playState = 0;
     public static int recordValueToGraph;
     public static int playValueToGraph;
@@ -144,13 +144,13 @@ public class MainActivity extends AppCompatActivity {
 
     }// End of onCreate()
 
-    public class AudioRecordClass extends AsyncTask{
+    public class AudioRecordClass extends AsyncTask<Void,Void,Void>{
 
 
         public Boolean recording = true;
 
         @Override
-        protected Object doInBackground(Object[] objects) {
+        protected Void doInBackground(Void... voids) {
             startRecord();
             return null;
         }
@@ -315,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(Object o) {
+        protected void onPostExecute(Void aVoid) {
             Rec.setText("RECORD");
             Rec.setTextColor(Color.parseColor("#000000"));
             Play.setEnabled(true);
@@ -324,10 +324,10 @@ public class MainActivity extends AppCompatActivity {
             Log.d("VIVZ", "onPost execute stop recording");
         }
 
-        public void stopRecord(){
+        /*public void stopRecord(){
             recording = false;
         }
-
+*/
     }
 
     public class AudioPlayClass extends AsyncTask<Void,Void,Boolean>{
@@ -371,7 +371,7 @@ public class MainActivity extends AppCompatActivity {
                         AudioFormat.ENCODING_PCM_16BIT,
                         minBuffersize,
                         AudioTrack.MODE_STREAM);
-                int avai;
+
                 audioTrack.play();
 
                 while (isPlaying && dataInputStream.available() > 0) {
