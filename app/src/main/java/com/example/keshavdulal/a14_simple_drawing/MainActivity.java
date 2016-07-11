@@ -191,6 +191,10 @@ public class MainActivity extends AppCompatActivity {
             open and understahnd and show the data.PLEASE, NOTE THAT EXTENSION DOES AFFECT HERE.
 */
 
+            OutputStream outputStream = null;
+            BufferedOutputStream bufferedOutputStream = null;
+            DataOutputStream dataOutputStream = null;
+            AudioRecord audioRecord = null;
             try {
                 filePcm.createNewFile();
                 //fileHaha.createNewFile();
@@ -202,9 +206,9 @@ public class MainActivity extends AppCompatActivity {
 //                DataOutputStream dataOutputStream = new DataOutputStream(bufferedOutputStream);
 
                 // Mechanism to store fetch data from mic and store it.
-                OutputStream outputStream = new FileOutputStream(filePcm);
-                BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
-                DataOutputStream dataOutputStream = new DataOutputStream(bufferedOutputStream);
+                outputStream = new FileOutputStream(filePcm);
+                bufferedOutputStream = new BufferedOutputStream(outputStream);
+                dataOutputStream = new DataOutputStream(bufferedOutputStream);
 
                 // Mechanism to store fetch data from mic and store it.
 //                OutputStream outputStream2 = new FileOutputStream(fileTxt);
@@ -223,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
                 float[] audioFloats= new float[audioData.length];
 
                 //Create a Object of the AudioRecord class with the required Samplig Frequency(44100 hz)
-                AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
+                audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
                         44100,
                         AudioFormat.CHANNEL_IN_MONO,
                         AudioFormat.ENCODING_PCM_16BIT,
@@ -275,11 +279,37 @@ public class MainActivity extends AppCompatActivity {
 
                 System.out.println("Audio Data: "+ Arrays.toString(audioData));
                 //dataOutputStream.close();
-                dataOutputStream.close();
+
                 //dataOutputStream2.close();
 
-            } catch (IOException e) {
+            } catch (IOException e){
                 e.printStackTrace();
+            }finally {
+
+                    if (dataOutputStream!=null){
+                        try {
+                            dataOutputStream.close();
+                        }catch (IOException e){
+                            e.printStackTrace();
+                        }
+                    }
+                    if(bufferedOutputStream!=null){
+                        try {
+                            bufferedOutputStream.close();
+                        }catch (IOException e){
+                            e.printStackTrace();
+                        }
+                    }
+                    if (outputStream!=null){
+                        try {
+                            outputStream.close();
+                        }catch (IOException e){
+                            e.printStackTrace();
+                        }
+                    }
+                    if (audioRecord!=null) {
+                        audioRecord.release();
+                    }
             }
 
         }
