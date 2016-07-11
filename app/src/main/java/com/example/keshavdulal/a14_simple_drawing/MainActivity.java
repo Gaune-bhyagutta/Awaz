@@ -92,13 +92,9 @@ public class MainActivity extends AppCompatActivity {
 
                     else if (rec_btn_count == 1){
                         //STOP Button
-                        Log.d("VIVZ", "Clicked - Stop");
+                        Log.d("VIVZ", "Clicked - Stop recording");
                         isRecording = false;
-                        Rec.setText("RECORD");
-                        Rec.setTextColor(Color.parseColor("#000000"));
-                        Play.setEnabled(true);
-                        Toast.makeText(getApplicationContext(), "Audio recorded successfully",Toast.LENGTH_SHORT).show();
-                        rec_btn_count =0;
+
 
 
                     }
@@ -114,24 +110,29 @@ public class MainActivity extends AppCompatActivity {
                     audioPlayClass = new AudioPlayClass();
                     if(play_btn_count == 0){
                         //PLAY Buttton
-                        Log.d("VIVZ", "Clicked - PLAY");
-                        isPlaying = true;
-                        audioPlayClass.execute();
+
+
+                        play_btn_count = 1;
+                        Log.d("VIVZ", "Clicked - Play audio");
+
                         Toast.makeText(getApplicationContext(), "Playing audio", Toast.LENGTH_SHORT).show();
                         Play.setText("Stop");
                         Play.setTextColor(Color.parseColor("#ff0000"));
                         Rec.setEnabled(false);
-                        play_btn_count = 1;
+                        isPlaying = true;
+                        audioPlayClass.execute();
+
                     }
 
                     else if (play_btn_count == 1){
                         //Code to pause/stop the playback
                         isPlaying = false;
-                        Play.setText("Play");
+
+                        Log.d("VIVZ", "Clicked - Stop audio");
+                        Log.d("VIVZ", "isPlaying="+isPlaying);
+
                         Toast.makeText(getApplicationContext(), "Stopping audio", Toast.LENGTH_SHORT).show();
-                        Play.setTextColor(Color.parseColor("#00b900"));
-                        Rec.setEnabled(true);
-                        play_btn_count = 0;
+
                     }
 
                 }
@@ -279,6 +280,16 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+        @Override
+        protected void onPostExecute(Object o) {
+            Rec.setText("RECORD");
+            Rec.setTextColor(Color.parseColor("#000000"));
+            Play.setEnabled(true);
+            Toast.makeText(getApplicationContext(), "Audio recorded successfully",Toast.LENGTH_SHORT).show();
+            rec_btn_count =0;
+            Log.d("VIVZ", "onPost execute stop recording");
+        }
+
         public void stopRecord(){
             recording = false;
         }
@@ -307,8 +318,8 @@ public class MainActivity extends AppCompatActivity {
                     AudioFormat.CHANNEL_OUT_MONO,
                     AudioFormat.ENCODING_PCM_16BIT);
 
-            int bufferSizeInBytes = (int)(filePcm.length()*2);
-            short[] audioData = new short[bufferSizeInBytes/4];
+            //int bufferSizeInBytes = (int)(filePcm.length()*2);
+            short[] audioData = new short[minBuffersize/4];
 
             InputStream inputStream = null;
             BufferedInputStream bufferedInputStream = null;
@@ -328,20 +339,23 @@ public class MainActivity extends AppCompatActivity {
                 int avai;
                 audioTrack.play();
 
-                    while (isPlaying && dataInputStream.available() > 0) {
-                        int i = 0;
-                        while (i < audioData.length) {
-                            audioData[i] = dataInputStream.readShort();
-                            i++;
+                while (isPlaying && dataInputStream.available() > 0) {
+                    int i = 0;
+                    while (dataInputStream.available() > 0 && i < audioData.length) {
 
-                        }
-                        audioTrack.write(audioData, 0, bufferSizeInBytes/4);
+                        audioData[i] = dataInputStream.readShort();
+                        i++;
+
 
                     }
+                    audioTrack.write(audioData, 0, audioData.length);
+                }
+
 
                 audioTrack.pause();
                 audioTrack.flush();
                 audioTrack.stop();
+                audioTrack.release();
 
                 sucessfull=true;
                 Log.d("VIVZ", "end of playrecord()");
@@ -389,7 +403,7 @@ public class MainActivity extends AppCompatActivity {
             Rec.setEnabled(true);
             play_btn_count = 0;
            Log.d("VIVZ", "onPostExecute");
-
+            isPlaying=false;
         }
     }
 }//End of MainActivity
