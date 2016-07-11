@@ -34,7 +34,7 @@ import java.util.Arrays;
 
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = MainActivity.class.getSimpleName();
+    //private static final String TAG = MainActivity.class.getSimpleName();
     //Fragment
     Button Rec, Play;
     int rec_btn_count = 0, play_btn_count =0;
@@ -45,7 +45,9 @@ public class MainActivity extends AppCompatActivity {
     Boolean isRecording = false;
     Boolean isPlaying = false;
     public static int temp;
-
+    public static int playState = 0;
+    public static int recordValueToGraph;
+    public static int playValueToGraph;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
                         Rec.setText("STOP");
                         Rec.setTextColor(Color.parseColor("#ff0000"));
                         Play.setEnabled(false);
+                        playState = 0;
                         isRecording = true;
                         audioRecordClass.execute();
 
@@ -110,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                     audioPlayClass = new AudioPlayClass();
                     if(play_btn_count == 0){
                         //PLAY Buttton
-
+                        playState =1;
 
                         play_btn_count = 1;
                         Log.d("VIVZ", "Clicked - Play audio");
@@ -140,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
         }//End of Play Button
 
     }// End of onCreate()
+
     public class AudioRecordClass extends AsyncTask{
 
 
@@ -179,8 +183,8 @@ public class MainActivity extends AppCompatActivity {
 
 
             File filePcm = new File(Environment.getExternalStorageDirectory(),"Sound.pcm");
-            File fileHaha = new File(Environment.getExternalStorageDirectory(),"Sound.haha");
-            File fileTxt = new File(Environment.getExternalStorageDirectory(),"Sound.txt");
+            //File fileHaha = new File(Environment.getExternalStorageDirectory(),"Sound.haha");
+            //File fileTxt = new File(Environment.getExternalStorageDirectory(),"Sound.txt");
        /*  -Above Three are Three different files as discussed above. In first two the files we pass the Array of short as the data
             to be stored and similarly fetch the data in same way.This is to that the extension does not effect.
            -And the Third kind of file stores tha data in integer form and has extension .txt so that text Editor(UFT-8) can
@@ -189,23 +193,23 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 filePcm.createNewFile();
-                fileHaha.createNewFile();
-                fileTxt.createNewFile();
+                //fileHaha.createNewFile();
+                //fileTxt.createNewFile();
 
                 // Mechanism to store fetch data from mic and store it.
-                OutputStream outputStream = new FileOutputStream(fileHaha);
+//                OutputStream outputStream = new FileOutputStream(fileHaha);
+//                BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
+//                DataOutputStream dataOutputStream = new DataOutputStream(bufferedOutputStream);
+
+                // Mechanism to store fetch data from mic and store it.
+                OutputStream outputStream = new FileOutputStream(filePcm);
                 BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
                 DataOutputStream dataOutputStream = new DataOutputStream(bufferedOutputStream);
 
                 // Mechanism to store fetch data from mic and store it.
-                OutputStream outputStream1 = new FileOutputStream(filePcm);
-                BufferedOutputStream bufferedOutputStream1 = new BufferedOutputStream(outputStream1);
-                DataOutputStream dataOutputStream1 = new DataOutputStream(bufferedOutputStream1);
-
-                // Mechanism to store fetch data from mic and store it.
-                OutputStream outputStream2 = new FileOutputStream(fileTxt);
-                BufferedOutputStream bufferedOutputStream2 = new BufferedOutputStream(outputStream2);
-                DataOutputStream dataOutputStream2 = new DataOutputStream(bufferedOutputStream2);
+//                OutputStream outputStream2 = new FileOutputStream(fileTxt);
+//                BufferedOutputStream bufferedOutputStream2 = new BufferedOutputStream(outputStream2);
+//                DataOutputStream dataOutputStream2 = new DataOutputStream(bufferedOutputStream2);
 
             /*Call the static class of Audio Record to get the Buffer size in Byte that can handle the Audio data values
                 based on our SAMPLING RATE (44100 hz or frame per second in our case)
@@ -243,13 +247,13 @@ public class MainActivity extends AppCompatActivity {
                    For now I have used (.haha) and (.txt)
                  */
                     for(int i = 0; i < numberOfShort; i++){
-                        dataOutputStream.writeShort(audioData[i]); // Store in Sound.haha file as short-short-short--
-                        dataOutputStream1.writeShort(audioData[i]);
+                        //dataOutputStream.writeShort(audioData[i]); // Store in Sound.haha file as short-short-short--
+                        dataOutputStream.writeShort(audioData[i]);
 
-                        temp = (int)audioData[i];//Convert the short to int to store in txt file
+                        recordValueToGraph = (int)audioData[i];//Convert the short to int to store in txt file
                         //GraphFragment.graph_height=temp;
                         audioFloats[i] = ((float)Short.reverseBytes(audioData[i])/0x8000);
-                        dataOutputStream2.writeInt(temp);//Store in Sound.txt as int-int-int--
+                        //dataOutputStream2.writeInt(temp);//Store in Sound.txt as int-int-int--
                     }
 
                 }
@@ -270,9 +274,9 @@ public class MainActivity extends AppCompatActivity {
                 audioRecord.stop();
 
                 System.out.println("Audio Data: "+ Arrays.toString(audioData));
+                //dataOutputStream.close();
                 dataOutputStream.close();
-                dataOutputStream1.close();
-                dataOutputStream2.close();
+                //dataOutputStream2.close();
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -293,6 +297,7 @@ public class MainActivity extends AppCompatActivity {
         public void stopRecord(){
             recording = false;
         }
+
     }
 
     public class AudioPlayClass extends AsyncTask<Void,Void,Boolean>{
@@ -311,8 +316,8 @@ public class MainActivity extends AppCompatActivity {
 
             Log.d("VIVZ", "playRecord()");
             File filePcm = new File(Environment.getExternalStorageDirectory(), "Sound.pcm");
-            File fileHaha = new File(Environment.getExternalStorageDirectory(), "Sound.haha");
-            int shortSizeInBytes = Short.SIZE/Byte.SIZE;
+            //File fileHaha = new File(Environment.getExternalStorageDirectory(), "Sound.haha");
+            //int shortSizeInBytes = Short.SIZE/Byte.SIZE;
 
             int minBuffersize = AudioTrack.getMinBufferSize(44100,
                     AudioFormat.CHANNEL_OUT_MONO,
@@ -326,7 +331,7 @@ public class MainActivity extends AppCompatActivity {
             DataInputStream dataInputStream = null;
             AudioTrack audioTrack = null;
             try {
-                inputStream = new FileInputStream(fileHaha);
+                inputStream = new FileInputStream(filePcm);
                 bufferedInputStream = new BufferedInputStream(inputStream);
                 dataInputStream = new DataInputStream(bufferedInputStream);
                 audioTrack = new AudioTrack(
@@ -344,6 +349,7 @@ public class MainActivity extends AppCompatActivity {
                     while (dataInputStream.available() > 0 && i < audioData.length) {
 
                         audioData[i] = dataInputStream.readShort();
+                        playValueToGraph = audioData[i];
                         i++;
 
 
@@ -405,5 +411,14 @@ public class MainActivity extends AppCompatActivity {
            Log.d("VIVZ", "onPostExecute");
             isPlaying=false;
         }
+    }
+    public static int recordValueToGraph(){
+        return recordValueToGraph;
+    }
+    public static int playValueToGraph(){
+        return playValueToGraph;
+    }
+    public static int playState(){
+        return playState;
     }
 }//End of MainActivity

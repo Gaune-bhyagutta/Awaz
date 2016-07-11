@@ -71,14 +71,25 @@ public class GraphFragment extends Fragment{
             int angle=0;
            /* MainActivity mainActivity = new MainActivity();
             short[] audioData = mainActivity.getAudioData();*/
-            for(X1 = 0; X1<canvas.getWidth();X1+=5){
-                //invalidate();
-                X2=X1;
-                Y2=Y1-graph_height;
-                canvas.drawLine(X1,Y1,X2,Y2,graphLinesObj);
-                graph_height = ((float) MainActivity.temp)/50;
+            if (MainActivity.playState()==1){
+                for(X1 = 0; X1<canvas.getWidth();X1+=5){
+                    //invalidate();
+                    X2=X1;
+                    Y2=Y1-graph_height;
+                    canvas.drawLine(X1,Y1,X2,Y2,graphLinesObj);
+                    graph_height = ((float) MainActivity.playValueToGraph())/50;
+                }
+                postInvalidateDelayed(250);
+            }else {
+                for (X1 = 0; X1 < canvas.getWidth(); X1 += 5) {
+                    //invalidate();
+                    X2 = X1;
+                    Y2 = Y1 - graph_height;
+                    canvas.drawLine(X1, Y1, X2, Y2, graphLinesObj);
+                    graph_height = ((float) MainActivity.recordValueToGraph()) / 50;
+                }
+                postInvalidateDelayed(250);
             }
-            postInvalidateDelayed(250);
 
         }
     }
