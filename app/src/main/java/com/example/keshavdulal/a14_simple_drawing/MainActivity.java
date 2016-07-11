@@ -284,12 +284,16 @@ public class MainActivity extends AppCompatActivity {
                         audioFloats[i] = ((float)Short.reverseBytes(audioData[i])/0x8000);
 
                     }
+                    System.out.println("Audio Data: "+ Arrays.toString(audioData));
+                    double[] fftOutput= FftOutput.callMainFft(audioFloats);
+                    double fundamentalFrequency= FrequencyValue.getFundamentalFrequency(fftOutput);
+                    System.out.println(" FundamentalFrequency "+fundamentalFrequency);
 
                 }
                 audioRecord.stop();
                 dataOutputStream.close();
 
-                System.out.println("Audio Data: "+ Arrays.toString(audioData));
+
 
 //                dataOutputStream1.close();
 //                dataOutputStream2.close();
