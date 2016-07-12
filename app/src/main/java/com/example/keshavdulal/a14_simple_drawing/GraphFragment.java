@@ -47,7 +47,7 @@ public class GraphFragment extends Fragment{
             canvas.drawColor(Color.LTGRAY);
             //Paint Object
             Paint graphBoundaryObj = new Paint();
-            graphBoundaryObj.setColor(Color.GRAY);
+            graphBoundaryObj.setColor(Color.RED);
             graphBoundaryObj.setStrokeWidth(7);
 
             float X1 = 0;
@@ -55,22 +55,16 @@ public class GraphFragment extends Fragment{
             float AX = canvas.getWidth();
             float AY = canvas.getHeight()/2;
             float X2,Y2;
-
-            float parallel_dist = 500;
-            // graph_height =1;
+            drawMeshLines(canvas);
 
             //Midline - Divider
             graphBoundaryObj.setStrokeWidth(2);
             canvas.drawLine(X1,Y1,AX,AY,graphBoundaryObj);
-
             //Vertical graphical line
             Paint graphLinesObj = new Paint();        //GLO graph-lines-object
             graphLinesObj.setColor(Color.GRAY);
             graphLinesObj.setStrokeWidth(5);
 
-            int angle=0;
-           /* MainActivity mainActivity = new MainActivity();
-            short[] audioData = mainActivity.getAudioData();*/
             if (MainActivity.playState()==1){
                 for(X1 = 0; X1<canvas.getWidth();X1+=5){
                     //invalidate();
@@ -90,7 +84,36 @@ public class GraphFragment extends Fragment{
                 }
                 postInvalidateDelayed(250);
             }
+        }
+        public void drawMeshLines(Canvas canvas){
+            //Mesh Lines
+            int cgh = canvas.getHeight();
+            int cgw = canvas.getWidth();
+            int cgh2 = cgh/2;
+            int cgw2 = cgw/2;
+            int meshDim = 100;
+            int i;
+            Paint meshObj = new Paint();
+            meshObj.setColor(Color.BLUE);
+            meshObj.setStrokeWidth(2);
 
+            //Horizontal Lines - Top Segment
+            for (i = cgh2; i>=0; i-=meshDim){
+                canvas.drawLine(0, i, cgw, i,meshObj);
+            }
+            //Horizontal Lines - Bottom Segment
+            for (i = cgh2; i<=cgh; i+=meshDim){
+                canvas.drawLine(0, i, cgw, i,meshObj);
+            }
+
+            //Vertical Lines - Left Segment
+            for (i = cgw2; i>=0; i-=meshDim){
+                canvas.drawLine(i,cgh2-meshDim*5, i,cgh,meshObj);
+            }
+            //Vertical Lines - Right Segment
+            for (i = cgw2; i<= cgw; i+=meshDim){
+                canvas.drawLine(i,cgh2-meshDim*5, i,cgh,meshObj);
+            }
         }
     }
 }
