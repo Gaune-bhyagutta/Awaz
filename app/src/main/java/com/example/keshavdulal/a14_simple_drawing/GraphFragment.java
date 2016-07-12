@@ -79,6 +79,7 @@ public class GraphFragment extends Fragment{
             }
             if (playAudioData==null){
                 int length=mainActivity.getPlayBufferSize();
+                length = length/4;
                 playAudioData = new short[length];
             }
             int recordBuffIndex = (recordAudioData.length/2-canvas.getWidth())/2;

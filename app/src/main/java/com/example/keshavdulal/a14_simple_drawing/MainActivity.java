@@ -218,9 +218,7 @@ public class MainActivity extends AppCompatActivity {
             /*Call the static class of Audio Record to get the Buffer size in Byte that can handle the Audio data values
                 based on our SAMPLING RATE (44100 hz or frame per second in our case)
              */
-                int minBufferSize = AudioRecord.getMinBufferSize(44100,
-                        AudioFormat.CHANNEL_IN_MONO,
-                        AudioFormat.ENCODING_PCM_16BIT);
+                int minBufferSize = getRecordBufferSize();
 
                 // The array short that will store the Audio data that we get From the mic.
                 short[] audioData = new short[minBufferSize];
@@ -353,9 +351,7 @@ public class MainActivity extends AppCompatActivity {
             //File fileHaha = new File(Environment.getExternalStorageDirectory(), "Sound.haha");
             //int shortSizeInBytes = Short.SIZE/Byte.SIZE;
 
-            int minBuffersize = AudioTrack.getMinBufferSize(44100,
-                    AudioFormat.CHANNEL_OUT_MONO,
-                    AudioFormat.ENCODING_PCM_16BIT);
+            int minBuffersize = getPlayBufferSize();
 
             //int bufferSizeInBytes = (int)(filePcm.length()*2);
             short[] audioData = new short[minBuffersize/4];
@@ -464,11 +460,9 @@ public class MainActivity extends AppCompatActivity {
         return minBufferSize;
     }
     public int getPlayBufferSize(){
-        int minBufferSize = AudioRecord.getMinBufferSize(44100,
-                AudioFormat.CHANNEL_IN_MONO,
-                AudioFormat.ENCODING_PCM_16BIT);int minBuffersize = AudioTrack.getMinBufferSize(44100,
+        int minBufferSize = AudioTrack.getMinBufferSize(44100,
                 AudioFormat.CHANNEL_OUT_MONO,
                 AudioFormat.ENCODING_PCM_16BIT);
-        return (minBufferSize/4);
+        return minBufferSize;
     }
 }//End of MainActivity
