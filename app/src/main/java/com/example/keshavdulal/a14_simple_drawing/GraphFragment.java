@@ -83,7 +83,7 @@ public class GraphFragment extends Fragment{
 
             if (MainActivity.playState()==1){
                 for(X1 = 0; X1<=canvas.getWidth();X1 += 5){
-                    graph_height = ((float) playAudioData[playBuffIndex])/;
+                    graph_height = ((float) playAudioData[playBuffIndex])/50;
                     X2=X1;
                     Y2=Y1-graph_height;
                     canvas.drawLine(X1,Y1,X2,Y2,graphLinesObj);
@@ -92,7 +92,7 @@ public class GraphFragment extends Fragment{
                 postInvalidateDelayed(250);
             }else {
                 for (X1 = 0; X1 <=canvas.getWidth(); X1 += 5) {
-                    graph_height = ((float) recordAudioData[recordBuffIndex]) / 10;
+                    graph_height = ((float) recordAudioData[recordBuffIndex]) / 50;
                     X2 = X1;
                     Y2 = Y1 - graph_height;
                     canvas.drawLine(X1, Y1, X2, Y2, graphLinesObj);
