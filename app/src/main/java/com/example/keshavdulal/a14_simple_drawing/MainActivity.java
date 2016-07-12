@@ -236,6 +236,8 @@ public class MainActivity extends AppCompatActivity {
             /* object of the AudioRecord class calls the startRecording() function so that every is ready and the data
                 can be fetch from mic-buffer-our array of short(audioData)
              */
+                //setting the size of the audioData array for graph fragment
+                graphFragment.setRecordBufferSize(minBufferSize);
                 audioRecord.startRecording();
                 //GraphFragment gF = new GraphFragment();
                 // it means while the user have  not pressed the STOP Button
@@ -246,7 +248,8 @@ public class MainActivity extends AppCompatActivity {
                    AND THE MOST IMPORTANT PART IS HERE:- The actual value is being store here in the audioData array.
                  */
                     int numberOfShort = audioRecord.read(audioData, 0, minBufferSize);
-
+                    //sending audioData to graph fragment
+                    graphFragment.updateRecordGraph(audioData);
                 /*This is part where we store that data to our 3 different files.
                    For now I have used (.haha) and (.txt)
                  */
@@ -259,6 +262,7 @@ public class MainActivity extends AppCompatActivity {
                         audioFloats[i] = ((float)Short.reverseBytes(audioData[i])/0x8000);
                         //dataOutputStream2.writeInt(temp);//Store in Sound.txt as int-int-int--
                     }
+
 
                 }
 
@@ -371,7 +375,7 @@ public class MainActivity extends AppCompatActivity {
                         AudioFormat.ENCODING_PCM_16BIT,
                         minBuffersize,
                         AudioTrack.MODE_STREAM);
-
+                graphFragment.setPlayBufferSize(audioData.length);
                 audioTrack.play();
 
                 while (isPlaying && dataInputStream.available() > 0) {
@@ -385,6 +389,8 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                     audioTrack.write(audioData, 0, audioData.length);
+                    graphFragment.updatePlayGraph(audioData);
+
                 }
 
 
@@ -450,5 +456,19 @@ public class MainActivity extends AppCompatActivity {
     }
     public static int playState(){
         return playState;
+    }
+    public int getRecordBufferSize(){
+        int minBufferSize = AudioRecord.getMinBufferSize(44100,
+                AudioFormat.CHANNEL_IN_MONO,
+                AudioFormat.ENCODING_PCM_16BIT);
+        return minBufferSize;
+    }
+    public int getPlayBufferSize(){
+        int minBufferSize = AudioRecord.getMinBufferSize(44100,
+                AudioFormat.CHANNEL_IN_MONO,
+                AudioFormat.ENCODING_PCM_16BIT);int minBuffersize = AudioTrack.getMinBufferSize(44100,
+                AudioFormat.CHANNEL_OUT_MONO,
+                AudioFormat.ENCODING_PCM_16BIT);
+        return (minBufferSize/4);
     }
 }//End of MainActivity
