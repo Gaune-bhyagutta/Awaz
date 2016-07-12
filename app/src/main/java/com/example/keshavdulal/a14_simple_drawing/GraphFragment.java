@@ -66,7 +66,7 @@ public class GraphFragment extends Fragment{
             graphLinesObj.setStrokeWidth(5);
 
             if (MainActivity.playState()==1){
-                for(X1 = 0; X1<canvas.getWidth();X1+=5){
+                for(X1 = 0; X1<=canvas.getWidth();X1+=10){
                     //invalidate();
                     X2=X1;
                     Y2=Y1-graph_height;
@@ -75,7 +75,7 @@ public class GraphFragment extends Fragment{
                 }
                 postInvalidateDelayed(250);
             }else {
-                for (X1 = 0; X1 < canvas.getWidth(); X1 += 5) {
+                for (X1 = 0; X1 <=canvas.getWidth(); X1 += 10) {
                     //invalidate();
                     X2 = X1;
                     Y2 = Y1 - graph_height;
@@ -91,11 +91,11 @@ public class GraphFragment extends Fragment{
             int cgw = canvas.getWidth();
             int cgh2 = cgh/2;
             int cgw2 = cgw/2;
-            int meshDim = 100;
+            int meshDim = cgh2/20;
             int i;
             Paint meshObj = new Paint();
-            meshObj.setColor(Color.BLUE);
-            meshObj.setStrokeWidth(2);
+            meshObj.setColor(Color.parseColor("#808080"));
+            meshObj.setStrokeWidth(1);
 
             //Horizontal Lines - Top Segment
             for (i = cgh2; i>=0; i-=meshDim){
@@ -106,13 +106,14 @@ public class GraphFragment extends Fragment{
                 canvas.drawLine(0, i, cgw, i,meshObj);
             }
 
+//            meshObj.setColor(Color.MAGENTA);
             //Vertical Lines - Left Segment
             for (i = cgw2; i>=0; i-=meshDim){
-                canvas.drawLine(i,cgh2-meshDim*5, i,cgh,meshObj);
+                canvas.drawLine(i,0, i,cgh,meshObj);
             }
             //Vertical Lines - Right Segment
             for (i = cgw2; i<= cgw; i+=meshDim){
-                canvas.drawLine(i,cgh2-meshDim*5, i,cgh,meshObj);
+                canvas.drawLine(i,0, i,cgh,meshObj);
             }
         }
     }
