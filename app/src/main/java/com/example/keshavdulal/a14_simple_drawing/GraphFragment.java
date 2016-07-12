@@ -17,7 +17,9 @@ import android.widget.LinearLayout;
 public class GraphFragment extends Fragment{
 
     public static  float graph_height;
-
+    static short[] recordAudioData = null;
+    static short[] playAudioData = null;
+    static MainActivity mainActivity = new MainActivity();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -71,26 +73,53 @@ public class GraphFragment extends Fragment{
             int angle=0;
            /* MainActivity mainActivity = new MainActivity();
             short[] audioData = mainActivity.getAudioData();*/
+            if (recordAudioData==null){
+                int length=mainActivity.getRecordBufferSize();
+                recordAudioData = new short[length];
+            }
+            if (playAudioData==null){
+                int length=mainActivity.getPlayBufferSize();
+                playAudioData = new short[length];
+            }
+            int recordBuffIndex = (recordAudioData.length/2-canvas.getWidth())/2;
+            int playBuffIndex = (playAudioData.length/2-canvas.getWidth())/2;
             if (MainActivity.playState()==1){
                 for(X1 = 0; X1<canvas.getWidth();X1+=5){
                     //invalidate();
                     X2=X1;
                     Y2=Y1-graph_height;
                     canvas.drawLine(X1,Y1,X2,Y2,graphLinesObj);
-                    graph_height = ((float) MainActivity.playValueToGraph())/50;
+                    graph_height = ((float) playAudioData[playBuffIndex])/50;
+                    playBuffIndex++;
                 }
                 postInvalidateDelayed(250);
             }else {
-                for (X1 = 0; X1 < canvas.getWidth(); X1 += 5) {
+
+                for (X1 = 0; X1 < canvas.getWidth(); X1+=5 ) {
                     //invalidate();
                     X2 = X1;
                     Y2 = Y1 - graph_height;
                     canvas.drawLine(X1, Y1, X2, Y2, graphLinesObj);
-                    graph_height = ((float) MainActivity.recordValueToGraph()) / 50;
+                    graph_height = ((float) recordAudioData[recordBuffIndex]) / 50;
+                    recordBuffIndex++;
                 }
                 postInvalidateDelayed(250);
             }
 
+
         }
+    }
+    //updating audiodata from mainactivity
+    public void updateRecordGraph(short[] data){
+        recordAudioData = data;
+    }
+    public void setRecordBufferSize(int size){
+        recordAudioData = new short[size];
+    }
+    public void updatePlayGraph(short[] data){
+        playAudioData = data;
+    }
+    public void setPlayBufferSize(int size){
+        playAudioData = new short[size];
     }
 }
