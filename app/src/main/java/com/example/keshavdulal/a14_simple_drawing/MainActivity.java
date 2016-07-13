@@ -280,7 +280,9 @@ public class MainActivity extends AppCompatActivity {
             //File fileHaha = new File(Environment.getExternalStorageDirectory(), "Sound.haha");
             //int shortSizeInBytes = Short.SIZE/Byte.SIZE;
 
-            int minBufferSize = getPlayBufferSize();
+            int minBufferSize = AudioTrack.getMinBufferSize(44100,
+                    AudioFormat.CHANNEL_OUT_MONO,
+                    AudioFormat.ENCODING_PCM_16BIT);
 
             //int bufferSizeInBytes = (int)(filePcm.length()*2);
             short[] audioData = new short[minBufferSize/4];
@@ -387,6 +389,6 @@ public class MainActivity extends AppCompatActivity {
         int minBufferSize = AudioTrack.getMinBufferSize(44100,
                 AudioFormat.CHANNEL_OUT_MONO,
                 AudioFormat.ENCODING_PCM_16BIT);
-        return minBufferSize;
+        return (minBufferSize/4);
     }
 }//End of MainActivity
