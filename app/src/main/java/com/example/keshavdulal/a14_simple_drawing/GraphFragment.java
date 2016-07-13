@@ -71,22 +71,19 @@ public class GraphFragment extends Fragment {
             }
             if (playAudioData == null) {
                 int length = mainActivity.getPlayBufferSize();
-
+                length = length/4;
                 playAudioData = new short[length];
             }
             int recordBuffIndex = (recordAudioData.length / 2 - canvas.getWidth()) / 2;
-            int playBuffIndex = (playAudioData.length / 2 - canvas.getWidth()) / 2;
+            //int playBuffIndex = (playAudioData.length / 2 - canvas.getWidth()) / 2;
             int i =0;
             if (MainActivity.playState() == 1) {
                 for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
-                    try {
                         graph_height = ((float) playAudioData[i]) / 50;
-                    }
-                    catch (NullPointerException e){}
                     X2 = X1;
                     Y2 = Y1 - graph_height;
                     canvas.drawLine(X1, Y1, X2, Y2, graphLinesObj);
-                    playBuffIndex++;
+                    //playBuffIndex++;
                     i++;
                 }
                 postInvalidateDelayed(1);
