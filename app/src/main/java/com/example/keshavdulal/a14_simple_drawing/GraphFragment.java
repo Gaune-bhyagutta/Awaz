@@ -63,7 +63,7 @@ public class GraphFragment extends Fragment {
             //Vertical graphical line
             Paint graphLinesObj = new Paint();        //GLO graph-lines-object
             graphLinesObj.setColor(Color.parseColor("#880000"));
-            graphLinesObj.setStrokeWidth(1);
+            graphLinesObj.setStrokeWidth(3);
 
             if (recordAudioData == null) {
                 int length = mainActivity.getRecordBufferSize();
@@ -79,10 +79,10 @@ public class GraphFragment extends Fragment {
             int i =0;
             if (MainActivity.playState() == 1) {
                 for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
-                        graph_height = ((float) playAudioData[i]) / 50;
+                        graph_height = ((float) playAudioData[i]) / 100;
                     X2 = X1;
                     Y2 = Y1 - graph_height;
-                    canvas.drawLine(X1, Y1, X2, Y2, graphLinesObj);
+                    canvas.drawLine(X2, Y2, X2, Y2, graphLinesObj);
                     //playBuffIndex++;
                     i++;
                 }
@@ -90,10 +90,10 @@ public class GraphFragment extends Fragment {
 //                invalidate();
             } else {
                 for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
-                    graph_height = ((float) recordAudioData[recordBuffIndex]) / 50;
+                    graph_height = ((float) recordAudioData[recordBuffIndex]) / 100;
                     X2 = X1;
                     Y2 = Y1 - graph_height;
-                    canvas.drawLine(X1, Y1, X2, Y2, graphLinesObj);
+                    canvas.drawLine(X2-1, Y2-1, X2, Y2, graphLinesObj);
                     recordBuffIndex++;
                 }
                 postInvalidateDelayed(1);
