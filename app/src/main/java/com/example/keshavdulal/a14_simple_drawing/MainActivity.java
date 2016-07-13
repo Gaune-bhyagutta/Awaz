@@ -1,6 +1,5 @@
 package com.example.keshavdulal.a14_simple_drawing;
 
-
 import android.graphics.Color;
 import android.media.AudioFormat;
 import android.media.AudioManager;
@@ -34,9 +33,7 @@ import java.util.Arrays;
 
 
 public class MainActivity extends AppCompatActivity {
-    //private static final String TAG = MainActivity.class.getSimpleName();
-    //Fragment
-    Button Rec, Play;
+    Button rec, play;
     int rec_btn_count = 0, play_btn_count =0;
     GraphFragment graphFragment = new GraphFragment();
     ListFragment listFragment = new ListFragment();
@@ -44,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
     AudioPlayClass audioPlayClass;
     Boolean isRecording = false;
     Boolean isPlaying = false;
-    //public static int temp;
     public static int playState = 0;
     public static int recordValueToGraph;
     public static int playValueToGraph;
@@ -66,29 +62,26 @@ public class MainActivity extends AppCompatActivity {
         //Fixed - Missing APP Name
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setTitle("Awazz");
+        setTitle("Awaj");
 
-        Rec = (Button) findViewById(R.id.rec);
-        Play = (Button) findViewById(R.id.play);
+        rec = (Button) findViewById(R.id.rec);
+        play = (Button) findViewById(R.id.play);
 
-        //Play.setEnabled(false);
         // Start of Record Button
-        if(Rec!=null) {
-            Rec.setOnClickListener(new View.OnClickListener() {
+        if(rec !=null) {
+            rec.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v){
                     audioRecordClass = new AudioRecordClass();
                     if (rec_btn_count == 0){
                         //RECORD Button
                         Log.d("VIVZ", "Clicked - Record");
-                        Rec.setText("STOP");
-                        Rec.setTextColor(Color.parseColor("#ff0000"));
-                        Play.setEnabled(false);
+                        rec.setText("STOP");
+                        rec.setTextColor(Color.parseColor("#ff0000"));
+                        play.setEnabled(false);
                         playState = 0;
                         isRecording = true;
                         audioRecordClass.execute();
-
-
                         Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_SHORT).show();
                         rec_btn_count =1;
                     }
@@ -97,31 +90,26 @@ public class MainActivity extends AppCompatActivity {
                         //STOP Button
                         Log.d("VIVZ", "Clicked - Stop recording");
                         isRecording = false;
-
-
-
                     }
                 }
             });
         }// End of Record Button
 
         //Start of Record Button
-        if(Play!=null) {
-            Play.setOnClickListener(new View.OnClickListener() {
+        if(play !=null) {
+            play.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     audioPlayClass = new AudioPlayClass();
                     if(play_btn_count == 0){
                         //PLAY Buttton
                         playState =1;
-
                         play_btn_count = 1;
-                        Log.d("VIVZ", "Clicked - Play audio");
-
+                        Log.d("VIVZ", "Clicked - play audio");
                         Toast.makeText(getApplicationContext(), "Playing audio", Toast.LENGTH_SHORT).show();
-                        Play.setText("Stop");
-                        Play.setTextColor(Color.parseColor("#ff0000"));
-                        Rec.setEnabled(false);
+                        play.setText("Stop");
+                        play.setTextColor(Color.parseColor("#ff0000"));
+                        rec.setEnabled(false);
                         isPlaying = true;
                         audioPlayClass.execute();
 
@@ -130,66 +118,47 @@ public class MainActivity extends AppCompatActivity {
                     else if (play_btn_count == 1){
                         //Code to pause/stop the playback
                         isPlaying = false;
-
                         Log.d("VIVZ", "Clicked - Stop audio");
                         Log.d("VIVZ", "isPlaying="+isPlaying);
-
                         Toast.makeText(getApplicationContext(), "Stopping audio", Toast.LENGTH_SHORT).show();
-
                     }
-
-                }
+                }//End of onCLick
             });
-        }//End of Play Button
-
+        }//End of play Button
     }// End of onCreate()
 
     public class AudioRecordClass extends AsyncTask<Void,Void,Void>{
-
-
         public Boolean recording = true;
-
         @Override
         protected Void doInBackground(Void... voids) {
             startRecord();
             return null;
         }
-
         public void startRecord(){
             Log.d("VIVZ", "Thread - Start record");
-        /* WHOLE PROCESS EXPLAINED IN BRIEF HERE:
-            1.Create a file to store that data values that comes from the mic.
-            2. Fix the bufferSize and AudioRecord Object.(Will be later in detail later).
-            3.In java the data comes in the form of bytes-bytes-bytes-and so on.
-            4.In the file that we have created we can store the same byte recieved.
-            5.But as we have to use 16 bit PCM ENCODING SYSTEM(Quantitaion), We cannot store the data in Byte form.
-            6.Thus we convert the data in short datatype and then store the array of short into the file.
-            7. short(16 bit) = 2*byte(8-bit)
-            8.And here we have used file to store the audio value from Mic and used the same file to play the Audio.
-            9.We store the data in file as Short-Short-Short(array of short) and fetch the data in same way to fetch.
-            10.But simply saying we do not needed to store and fetch from file for recording and playing for ONCE.
-            11.for that purpose , we can use the array of short datatype
-            12. Another thing is when we try to open the file via a text editor (notepad /notepad++ used by us) we cannot read
-                the actual data(short datatype) that we have store in that file.Because we have stored 16bit-16bit-16bit----
-                and most of the text editor use UTF-8 encoding which is 32-bit.
-            13.Thus to read the data we have to store it using int datatypte . int-int-int
-            14.And in this case we have to name the extension as (.txt).But when we store and fetch the data ourselves to mic and speaker
-                respectively, the extension does not matter at all . To show that I have craeted Three File
-                ONE- as extension Sound.pcm
-                Two- as extension Sound.haha
-                Three- as extension Sound.txt
+            /**RECORDING PROCESS:
+             1.Create a file to store that data values that comes from the mic.
+             2. Fix the bufferSize and AudioRecord Object.(Will be later in detail later).
+             3.In java the data comes in the form of bytes-bytes-bytes-and so on.
+             4.In the file that we have created we can store the same byte received.
+             5.But as we have to use 16 bit PCM ENCODING SYSTEM(Quantisation), We cannot store the data in Byte form.
+             6.Thus we convert the data in short datatype and then store the array of short into the file.
+             7. short(16 bit) = 2*byte(8-bit)
+             8.And here we have used file to store the audio value from Mic and used the same file to play the Audio.
+             9.We store the data in file as Short-Short-Short(array of short) and fetch the data in same way to fetch.
+             10.But simply saying we do not needed to store and fetch from file for recording and playing for ONCE.
+             11.for that purpose , we can use the array of short datatype
+             12. Another thing is when we try to open the file via a text editor (notepad /notepad++ used by us) we cannot read
+             the actual data(short datatype) that we have store in that file.Because we have stored 16bit-16bit-16bit----
+             and most of the text editor use UTF-8 encoding which is 32-bit.
+             13.Thus to read the data we have to store it using int datatypte . int-int-int
+             14.And in this case we have to name the extension as (.txt).But when we store and fetch the data ourselves to mic and speaker
+             respectively, the extension does not matter at all . To show that I have created Three File
+             ONE- as extension Sound.pcm
              15. AND MOST IMPORTANT THING TO REMEMBER :- OUR AMPLITUDE IS REPRESENTED BY 16 bit. SO WE USE SHORT
-         */
-
+             */
 
             File filePcm = new File(Environment.getExternalStorageDirectory(),"Sound.pcm");
-            //File fileHaha = new File(Environment.getExternalStorageDirectory(),"Sound.haha");
-            //File fileTxt = new File(Environment.getExternalStorageDirectory(),"Sound.txt");
-       /*  -Above Three are Three different files as discussed above. In first two the files we pass the Array of short as the data
-            to be stored and similarly fetch the data in same way.This is to that the extension does not effect.
-           -And the Third kind of file stores tha data in integer form and has extension .txt so that text Editor(UFT-8) can
-            open and understahnd and show the data.PLEASE, NOTE THAT EXTENSION DOES AFFECT HERE.
-*/
 
             OutputStream outputStream = null;
             BufferedOutputStream bufferedOutputStream = null;
@@ -197,30 +166,13 @@ public class MainActivity extends AppCompatActivity {
             AudioRecord audioRecord = null;
             try {
                 filePcm.createNewFile();
-                //fileHaha.createNewFile();
-                //fileTxt.createNewFile();
-
-                // Mechanism to store fetch data from mic and store it.
-//                OutputStream outputStream = new FileOutputStream(fileHaha);
-//                BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
-//                DataOutputStream dataOutputStream = new DataOutputStream(bufferedOutputStream);
-
                 // Mechanism to store fetch data from mic and store it.
                 outputStream = new FileOutputStream(filePcm);
                 bufferedOutputStream = new BufferedOutputStream(outputStream);
                 dataOutputStream = new DataOutputStream(bufferedOutputStream);
 
-                // Mechanism to store fetch data from mic and store it.
-//                OutputStream outputStream2 = new FileOutputStream(fileTxt);
-//                BufferedOutputStream bufferedOutputStream2 = new BufferedOutputStream(outputStream2);
-//                DataOutputStream dataOutputStream2 = new DataOutputStream(bufferedOutputStream2);
-
-            /*Call the static class of Audio Record to get the Buffer size in Byte that can handle the Audio data values
-                based on our SAMPLING RATE (44100 hz or frame per second in our case)
-             */
-                int minBufferSize = AudioRecord.getMinBufferSize(44100,
-                        AudioFormat.CHANNEL_IN_MONO,
-                        AudioFormat.ENCODING_PCM_16BIT);
+                /**Call the static class of Audio Record to get the Buffer size in Byte that can handle the Audio data values based on our SAMPLING RATE (44100 hz or frame per second in our case)*/
+                int minBufferSize = getRecordBufferSize();
 
                 // The array short that will store the Audio data that we get From the mic.
                 short[] audioData = new short[minBufferSize];
@@ -233,9 +185,8 @@ public class MainActivity extends AppCompatActivity {
                         AudioFormat.ENCODING_PCM_16BIT,
                         minBufferSize);
 
-            /* object of the AudioRecord class calls the startRecording() function so that every is ready and the data
-                can be fetch from mic-buffer-our array of short(audioData)
-             */
+                /** object of the AudioRecord class calls the startRecording() function so that every is ready and the data can be fetch from mic-buffer-our array of short(audioData)
+                 */
                 //setting the size of the audioData array for graph fragment
                 graphFragment.setRecordBufferSize(minBufferSize);
                 audioRecord.startRecording();
@@ -243,53 +194,30 @@ public class MainActivity extends AppCompatActivity {
                 // it means while the user have  not pressed the STOP Button
                 while(isRecording){
 
-                /* numberOfShort=minBufferSize/2
-                   Actually what is happening is the minBufferSize(8 bit Buffer) is being converted to numberOfShort(16 bit buffer)
-                   AND THE MOST IMPORTANT PART IS HERE:- The actual value is being store here in the audioData array.
-                 */
+                    /** numberOfShort=minBufferSize/2
+                     Actually what is happening is the minBufferSize(8 bit Buffer) is being converted to numberOfShort(16 bit buffer)
+                     AND THE MOST IMPORTANT PART IS HERE:- The actual value is being store here in the audioData array.
+                     */
                     int numberOfShort = audioRecord.read(audioData, 0, minBufferSize);
                     //sending audioData to graph fragment
                     graphFragment.updateRecordGraph(audioData);
-                /*This is part where we store that data to our 3 different files.
-                   For now I have used (.haha) and (.txt)
-                 */
+
                     for(int i = 0; i < numberOfShort; i++){
                         //dataOutputStream.writeShort(audioData[i]); // Store in Sound.haha file as short-short-short--
                         dataOutputStream.writeShort(audioData[i]);
-
                         recordValueToGraph = (int)audioData[i];//Convert the short to int to store in txt file
-                        //GraphFragment.graph_height=temp;
                         audioFloats[i] = ((float)Short.reverseBytes(audioData[i])/0x8000);
-                        //dataOutputStream2.writeInt(temp);//Store in Sound.txt as int-int-int--
                     }
 
 
                 }
-
-                /** FFT calculation part **/
-
-//            float[] fft_input = new float[8];
-//            for(int i=0;i<8;i++){
-//                fft_input[i] = audioFloats[i];
-//            }
-//            FFT fft_object= new FFT(fft_input);
-                /*double[] fftAbsoluteOutput= FftOutput.callMainFft(audioFloats);
-                System.out.println("absolute value: "+ Arrays.toString(fftAbsoluteOutput));
-                double[] frequency = FrequencyValue.getFrequency(fftAbsoluteOutput);
-                System.out.println("Frequency value: "+ Arrays.toString(frequency));
-                System.out.println(fftAbsoluteOutput.length);
-                System.out.println(frequency.length);*/
+                /** FFT calculation part - WAS HERE **/
                 audioRecord.stop();
 
                 System.out.println("Audio Data: "+ Arrays.toString(audioData));
-                //dataOutputStream.close();
-
-                //dataOutputStream2.close();
-
             } catch (IOException e){
                 e.printStackTrace();
             }finally {
-
                 if (dataOutputStream!=null){
                     try {
                         dataOutputStream.close();
@@ -315,23 +243,22 @@ public class MainActivity extends AppCompatActivity {
                     audioRecord.release();
                 }
             }
-
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            Rec.setText("RECORD");
-            Rec.setTextColor(Color.parseColor("#000000"));
-            Play.setEnabled(true);
+            rec.setText("RECORD");
+            rec.setTextColor(Color.parseColor("#000000"));
+            play.setEnabled(true);
             Toast.makeText(getApplicationContext(), "Audio recorded successfully",Toast.LENGTH_SHORT).show();
             rec_btn_count =0;
             Log.d("VIVZ", "onPost execute stop recording");
         }
 
-        /*public void stopRecord(){
-            recording = false;
-        }
-*/
+        /**public void stopRecord(){
+         recording = false;
+         }
+         */
     }
 
     public class AudioPlayClass extends AsyncTask<Void,Void,Boolean>{
@@ -353,12 +280,10 @@ public class MainActivity extends AppCompatActivity {
             //File fileHaha = new File(Environment.getExternalStorageDirectory(), "Sound.haha");
             //int shortSizeInBytes = Short.SIZE/Byte.SIZE;
 
-            int minBuffersize = AudioTrack.getMinBufferSize(44100,
-                    AudioFormat.CHANNEL_OUT_MONO,
-                    AudioFormat.ENCODING_PCM_16BIT);
+            int minBufferSize = getPlayBufferSize();
 
             //int bufferSizeInBytes = (int)(filePcm.length()*2);
-            short[] audioData = new short[minBuffersize/4];
+            short[] audioData = new short[minBufferSize/4];
 
             InputStream inputStream = null;
             BufferedInputStream bufferedInputStream = null;
@@ -373,7 +298,7 @@ public class MainActivity extends AppCompatActivity {
                         44100,
                         AudioFormat.CHANNEL_OUT_MONO,
                         AudioFormat.ENCODING_PCM_16BIT,
-                        minBuffersize,
+                        minBufferSize,
                         AudioTrack.MODE_STREAM);
                 graphFragment.setPlayBufferSize(audioData.length);
                 audioTrack.play();
@@ -381,18 +306,13 @@ public class MainActivity extends AppCompatActivity {
                 while (isPlaying && dataInputStream.available() > 0) {
                     int i = 0;
                     while (dataInputStream.available() > 0 && i < audioData.length) {
-
                         audioData[i] = dataInputStream.readShort();
                         playValueToGraph = audioData[i];
                         i++;
-
-
                     }
                     audioTrack.write(audioData, 0, audioData.length);
                     graphFragment.updatePlayGraph(audioData);
-
                 }
-
 
                 audioTrack.pause();
                 audioTrack.flush();
@@ -440,9 +360,9 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Boolean aVoid) {
-            Play.setText("Play");
-            Play.setTextColor(Color.parseColor("#00b900"));
-            Rec.setEnabled(true);
+            play.setText("play");
+            play.setTextColor(Color.parseColor("#00b900"));
+            rec.setEnabled(true);
             play_btn_count = 0;
             Log.d("VIVZ", "onPostExecute");
             isPlaying=false;
@@ -464,11 +384,9 @@ public class MainActivity extends AppCompatActivity {
         return minBufferSize;
     }
     public int getPlayBufferSize(){
-        int minBufferSize = AudioRecord.getMinBufferSize(44100,
-                AudioFormat.CHANNEL_IN_MONO,
-                AudioFormat.ENCODING_PCM_16BIT);int minBuffersize = AudioTrack.getMinBufferSize(44100,
+        int minBufferSize = AudioTrack.getMinBufferSize(44100,
                 AudioFormat.CHANNEL_OUT_MONO,
                 AudioFormat.ENCODING_PCM_16BIT);
-        return (minBufferSize/4);
+        return minBufferSize;
     }
 }//End of MainActivity
