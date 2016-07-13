@@ -49,7 +49,7 @@ public class GraphFragment extends Fragment{
             canvas.drawColor(Color.LTGRAY);
             //Paint Object
             Paint graphBoundaryObj = new Paint();
-            graphBoundaryObj.setColor(Color.RED);
+            graphBoundaryObj.setColor(Color.parseColor("#880000"));
             graphBoundaryObj.setStrokeWidth(7);
 
             float X1 = 0;
@@ -64,12 +64,9 @@ public class GraphFragment extends Fragment{
             canvas.drawLine(X1,Y1,AX,AY,graphBoundaryObj);
             //Vertical graphical line
             Paint graphLinesObj = new Paint();        //GLO graph-lines-object
-            graphLinesObj.setColor(Color.parseColor("#000000"));
+            graphLinesObj.setColor(Color.parseColor("#880000"));
             graphLinesObj.setStrokeWidth(5);
 
-            int angle=0;
-           /* MainActivity mainActivity = new MainActivity();
-            short[] audioData = mainActivity.getAudioData();*/
             if (recordAudioData==null){
                 int length=mainActivity.getRecordBufferSize();
                 recordAudioData = new short[length];
@@ -82,23 +79,25 @@ public class GraphFragment extends Fragment{
             int playBuffIndex = (playAudioData.length/2-canvas.getWidth())/2;
 
             if (MainActivity.playState()==1){
-                for(X1 = 0; X1<=canvas.getWidth();X1 += 5){
+                for(X1 = 0; X1<=canvas.getWidth();X1++){
                     graph_height = ((float) playAudioData[playBuffIndex])/50;
                     X2=X1;
                     Y2=Y1-graph_height;
                     canvas.drawLine(X1,Y1,X2,Y2,graphLinesObj);
                     playBuffIndex++;
                 }
-                postInvalidateDelayed(250);
+                postInvalidateDelayed(1);
+//                invalidate();
             }else {
-                for (X1 = 0; X1 <=canvas.getWidth(); X1 += 5) {
+                for (X1 = 0; X1 <=canvas.getWidth(); X1++) {
                     graph_height = ((float) recordAudioData[recordBuffIndex]) / 50;
                     X2 = X1;
                     Y2 = Y1 - graph_height;
                     canvas.drawLine(X1, Y1, X2, Y2, graphLinesObj);
                     recordBuffIndex++;
                 }
-                postInvalidateDelayed(250);
+                postInvalidateDelayed(1);
+//                invalidate();
             }
         }
 

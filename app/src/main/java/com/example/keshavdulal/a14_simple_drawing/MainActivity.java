@@ -464,9 +464,10 @@ public class MainActivity extends AppCompatActivity {
         return minBufferSize;
     }
     public int getPlayBufferSize(){
-        int minBufferSize = AudioRecord.getMinBufferSize(44100,
-                AudioFormat.CHANNEL_IN_MONO,
-                AudioFormat.ENCODING_PCM_16BIT);int minBuffersize = AudioTrack.getMinBufferSize(44100,
+//        int minBufferSize = AudioRecord.getMinBufferSize(44100,
+//                AudioFormat.CHANNEL_IN_MONO,
+//                AudioFormat.ENCODING_PCM_16BIT);
+        int minBufferSize = AudioTrack.getMinBufferSize(44100,
                 AudioFormat.CHANNEL_OUT_MONO,
                 AudioFormat.ENCODING_PCM_16BIT);
         return (minBufferSize/4);
