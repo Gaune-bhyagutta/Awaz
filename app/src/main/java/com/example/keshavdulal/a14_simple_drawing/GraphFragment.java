@@ -77,27 +77,39 @@ public class GraphFragment extends Fragment {
             int recordBuffIndex = (recordAudioData.length / 2 - canvas.getWidth()) / 2;
             //int playBuffIndex = (playAudioData.length / 2 - canvas.getWidth()) / 2;
             int i =0;
+            float oldX = 0,oldY = canvas.getHeight()/2;
+            float newX,newY;
             if (MainActivity.playState() == 1) {
                 for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
-                        graph_height = ((float) playAudioData[i]) / 100;
+                    graph_height = ((float) playAudioData[i]) / 100;
                     X2 = X1;
                     Y2 = Y1 - graph_height;
-                    canvas.drawLine(X2, Y2, X2, Y2, graphLinesObj);
+
+                    newX = X2;  newY = Y2;
+                    canvas.drawLine(oldX,oldY, newX,newY, graphLinesObj);
+                    oldX = newX;oldY = newY;
+
                     //playBuffIndex++;
                     i++;
                 }
+
                 postInvalidateDelayed(1);
-//                invalidate();
             } else {
+                oldX = 0;
+                oldY = canvas.getHeight()/2;
                 for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
                     graph_height = ((float) recordAudioData[recordBuffIndex]) / 100;
                     X2 = X1;
                     Y2 = Y1 - graph_height;
-                    canvas.drawLine(X2-1, Y2-1, X2, Y2, graphLinesObj);
+//                    canvas.drawLine(X2-1, Y2-1, X2, Y2, graphLinesObj);
+
+                    newX = X2;  newY = Y2;
+                    canvas.drawLine(oldX,oldY, newX,newY, graphLinesObj);
+                    oldX = newX;oldY = newY;
+
                     recordBuffIndex++;
                 }
                 postInvalidateDelayed(1);
-//                invalidate();
             }
         }
 
