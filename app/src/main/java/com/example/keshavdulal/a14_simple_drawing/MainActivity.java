@@ -42,8 +42,7 @@ public class MainActivity extends AppCompatActivity {
     Boolean isRecording = false;
     Boolean isPlaying = false;
     public static int playState = 0;
-    public static int recordValueToGraph;
-    public static int playValueToGraph;
+    public static int samplingRate=44100;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,9 +111,7 @@ public class MainActivity extends AppCompatActivity {
                         rec.setEnabled(false);
                         isPlaying = true;
                         audioPlayClass.execute();
-
                     }
-
                     else if (play_btn_count == 1){
                         //Code to pause/stop the playback
                         isPlaying = false;
@@ -180,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //Create a Object of the AudioRecord class with the required Samplig Frequency(44100 hz)
                 audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
-                        44100,
+                        samplingRate,
                         AudioFormat.CHANNEL_IN_MONO,
                         AudioFormat.ENCODING_PCM_16BIT,
                         minBufferSize);
@@ -198,18 +195,19 @@ public class MainActivity extends AppCompatActivity {
                      Actually what is happening is the minBufferSize(8 bit Buffer) is being converted to numberOfShort(16 bit buffer)
                      AND THE MOST IMPORTANT PART IS HERE:- The actual value is being store here in the audioData array.
                      */
-                    int numberOfShort = audioRecord.read(audioData, 0, minBufferSize);
-                    //sending audioData to graph fragment
-                    graphFragment.updateRecordGraph(audioData);
+                    int numberOfShort = audioRecord.read(audioData, 0, minBufferSize);//sending audioData to graph fragment
+                    //graphFragment.updateRecordGraph(audioData);
 
+                    //int l=audioData.length;
+//                    Log.d("VIVZzz",Arrays.toString(fftOuput));
+                    //System.out.println(" length of fftoutput "+l);;
                     for(int i = 0; i < numberOfShort; i++){
                         //dataOutputStream.writeShort(audioData[i]); // Store in Sound.haha file as short-short-short--
                         dataOutputStream.writeShort(audioData[i]);
-                        recordValueToGraph = (int)audioData[i];//Convert the short to int to store in txt file
                         audioFloats[i] = ((float)Short.reverseBytes(audioData[i])/0x8000);
                     }
-
-
+                    int []  fftOutput= FftOutput.callMainFft(audioFloats);
+                    graphFragment.updateRecordGraph(fftOutput);
                 }
                 /** FFT calculation part - WAS HERE **/
                 audioRecord.stop();
@@ -262,29 +260,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public class AudioPlayClass extends AsyncTask<Void,Void,Boolean>{
-        Boolean sucessfull;
+        Boolean successful;
         @Override
         protected Boolean doInBackground(Void... voids) {
-            sucessfull = false;
+            successful = false;
             Log.d("VIVZ", "doInBackground");
             playRecord();
             Log.d("VIVZ", "end of doInBackground");
-            return sucessfull;
+            return successful;
         }
-
         //Start of playRecord()
         public void playRecord(){
 
             Log.d("VIVZ", "playRecord()");
             File filePcm = new File(Environment.getExternalStorageDirectory(), "Sound.pcm");
-            //File fileHaha = new File(Environment.getExternalStorageDirectory(), "Sound.haha");
-            //int shortSizeInBytes = Short.SIZE/Byte.SIZE;
-
             int minBufferSize = getPlayBufferSize();
 
             //int bufferSizeInBytes = (int)(filePcm.length()*2);
             short[] audioData = new short[minBufferSize/4];
-
             InputStream inputStream = null;
             BufferedInputStream bufferedInputStream = null;
             DataInputStream dataInputStream = null;
@@ -295,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
                 dataInputStream = new DataInputStream(bufferedInputStream);
                 audioTrack = new AudioTrack(
                         AudioManager.STREAM_MUSIC,
-                        44100,
+                        samplingRate,
                         AudioFormat.CHANNEL_OUT_MONO,
                         AudioFormat.ENCODING_PCM_16BIT,
                         minBufferSize,
@@ -307,7 +300,6 @@ public class MainActivity extends AppCompatActivity {
                     int i = 0;
                     while (dataInputStream.available() > 0 && i < audioData.length) {
                         audioData[i] = dataInputStream.readShort();
-                        playValueToGraph = audioData[i];
                         i++;
                     }
                     audioTrack.write(audioData, 0, audioData.length);
@@ -319,7 +311,7 @@ public class MainActivity extends AppCompatActivity {
                 audioTrack.stop();
                 audioTrack.release();
 
-                sucessfull=true;
+                successful=true;
                 Log.d("VIVZ", "end of playrecord()");
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -368,23 +360,18 @@ public class MainActivity extends AppCompatActivity {
             isPlaying=false;
         }
     }
-    public static int recordValueToGraph(){
-        return recordValueToGraph;
-    }
-    public static int playValueToGraph(){
-        return playValueToGraph;
-    }
+
     public static int playState(){
         return playState;
     }
     public int getRecordBufferSize(){
-        int minBufferSize = AudioRecord.getMinBufferSize(44100,
+        int minBufferSize = AudioRecord.getMinBufferSize(samplingRate,
                 AudioFormat.CHANNEL_IN_MONO,
                 AudioFormat.ENCODING_PCM_16BIT);
         return minBufferSize;
     }
     public int getPlayBufferSize(){
-        int minBufferSize = AudioTrack.getMinBufferSize(44100,
+        int minBufferSize = AudioTrack.getMinBufferSize(samplingRate,
                 AudioFormat.CHANNEL_OUT_MONO,
                 AudioFormat.ENCODING_PCM_16BIT);
         return minBufferSize;

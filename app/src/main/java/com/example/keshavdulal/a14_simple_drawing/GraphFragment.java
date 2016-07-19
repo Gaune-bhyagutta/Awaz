@@ -16,7 +16,7 @@ import java.io.IOException;
 public class GraphFragment extends Fragment {
 
     public static float graph_height;
-    static short[] recordAudioData = null;
+    static int[] recordAudioData = null;
     static short[] playAudioData = null;
     static MainActivity mainActivity = new MainActivity();
 
@@ -43,10 +43,8 @@ public class GraphFragment extends Fragment {
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
-            //BACKGROUND
-            canvas.drawColor(Color.LTGRAY);
-            //Paint Object
-            Paint graphBoundaryObj = new Paint();
+            canvas.drawColor(Color.LTGRAY);//BACKGROUND
+            Paint graphBoundaryObj = new Paint();//Paint Object
             graphBoundaryObj.setColor(Color.parseColor("#880000"));
             graphBoundaryObj.setStrokeWidth(7);
 
@@ -56,7 +54,6 @@ public class GraphFragment extends Fragment {
             float AY = canvas.getHeight() / 2;
             float X2, Y2;
             drawMeshLines(canvas);
-
             //Midline - Divider
             graphBoundaryObj.setStrokeWidth(2);
             canvas.drawLine(X1, Y1, AX, AY, graphBoundaryObj);
@@ -67,14 +64,16 @@ public class GraphFragment extends Fragment {
 
             if (recordAudioData == null) {
                 int length = mainActivity.getRecordBufferSize();
-                recordAudioData = new short[length];
+                //length=length/2;
+                recordAudioData = new int[length];
             }
             if (playAudioData == null) {
                 int length = mainActivity.getPlayBufferSize();
                 length = length/4;
                 playAudioData = new short[length];
             }
-            int recordBuffIndex = (recordAudioData.length / 2 - canvas.getWidth()) / 2;
+            //int recordBuffIndex = (recordAudioData.length/2 - canvas.getWidth()) / 2;
+            int recordBuffIndex= 2;
             int playBuffIndex = (playAudioData.length / 2 - canvas.getWidth()) / 2;
 
             if (MainActivity.playState() == 1) {
@@ -91,12 +90,13 @@ public class GraphFragment extends Fragment {
                 postInvalidateDelayed(1);
 //                invalidate();
             } else {
-                for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
-                    graph_height = ((float) recordAudioData[recordBuffIndex]) / 50;
+                for (X1 = 0; X1 <= canvas.getWidth(); X1+=2) {
+                    graph_height = ((float) recordAudioData[recordBuffIndex]);
+                   // System.out.println("Graph Height"+graph_height);
                     X2 = X1;
                     Y2 = Y1 - graph_height;
                     canvas.drawLine(X1, Y1, X2, Y2, graphLinesObj);
-                    recordBuffIndex++;
+                    recordBuffIndex+=2;
                 }
                 postInvalidateDelayed(1);
 //                invalidate();
@@ -136,12 +136,12 @@ public class GraphFragment extends Fragment {
     }
 
     //updating audiodata from mainactivity
-    public void updateRecordGraph(short[] data) {
+    public void updateRecordGraph(int[] data) {
         recordAudioData = data;
     }
 
     public void setRecordBufferSize(int size) {
-        recordAudioData = new short[size];
+        recordAudioData = new int[size];
     }
 
     public void updatePlayGraph(short[] data) {
