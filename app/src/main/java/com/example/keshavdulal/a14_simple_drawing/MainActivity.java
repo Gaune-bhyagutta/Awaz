@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                         //RECORD Button
                         Log.d("VIVZ", "Clicked - Record");
                         rec.setText("STOP");
-                        rec.setTextColor(Color.parseColor("#ff0000"));
+                        rec.setTextColor(Color.RED);
                         play.setEnabled(false);
                         playState = 0;
                         isRecording = true;
@@ -109,10 +109,10 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Playing audio", Toast.LENGTH_SHORT).show();
                         play.setText("Stop");
                         play.setTextColor(Color.parseColor("#ff0000"));
-                        rec.setEnabled(false);
                         isPlaying = true;
                         audioPlayClass.execute();
-
+                        rec.setEnabled(false);
+                        rec.setTextColor(Color.parseColor("#808080"));
                     }
 
                     else if (play_btn_count == 1){
@@ -248,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             rec.setText("RECORD");
-            rec.setTextColor(Color.parseColor("#000000"));
+            rec.setTextColor(Color.parseColor("#ffffff"));
             play.setEnabled(true);
             Toast.makeText(getApplicationContext(), "Audio recorded successfully",Toast.LENGTH_SHORT).show();
             rec_btn_count =0;
@@ -325,7 +325,10 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
-            }finally {
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+            finally {
                 if (dataInputStream!=null){
                     try {
                         dataInputStream.close();
@@ -360,6 +363,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Boolean aVoid) {
+            rec.setTextColor(Color.parseColor("#ffffff"));
             play.setText("play");
             play.setTextColor(Color.parseColor("#00b900"));
             rec.setEnabled(true);

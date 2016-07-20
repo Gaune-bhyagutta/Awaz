@@ -11,8 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import java.io.IOException;
-
 public class GraphFragment extends Fragment {
 
     public static float graph_height;
@@ -36,34 +34,24 @@ public class GraphFragment extends Fragment {
 
     public static class myGraphView extends View {
         public myGraphView(Context context) {
-
             super(context);
         }
 
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
-            //BACKGROUND
             canvas.drawColor(Color.LTGRAY);
-            //Paint Object
-            Paint graphBoundaryObj = new Paint();
-            graphBoundaryObj.setColor(Color.parseColor("#880000"));
-            graphBoundaryObj.setStrokeWidth(7);
 
-            float X1 = 0;
-            float Y1 = canvas.getHeight() / 2;
-            float AX = canvas.getWidth();
-            float AY = canvas.getHeight() / 2;
-            float X2, Y2;
-            drawMeshLines(canvas);
-
-            //Midline - Divider
-            //graphBoundaryObj.setStrokeWidth(2);
-            //canvas.drawLine(X1, Y1, AX, AY, graphBoundaryObj);
-            //Vertical graphical line
-            Paint graphLinesObj = new Paint();        //GLO graph-lines-object
-            graphLinesObj.setColor(Color.parseColor("#880000"));
-            graphLinesObj.setStrokeWidth(3);
+            /**Boundary Paint Object*/
+            Paint graphBoundaryPO = new Paint();
+            graphBoundaryPO.setColor(Color.parseColor("#880000"));
+            graphBoundaryPO.setStrokeWidth(7);
+            /**Visualization Paint Object*/
+            Paint graphVisualizationPO = new Paint();
+            graphVisualizationPO.setColor(Color.parseColor("#880000"));
+            graphVisualizationPO.setStrokeWidth(3);
+            /**Midline - Divider*/
+            //canvas.drawLine(X1, Y1, AX, AY, graphBoundaryPO);
 
             if (recordAudioData == null) {
                 int length = mainActivity.getRecordBufferSize();
@@ -74,43 +62,61 @@ public class GraphFragment extends Fragment {
                 length = length/4;
                 playAudioData = new short[length];
             }
-            int recordBuffIndex = (recordAudioData.length / 2 - canvas.getWidth()) / 2;
             //int playBuffIndex = (playAudioData.length / 2 - canvas.getWidth()) / 2;
-            int i =0;
-            float oldX = 0,oldY = canvas.getHeight()/2;
-            float newX,newY;
+
+            /**ACTUAL PLOTS*/
+            drawMeshLines(canvas);
             if (MainActivity.playState() == 1) {
-                for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
-                    graph_height = ((float) playAudioData[i]) / 100;
-                    X2 = X1;
-                    Y2 = Y1 - graph_height;
-
-                    newX = X2;  newY = Y2;
-                    canvas.drawLine(oldX,oldY, newX,newY, graphLinesObj);
-                    oldX = newX;oldY = newY;
-
-                    //playBuffIndex++;
-                    i++;
-                }
-
-                postInvalidateDelayed(1);
-            } else {
-                oldX = 0;
-                oldY = canvas.getHeight()/2;
-                for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
-                    graph_height = ((float) recordAudioData[recordBuffIndex]) / 100;
-                    X2 = X1;
-                    Y2 = Y1 - graph_height;
-//                    canvas.drawLine(X2-1, Y2-1, X2, Y2, graphLinesObj);
-
-                    newX = X2;  newY = Y2;
-                    canvas.drawLine(oldX,oldY, newX,newY, graphLinesObj);
-                    oldX = newX;oldY = newY;
-
-                    recordBuffIndex++;
-                }
-                postInvalidateDelayed(1);
+                plotPlayBackVisualization(canvas, graphVisualizationPO);
             }
+            else {
+                plotRecordingVisualization(canvas, graphVisualizationPO);
+            }
+        }/**End of onDraw*/
+
+        public void plotPlayBackVisualization(Canvas canvas, Paint graphVisualizationPO){
+            int i =0;
+            float newX,newY;
+            float oldX = 0,oldY = canvas.getHeight()/2;
+            float X1 = 0;
+            float Y1 = canvas.getHeight() / 2;
+            float X2, Y2;
+
+            for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
+                graph_height = ((float) playAudioData[i]) / 100;
+                X2 = X1;
+                Y2 = Y1 - graph_height;
+
+                newX = X2;  newY = Y2;
+                canvas.drawLine(oldX,oldY, newX,newY, graphVisualizationPO);
+                oldX = newX;oldY = newY;
+
+                //playBuffIndex++;
+                i++;
+            }
+            postInvalidateDelayed(1);
+        }
+
+        public void plotRecordingVisualization(Canvas canvas, Paint graphVisualizationPO){
+            float newX,newY;
+            float oldX = 0,oldY = canvas.getHeight()/2;
+            int recordBuffIndex = (recordAudioData.length / 2 - canvas.getWidth()) / 2;
+            float X1 = 0;
+            float Y1 = canvas.getHeight() / 2;
+            float X2, Y2;
+
+            for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
+                graph_height = ((float) recordAudioData[recordBuffIndex]) / 100;
+                X2 = X1;
+                Y2 = Y1 - graph_height;
+//              canvas.drawLine(X2-1, Y2-1, X2, Y2, graphLinesObj);
+
+                newX = X2;  newY = Y2;
+                canvas.drawLine(oldX,oldY, newX,newY, graphVisualizationPO);
+                oldX = newX;oldY = newY;
+                recordBuffIndex++;
+            }
+            postInvalidateDelayed(1);
         }
 
         public void drawMeshLines(Canvas canvas) {
@@ -121,6 +127,7 @@ public class GraphFragment extends Fragment {
             int cgw2 = cgw / 2;
             int meshDim = cgh2 / 20;
             int i;
+            /**Mesh Paint Object*/
             Paint meshObj = new Paint();
             meshObj.setColor(Color.parseColor("#808080"));
             meshObj.setStrokeWidth(1);
@@ -144,6 +151,7 @@ public class GraphFragment extends Fragment {
             }
         }
     }
+    //
 
     //updating audiodata from mainactivity
     public void updateRecordGraph(short[] data) {
