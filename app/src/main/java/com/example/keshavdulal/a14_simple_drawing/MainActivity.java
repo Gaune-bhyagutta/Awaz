@@ -50,15 +50,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /**GRAPH FRAGMENT*/
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.graphLayout, graphFragment," ");
         fragmentTransaction.commit();
 
-        FragmentManager fragmentManager1 = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction1 = fragmentManager1.beginTransaction();
-        fragmentTransaction1.add(R.id.listLayout, listFragment," ");
-        fragmentTransaction1.commit();
+        /**LIST FRAGMENT*/
+//        FragmentManager fragmentManager1 = getSupportFragmentManager();
+//        FragmentTransaction fragmentTransaction1 = fragmentManager1.beginTransaction();
+//        fragmentTransaction1.add(R.id.listLayout, listFragment," ");
+//        fragmentTransaction1.commit();
 
         //Fixed - Missing APP Name
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
