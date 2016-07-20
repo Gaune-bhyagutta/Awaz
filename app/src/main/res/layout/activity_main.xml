@@ -5,21 +5,23 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/biggestLayout"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#000">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        app:titleTextColor="@android:color/white"
-        android:background="@color/colorPrimary"
+        app:titleTextColor="#fff"
+        android:background="#000"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="4"
         android:id="@+id/graphLayout"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="#000"
+        android:layout_margin="5dp">
     </LinearLayout>
 
     <LinearLayout
@@ -27,19 +29,30 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:id="@+id/buttonsLayout"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="#fff">
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:id="@+id/rec"
             android:text="@string/record_button_name"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:textColor="#fff"
+            android:background="#000"
+            android:textStyle="italic"
+            android:textSize="20dp"
+            android:layout_margin="3dp"/>
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/play"
-            android:text="@string/play_button_name" />
+            android:text="@string/play_button_name"
+            android:textColor="#fff"
+            android:background="#000"
+            android:textStyle="italic"
+            android:textSize="20dp"
+            android:layout_margin="3dp"/>
     </LinearLayout>
 
     <LinearLayout
@@ -47,7 +60,9 @@
         android:layout_height="0dp"
         android:layout_weight="3"
         android:id="@+id/listLayout"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="#000"
+        android:layout_margin="5dp">
     </LinearLayout>
 
 </LinearLayout>
