@@ -17,6 +17,7 @@ public class GraphFragment extends Fragment {
 
     public static float graph_height;
     static short[] recordAudioData = null;
+    static short[] recordAudioData2 ;
     static short[] playAudioData = null;
     static MainActivity mainActivity = new MainActivity();
 
@@ -29,6 +30,8 @@ public class GraphFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        MainActivity a= new MainActivity();
+       // a.is
         LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.rect);
         linearLayout.addView(new myGraphView(getActivity()));
         // Log.d("VIVZ", "Linear Layout - "+linearLayout.getHeight());
@@ -79,7 +82,7 @@ public class GraphFragment extends Fragment {
             int i =0;
             if (MainActivity.playState() == 1) {
                 for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
-                        graph_height = ((float) playAudioData[i]) / 50;
+                    graph_height = ((float) playAudioData[i]) / 50;
                     X2 = X1;
                     Y2 = Y1 - graph_height;
                     canvas.drawLine(X1, Y1, X2, Y2, graphLinesObj);
@@ -89,10 +92,14 @@ public class GraphFragment extends Fragment {
                 postInvalidateDelayed(1);
 //                invalidate();
             } else {
-                for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
+
+                for (X1 = 0; X1 <= canvas.getWidth(); X1+=2) {
                     graph_height = ((float) recordAudioData[recordBuffIndex]) / 50;
                     X2 = X1;
-                    Y2 = Y1 - graph_height;
+                   //if((int)recordAudioData2[recordBuffIndex]<0)
+                       Y2 = Y1 + graph_height;
+                   // else
+                     //  Y2 = Y1 - graph_height;
                     canvas.drawLine(X1, Y1, X2, Y2, graphLinesObj);
                     recordBuffIndex++;
                 }
@@ -134,8 +141,9 @@ public class GraphFragment extends Fragment {
     }
 
     //updating audiodata from mainactivity
-    public void updateRecordGraph(short[] data) {
+    public void updateRecordGraph(short[] data,short[] data2) {
         recordAudioData = data;
+        recordAudioData2= data2;
     }
 
     public void setRecordBufferSize(int size) {

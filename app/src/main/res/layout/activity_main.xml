@@ -42,6 +42,12 @@
             android:text="@string/play_button_name" />
     </LinearLayout>
 
+    <TextView
+        android:layout_width="269dp"
+        android:layout_height="wrap_content"
+        android:text="Decibel"
+        android:id="@+id/decibel" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="0dp"
