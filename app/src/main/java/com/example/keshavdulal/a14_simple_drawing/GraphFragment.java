@@ -40,15 +40,15 @@ public class GraphFragment extends Fragment {
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
-            canvas.drawColor(Color.LTGRAY);
+            canvas.drawColor(Color.BLACK);
 
             /**Boundary Paint Object*/
-            Paint graphBoundaryPO = new Paint();
-            graphBoundaryPO.setColor(Color.parseColor("#880000"));
-            graphBoundaryPO.setStrokeWidth(7);
+//            Paint graphBoundaryPO = new Paint();
+//            graphBoundaryPO.setColor(Color.parseColor("#880000"));
+//            graphBoundaryPO.setStrokeWidth(7);
             /**Visualization Paint Object*/
             Paint graphVisualizationPO = new Paint();
-            graphVisualizationPO.setColor(Color.parseColor("#880000"));
+            graphVisualizationPO.setColor(Color.parseColor("#ffffff"));
             graphVisualizationPO.setStrokeWidth(3);
             /**Midline - Divider*/
             //canvas.drawLine(X1, Y1, AX, AY, graphBoundaryPO);
@@ -129,7 +129,7 @@ public class GraphFragment extends Fragment {
             int i;
             /**Mesh Paint Object*/
             Paint meshObj = new Paint();
-            meshObj.setColor(Color.parseColor("#808080"));
+            meshObj.setColor(Color.parseColor("#222222"));
             meshObj.setStrokeWidth(1);
 
             //Horizontal Lines - Top Segment

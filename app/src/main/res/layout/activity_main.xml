@@ -28,9 +28,7 @@
         android:layout_weight="4"
         android:id="@+id/graphLayout"
         android:orientation="vertical"
-        android:background="#000"
-        android:layout_marginTop="3dp"
-        android:layout_marginBottom="3dp">
+        android:background="#000">
     </LinearLayout>
 
     <LinearLayout
@@ -51,7 +49,7 @@
             android:background="#000"
             android:textStyle="italic"
             android:textSize="20dp"
-            android:layout_margin="3dp"/>
+            android:layout_margin="2dp"/>
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -62,7 +60,7 @@
             android:background="#000"
             android:textStyle="italic"
             android:textSize="20dp"
-            android:layout_margin="3dp"/>
+            android:layout_margin="2dp"/>
     </LinearLayout>
 
     <!--LinearLayout
