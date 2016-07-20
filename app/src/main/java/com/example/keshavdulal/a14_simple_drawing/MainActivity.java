@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -62,10 +63,12 @@ public class MainActivity extends AppCompatActivity {
         //Fixed - Missing APP Name
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setTitle("Awaj");
+        setTitle("A-W-A-J");
+//        setTitle(Html.fromHtml("AWAJ"));
 
         rec = (Button) findViewById(R.id.rec);
         play = (Button) findViewById(R.id.play);
+        play.setTextColor(Color.parseColor("#808080"));
 
         // Start of Record Button
         if(rec !=null) {
@@ -74,22 +77,25 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v){
                     audioRecordClass = new AudioRecordClass();
                     if (rec_btn_count == 0){
-                        //RECORD Button
-                        Log.d("VIVZ", "Clicked - Record");
-                        rec.setText("STOP");
-                        rec.setTextColor(Color.RED);
-                        play.setEnabled(false);
+                        /**Code to Record Audio*/
                         playState = 0;
                         isRecording = true;
                         audioRecordClass.execute();
-                        Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_SHORT).show();
                         rec_btn_count =1;
+
+                        rec.setText("STOP");
+                        rec.setTextColor(Color.parseColor("#ff0000"));
+                        play.setEnabled(false);
+                        play.setTextColor(Color.parseColor("#808080"));
+                        Log.d("VIVZ", "Clicked - Record");
+                        Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_SHORT).show();
                     }
 
                     else if (rec_btn_count == 1){
                         //STOP Button
                         Log.d("VIVZ", "Clicked - Stop recording");
                         isRecording = false;
+                        play.setTextColor(Color.parseColor("#00ff00"));
                     }
                 }
             });
@@ -102,30 +108,32 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     audioPlayClass = new AudioPlayClass();
                     if(play_btn_count == 0){
-                        //PLAY Buttton
+                        /**Code to Play the Recorded Audio*/
                         playState =1;
                         play_btn_count = 1;
-                        Log.d("VIVZ", "Clicked - play audio");
-                        Toast.makeText(getApplicationContext(), "Playing audio", Toast.LENGTH_SHORT).show();
-                        play.setText("Stop");
-                        play.setTextColor(Color.parseColor("#ff0000"));
                         isPlaying = true;
                         audioPlayClass.execute();
+
+                        play.setText("Stop");
+                        play.setTextColor(Color.parseColor("#ff0000"));
                         rec.setEnabled(false);
                         rec.setTextColor(Color.parseColor("#808080"));
+                        Log.d("VIVZ", "Clicked - play audio");
+                        Toast.makeText(getApplicationContext(), "Playing audio", Toast.LENGTH_SHORT).show();
                     }
 
                     else if (play_btn_count == 1){
-                        //Code to pause/stop the playback
+                        /**Code to pause/stop the playback*/
                         isPlaying = false;
+
                         Log.d("VIVZ", "Clicked - Stop audio");
                         Log.d("VIVZ", "isPlaying="+isPlaying);
                         Toast.makeText(getApplicationContext(), "Stopping audio", Toast.LENGTH_SHORT).show();
                     }
-                }//End of onCLick
+                }/**End of onCLick*/
             });
-        }//End of play Button
-    }// End of onCreate()
+        }
+    }/**End of onCreate()*/
 
     public class AudioRecordClass extends AsyncTask<Void,Void,Void>{
         public Boolean recording = true;
