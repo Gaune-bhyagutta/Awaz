@@ -332,7 +332,7 @@ public class MainActivity extends AppCompatActivity {
                 sucessfull=true;
                 Log.d("VIVZ", "end of playrecord()");
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                e.printStackTrace();/**/
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (Exception e){
