@@ -129,7 +129,7 @@ public class GraphFragment extends Fragment {
             int i;
             /**Mesh Paint Object*/
             Paint meshObj = new Paint();
-            meshObj.setColor(Color.parseColor("#222222"));
+            meshObj.setColor(Color.parseColor("#333333"));
             meshObj.setStrokeWidth(1);
 
             //Horizontal Lines - Top Segment

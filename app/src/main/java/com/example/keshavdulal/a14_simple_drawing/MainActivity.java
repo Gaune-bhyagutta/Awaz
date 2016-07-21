@@ -8,15 +8,16 @@ import android.media.AudioTrack;
 import android.media.MediaRecorder;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedInputStream;
@@ -34,6 +35,7 @@ import java.util.Arrays;
 
 
 public class MainActivity extends AppCompatActivity {
+
     Button rec, play;
     int rec_btn_count = 0, play_btn_count =0;
     GraphFragment graphFragment = new GraphFragment();
@@ -45,11 +47,16 @@ public class MainActivity extends AppCompatActivity {
     public static int playState = 0;
     public static int recordValueToGraph;
     public static int playValueToGraph;
+    static TextView timerTV;
+    final Timer timerStartObj = new Timer(3000000,1000);
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        timerTV = (TextView) findViewById(R.id.timerTV);
         /**GRAPH FRAGMENT*/
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -71,15 +78,16 @@ public class MainActivity extends AppCompatActivity {
         rec = (Button) findViewById(R.id.rec);
         play = (Button) findViewById(R.id.play);
         play.setTextColor(Color.parseColor("#808080"));
+        timerTV.setText("00:00:00");
 
-        // Start of Record Button
+        /**Start of Record Button*/
         if(rec !=null) {
             rec.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v){
                     audioRecordClass = new AudioRecordClass();
                     if (rec_btn_count == 0){
-                        /**Code to Record Audio*/
+                        /**Code to handle click of "RECORD" button*/
                         playState = 0;
                         isRecording = true;
                         audioRecordClass.execute();
@@ -89,21 +97,28 @@ public class MainActivity extends AppCompatActivity {
                         rec.setTextColor(Color.parseColor("#ff0000"));
                         play.setEnabled(false);
                         play.setTextColor(Color.parseColor("#808080"));
-                        Log.d("VIVZ", "Clicked - Record");
                         Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_SHORT).show();
+
+                        timerTV.setText("00:00:00");
+                        timerStartObj.start();
                     }
 
                     else if (rec_btn_count == 1){
-                        //STOP Button
-                        Log.d("VIVZ", "Clicked - Stop recording");
+                        /**Code to handle click of "Rec-STOP" button*/
                         isRecording = false;
                         play.setTextColor(Color.parseColor("#00ff00"));
+
+                        timerStartObj.cancel();
+                        timerStartObj.SS=0L;
+                        timerStartObj.MM=0L;
+                        timerStartObj.HH=0L;
+                        timerStartObj.MS=0L;
                     }
                 }
             });
-        }// End of Record Button
+        }/**End of Record Button*/
 
-        //Start of Record Button
+        /**Start of Play Button*/
         if(play !=null) {
             play.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -122,6 +137,8 @@ public class MainActivity extends AppCompatActivity {
                         rec.setTextColor(Color.parseColor("#808080"));
                         Log.d("VIVZ", "Clicked - play audio");
                         Toast.makeText(getApplicationContext(), "Playing audio", Toast.LENGTH_SHORT).show();
+                        timerTV.setText("00:00:00");
+                        timerStartObj.start();
                     }
 
                     else if (play_btn_count == 1){
@@ -130,9 +147,15 @@ public class MainActivity extends AppCompatActivity {
 
                         Log.d("VIVZ", "Clicked - Stop audio");
                         Log.d("VIVZ", "isPlaying="+isPlaying);
-                        Toast.makeText(getApplicationContext(), "Stopping audio", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(), "Stopping audio", Toast.LENGTH_SHORT).show();
+
+                        timerStartObj.cancel();
+                        timerStartObj.SS=0L;
+                        timerStartObj.MM=0L;
+                        timerStartObj.HH=0L;
+                        timerStartObj.MS=0L;
                     }
-                }/**End of onCLick*/
+                }/**End of Play Button*/
             });
         }
     }/**End of onCreate()*/
@@ -195,8 +218,7 @@ public class MainActivity extends AppCompatActivity {
                         AudioFormat.ENCODING_PCM_16BIT,
                         minBufferSize);
 
-            /** object of the AudioRecord class calls the startRecording() function so that every is ready and the data can be fetch from mic-buffer-our array of short(audioData)
-             */
+            /** object of the AudioRecord class calls the startRecording() function so that every is ready and the data can be fetch from mic-buffer-our array of short(audioData)*/
                 //setting the size of the audioData array for graph fragment
                 graphFragment.setRecordBufferSize(minBufferSize);
                 audioRecord.startRecording();
@@ -204,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
                 // it means while the user have  not pressed the STOP Button
                 while(isRecording){
 
-                /** numberOfShort=minBufferSize/2
+                /**numberOfShort=minBufferSize/2
                    Actually what is happening is the minBufferSize(8 bit Buffer) is being converted to numberOfShort(16 bit buffer)
                    AND THE MOST IMPORTANT PART IS HERE:- The actual value is being store here in the audioData array.
                  */
@@ -260,9 +282,9 @@ public class MainActivity extends AppCompatActivity {
             rec.setText("RECORD");
             rec.setTextColor(Color.parseColor("#ffffff"));
             play.setEnabled(true);
-            Toast.makeText(getApplicationContext(), "Audio recorded successfully",Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(), "Audio recorded successfully",Toast.LENGTH_SHORT).show();
             rec_btn_count =0;
-            Log.d("VIVZ", "onPost execute stop recording");
+//            Log.d("VIVZ", "onPost execute stop recording");
         }
 
         /**public void stopRecord(){
@@ -276,9 +298,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... voids) {
             sucessfull = false;
-            Log.d("VIVZ", "doInBackground");
+//            Log.d("VIVZ", "doInBackground");
             playRecord();
-            Log.d("VIVZ", "end of doInBackground");
+//            Log.d("VIVZ", "end of doInBackground");
             return sucessfull;
         }
 
@@ -287,7 +309,6 @@ public class MainActivity extends AppCompatActivity {
 
             Log.d("VIVZ", "playRecord()");
             File filePcm = new File(Environment.getExternalStorageDirectory(), "Sound.pcm");
-            //File fileHaha = new File(Environment.getExternalStorageDirectory(), "Sound.haha");
             //int shortSizeInBytes = Short.SIZE/Byte.SIZE;
 
             int minBufferSize = getPlayBufferSize();
@@ -323,14 +344,13 @@ public class MainActivity extends AppCompatActivity {
                     audioTrack.write(audioData, 0, audioData.length);
                     graphFragment.updatePlayGraph(audioData);
                 }
-
                 audioTrack.pause();
                 audioTrack.flush();
                 audioTrack.stop();
                 audioTrack.release();
 
                 sucessfull=true;
-                Log.d("VIVZ", "end of playrecord()");
+//                Log.d("VIVZ", "end of playrecord()");
             } catch (FileNotFoundException e) {
                 e.printStackTrace();/**/
             } catch (IOException e) {
@@ -364,11 +384,11 @@ public class MainActivity extends AppCompatActivity {
                     audioTrack.release();
                 }
             }
-        }//End of playRecord()
+        }/**End of playRecord()*/
 
         @Override
         protected void onProgressUpdate(Void... values) {
-            Log.d("VIVZ", "onProgressUpdate");
+//            Log.d("VIVZ", "onProgressUpdate");
         }
 
         @Override
@@ -378,11 +398,16 @@ public class MainActivity extends AppCompatActivity {
             play.setTextColor(Color.parseColor("#00b900"));
             rec.setEnabled(true);
             play_btn_count = 0;
-           Log.d("VIVZ", "onPostExecute");
+//           Log.d("VIVZ", "onPostExecute");
             isPlaying=false;
+            timerStartObj.cancel();
+            timerStartObj.SS=0L;
+            timerStartObj.MM=0L;
+            timerStartObj.HH=0L;
+            timerStartObj.MS=0L;
         }
     }
-        public static int playState(){
+    public static int playState(){
         return playState;
     }
     public int getRecordBufferSize(){
@@ -397,4 +422,4 @@ public class MainActivity extends AppCompatActivity {
                 AudioFormat.ENCODING_PCM_16BIT);
         return minBufferSize;
     }
-}//End of MainActivity
+}/**End of MainActivity*/
