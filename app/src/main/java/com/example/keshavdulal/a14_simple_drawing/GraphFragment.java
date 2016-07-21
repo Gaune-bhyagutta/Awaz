@@ -49,7 +49,7 @@ public class GraphFragment extends Fragment {
             /**Visualization Paint Object*/
             Paint graphVisualizationPO = new Paint();
             graphVisualizationPO.setColor(Color.parseColor("#ffffff"));
-            graphVisualizationPO.setStrokeWidth(3);
+            graphVisualizationPO.setStrokeWidth(1);
             /**Midline - Divider*/
             //canvas.drawLine(X1, Y1, AX, AY, graphBoundaryPO);
 

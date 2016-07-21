@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         /**GRAPH FRAGMENT*/
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.graphLayout, graphFragment," ");
+        fragmentTransaction.add(R.id.graphFragmentLL, graphFragment," ");
         fragmentTransaction.commit();
 
         /**LIST FRAGMENT*/
@@ -62,10 +62,10 @@ public class MainActivity extends AppCompatActivity {
 //        fragmentTransaction1.add(R.id.listLayout, listFragment," ");
 //        fragmentTransaction1.commit();
 
-        //Fixed - Missing APP Name
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        setTitle("A-W-A-J");
+        /**Fixed - Missing APP Name*/
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//        setTitle("A-W-A-J");
 //        setTitle(Html.fromHtml("AWAJ"));
 
         rec = (Button) findViewById(R.id.rec);
