@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Audio Record Parameters
     private static final int AUDIO_SOURCE = MediaRecorder.AudioSource.MIC;
-    private static final int SAMPLE_RATE_IN_HZ = 11025;
+    private static final int SAMPLE_RATE_IN_HZ = 44100;
     private static final int CHANNELS_CONFIGURATION = AudioFormat.CHANNEL_IN_MONO;
     private static final int AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;
 
@@ -237,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
                     int numberOfShort = audioRecord.read(audioData, 0, minBufferSizeInBytes);
 
                     //sending audioData to graph fragment
-                    graphFragment.updateRecordGraph(decibelData,decibelData);
+                    graphFragment.updateRecordGraph(audioData,decibelData);
 
                     //for calculating Decibel Values
                     int totalDecibel=0;
@@ -249,15 +249,24 @@ public class MainActivity extends AppCompatActivity {
 
                         //DECIBEL CALCULATION
                         if(audioData[i]!=0)
-                            decibelData[i]= (short) (-1*(short) (2000.0*Math.log10(Math.abs(audioData[i])/32678.0)));
-                        tempDecibel = decibelData[i]/100;
-                        totalDecibel = totalDecibel + tempDecibel;
+                            decibelData[i]= (short) (-1*(short) (100.0*Math.log10(Math.abs(audioData[i])/32678.0)));
+                        else
+                            decibelData[i]= 0;
+                        tempDecibel = decibelData[i]/5;
+                        totalDecibel = (int) (totalDecibel + Math.pow(tempDecibel,2));
 
                         //For FFT
-                        audioFloats[i] = ((float)Short.reverseBytes(audioData[i])/0x8000);
+                        //audioFloats[i] = ((float)Short.reverseBytes(audioData[i])/0x8000);
                     }
-                    float averageDecibel = (totalDecibel/numberOfShort);
-                    //System.out.println(averageDecibel);
+                    final float averageDecibel = (float) (Math.sqrt(totalDecibel)/numberOfShort);
+                    System.out.println(averageDecibel);
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            if(decibel!=null)
+//                                decibel.setText(Float.toString(averageDecibel));
+//                        }
+//                    }).start();
 //                    if(decibel!=null)
 //                        decibel.setText(Float.toString(averageDecibel));
 
@@ -331,7 +340,6 @@ public class MainActivity extends AppCompatActivity {
 
             int minBufferSize = getPlayBufferSize();
 
-            //int bufferSizeInBytes = (int)(filePcm.length()*2);
             short[] audioData = new short[minBufferSize/4];
 
             InputStream inputStream = null;
