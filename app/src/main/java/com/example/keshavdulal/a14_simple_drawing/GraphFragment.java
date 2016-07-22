@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,9 +82,13 @@ public class GraphFragment extends Fragment {
             float X1 = 0;
             float Y1 = canvas.getHeight() / 2;
             float X2, Y2;
+            double heightNormalizer = (canvas.getHeight()/2)*0.00003051757812;
+//            String.format("%.6f",heightNormalizer);
+//            Log.d("VIVZ", String.valueOf(canvas.getHeight()));
+            Log.d("VIVZ", "heightNormalizer :"+String.format("%.6f",heightNormalizer));
 
             for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
-                graph_height = ((float) playAudioData[i]) / 100;
+                graph_height = (float)( playAudioData[i] * heightNormalizer);
                 X2 = X1;
                 Y2 = Y1 - graph_height;
 
@@ -104,9 +109,10 @@ public class GraphFragment extends Fragment {
             float X1 = 0;
             float Y1 = canvas.getHeight() / 2;
             float X2, Y2;
+            double heightNormalizer = (canvas.getHeight()/2)*0.00003051757812;
 
             for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
-                graph_height = ((float) recordAudioData[recordBuffIndex]) / 100;
+                graph_height = (float) (recordAudioData[recordBuffIndex] * heightNormalizer);
                 X2 = X1;
                 Y2 = Y1 - graph_height;
 //              canvas.drawLine(X2-1, Y2-1, X2, Y2, graphLinesObj);

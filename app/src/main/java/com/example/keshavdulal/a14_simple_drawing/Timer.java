@@ -16,10 +16,7 @@ public class Timer extends CountDownTimer {
 
     @Override
     public void onTick(long l) {
-//        MS++;
-//        if (MS ==100) {MS=0;}
         SS++;
-//        if(MS==25)    {SS++;MS=0;}
         if(SS == 60)    {MM++;SS=0;}
         if(MM == 60)    {HH++;MM=0;}
 
@@ -36,6 +33,5 @@ public class Timer extends CountDownTimer {
     }
 
     @Override
-    public void onFinish() {
-    }
+    public void onFinish() {}
 }

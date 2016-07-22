@@ -162,11 +162,13 @@ public class MainActivity extends AppCompatActivity {
 
     public class AudioRecordClass extends AsyncTask<Void,Void,Void>{
         public Boolean recording = true;
+
         @Override
         protected Void doInBackground(Void... voids) {
             startRecord();
             return null;
         }
+
         public void startRecord(){
             Log.d("VIVZ", "Thread - Start record");
         /**RECORDING PROCESS:
