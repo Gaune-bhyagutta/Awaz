@@ -99,18 +99,18 @@ public class GraphFragment extends Fragment {
                 postInvalidateDelayed(1);
 //                invalidate();
             } else {
-                Y1=0;
+                Y1=canvas.getHeight()/2;
                // int maxDecibel = recordDecibelData.
                 for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
                     graph_height = (recordDecibelData[recordBuffIndex]);
-                    X2 = X1+1;
+                    X2 = X1;
                    if((int)recordAudioData[recordBuffIndex]<0)
-                       Y2 = canvas.getHeight()/2 + (40+graph_height);
+                       Y2 = Y1+ (300-graph_height);
                    else
-                        Y2 = canvas.getHeight()/2 - (40-graph_height);
+                        Y2 = Y1 - (300-graph_height);
 
                     canvas.drawLine(X1, Y1, X2, Y2, graphLinesObj);
-                    Y1=Y2;
+                    //Y1=Y2;
                     recordBuffIndex++;
                 }
                 postInvalidateDelayed(1);

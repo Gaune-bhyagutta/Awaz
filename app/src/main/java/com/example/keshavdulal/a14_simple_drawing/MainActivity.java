@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Audio Record Parameters
     private static final int AUDIO_SOURCE = MediaRecorder.AudioSource.MIC;
-    private static final int SAMPLE_RATE_IN_HZ = 44100;
+    public static final int SAMPLE_RATE_IN_HZ = 44100;
     private static final int CHANNELS_CONFIGURATION = AudioFormat.CHANNEL_IN_MONO;
     private static final int AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;
 
@@ -236,12 +236,15 @@ public class MainActivity extends AppCompatActivity {
                     //Writes short values into short Array and returns numberOfShort
                     int numberOfShort = audioRecord.read(audioData, 0, minBufferSizeInBytes);
 
+                    int[] audioInt = new int[audioData.length];
+                    float[] audioFloat = new float[audioData.length];
                     //sending audioData to graph fragment
                     graphFragment.updateRecordGraph(audioData,decibelData);
 
                     //for calculating Decibel Values
                     int totalDecibel=0;
                     int tempDecibel =0;
+
                     for(int i = 0; i <numberOfShort ; i++){
                         // Store in Sound.Pcm file as short-short-short--
                         //Cannot be Read by Text Editor as the numbers are not stored in any Encoding Format(ex:UTF-8)
@@ -249,17 +252,25 @@ public class MainActivity extends AppCompatActivity {
 
                         //DECIBEL CALCULATION
                         if(audioData[i]!=0)
-                            decibelData[i]= (short) (-1*(short) (100.0*Math.log10(Math.abs(audioData[i])/32678.0)));
+                            decibelData[i]= (short) (-1*(short) (100.0 * Math.log10(Math.abs(audioData[i]/32678.0 ))));
                         else
                             decibelData[i]= 0;
                         tempDecibel = decibelData[i]/5;
-                        totalDecibel = (int) (totalDecibel + Math.pow(tempDecibel,2));
+                        totalDecibel = (int) (totalDecibel + tempDecibel);
 
                         //For FFT
+                        audioInt[i]= audioData[i];
+                        audioFloat[i]= (float)audioInt[i];
                         //audioFloats[i] = ((float)Short.reverseBytes(audioData[i])/0x8000);
                     }
-                    final float averageDecibel = (float) (Math.sqrt(totalDecibel)/numberOfShort);
+                    final float averageDecibel = (float) totalDecibel/numberOfShort;
                     System.out.println(averageDecibel);
+
+                    /** FFT calculation part - WAS HERE **/
+//                    double[] fft = FftOutput.callMainFft(audioFloat);
+//                    float freq = FrequencyValue.getFundamentalFrequency(fft);
+//                    System.out.println("Freq "+ freq);
+
 //                    new Thread(new Runnable() {
 //                        @Override
 //                        public void run() {
@@ -271,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
 //                        decibel.setText(Float.toString(averageDecibel));
 
                 }
-                /** FFT calculation part - WAS HERE **/
+
 
                 audioRecord.stop();//Turns off the MIC,ADC and Others
                 audioRecord.release();
