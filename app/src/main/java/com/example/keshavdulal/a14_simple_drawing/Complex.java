@@ -9,9 +9,9 @@ public class Complex {
     public Complex(float real, float imag) {
         re = real;im = imag;
     }
-    public int abs()   { return (int)Math.sqrt(Math.pow(re,2) + Math.pow(im,2)); }
+    public float abs()   { return (float)Math.sqrt((float)Math.pow(re,2) + (float)Math.pow(im,2)); }
 //    public short phase() { return (short)Math.atan2(im, re); }  // between -pi and pi
-
+//public Complex conjugate(){return new Complex(re,-im);}
     // return a new Complex object whose value is (this + b)
     public Complex plus(Complex b) {
         Complex a = this;             // invoking object
@@ -35,6 +35,9 @@ public class Complex {
         float imag = (a.re * b.im + a.im * b.re);
         return new Complex(real, imag);
     }
+//    public Complex times(float alpha) {
+//        return new Complex((float)alpha*re, (float)alpha*im);
+//    }
     // return the real or imaginary part
 //    public short re() { return re; }
 //    public short im() { return im; }

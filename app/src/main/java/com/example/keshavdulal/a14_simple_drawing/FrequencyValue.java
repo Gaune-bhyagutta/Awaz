@@ -5,23 +5,29 @@ package com.example.keshavdulal.a14_simple_drawing;
  */
 public class FrequencyValue{
 
-//    public static double[] getFrequency (double[] amplitude){
-//        double[] frequency = new double[amplitude.length];
+//    public static float[] getFrequency (float[] amplitude){
+//        float[] frequency = new float[amplitude.length];
 //        for(int i=0;i<amplitude.length;i++){
 //            frequency[i]= 44100*i/(2*amplitude.length);
 //        }
 //        return frequency;
 //    }
-
-    public static double getFundamentalFrequency (double[] amplitude){
-        double fundamentalFrequency;
-        double maxAmplitude=0;
-        for(int i=0;i<amplitude.length;i++){
-            if(maxAmplitude<amplitude[i]){
-                maxAmplitude=amplitude[i];
+    public static float getFundamentalFrequency (float[] amplitude){
+        float fundamentalFrequency;
+        float maxAmplitude=0;
+        float[] sum= new float[amplitude.length];
+        int i_max=0;
+        float x= MainActivity.samplingRate/(amplitude.length*2);
+        for(int i=0;i<amplitude.length/8;i++){
+            sum[i] = amplitude[i]*amplitude[2*i]*amplitude[3*i];
+            if(sum[i]>maxAmplitude){
+                maxAmplitude=sum[i];
+                i_max=i;
             }
         }
-        fundamentalFrequency= maxAmplitude* (MainActivity.samplingRate/(2*amplitude.length));
+
+        fundamentalFrequency= i_max*x;
+
         return fundamentalFrequency;
     }
 }

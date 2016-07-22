@@ -2,6 +2,8 @@ package com.example.keshavdulal.a14_simple_drawing;
 
 //
 
+import java.util.Arrays;
+
 /**
  * Radix-2 FftOutput implementation
  Here the input to the fft is a real number and output is complex number
@@ -72,17 +74,22 @@ public class FftOutput {
         return y;
     }
 
-    public static int[] absoluteValue(Complex[] complexInput){//Calculating the absolute value for the complex number array
+    public static float[] absoluteValue(Complex[] complexInput){//Calculating the absolute value for the complex number array
         int l = complexInput.length/2;
-        int[] absoluteValue = new int[l];
+        float[] absoluteValue = new float[l];
         for(int i=0; i<l;i++){
-            absoluteValue[i]= complexInput[i].abs();//calling abs method of Complex class
-            if(absoluteValue[i]<0) {
-                System.out.println(" absolute value " + absoluteValue[i]+" "+ complexInput[i].toString());
-            }
+            absoluteValue[i]= (complexInput[i].abs());//calling abs method of Complex class
         }
         return absoluteValue;
     }
+
+    public static void windowing(float[] input){
+        float w[]=new float[input.length];
+        for(int i=0; i<input.length; i++){
+            w[i] = (float)( 0.54 - 0.46*(Math.cos( 2*Math.PI*i/(input.length-1) ) ));
+            input[i]*=w[i];}
+    }
+
 
 //    public static void print(Complex[] complexInput) {// for printing the complex number
 //
@@ -93,10 +100,11 @@ public class FftOutput {
 //        System.out.println();
 //    }
 
-    public static int[] callMainFft(float[] input){
+    public static float[] callMainFft(float[] input){
+        windowing(input);
         Complex[] fftInput = makePowerOf2(input);// for zero padding if it is not a power of 2
         Complex[] fftOutput = fft(fftInput);
-        int[] absValue = absoluteValue(fftOutput);
+        float[] absValue = absoluteValue(fftOutput);
         return absValue;
     }
 }

@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
                 // The array short that will store the Audio data that we get From the mic.
                 short[] audioData = new short[minBufferSize];
                 float[] audioFloats= new float[audioData.length];
-
+                int [] audioInt = new int[audioData.length];
                 //Create a Object of the AudioRecord class with the required Samplig Frequency(44100 hz)
                 audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
                         samplingRate,
@@ -202,17 +202,23 @@ public class MainActivity extends AppCompatActivity {
 //                    Log.d("VIVZzz",Arrays.toString(fftOuput));
                     //System.out.println(" length of fftoutput "+l);;
                     for(int i = 0; i < numberOfShort; i++){
-                        //dataOutputStream.writeShort(audioData[i]); // Store in Sound.haha file as short-short-short--
-                        dataOutputStream.writeShort(audioData[i]);
-                        audioFloats[i] = ((float)Short.reverseBytes(audioData[i])/0x8000);
+                        dataOutputStream.writeShort(audioData[i]); // Store in Sound.haha file as short-short-short--
+                        audioInt[i]=audioData[i];
+                        audioFloats[i] = (float)audioInt[i];
                     }
-                    int []  fftOutput= FftOutput.callMainFft(audioFloats);
+                    System.out.println("INPUT"+Arrays.toString(audioInt));
+                    float[] fftOutput= FftOutput.callMainFft(audioFloats);
                     graphFragment.updateRecordGraph(fftOutput);
+                    System.out.println("FFT OUTPUT: "+Arrays.toString(fftOutput));
+                    float frequency = FrequencyValue.getFundamentalFrequency(fftOutput);
+                    Log.d("FREQUENCY", " "+frequency);
+//                    float[] Frequency=FrequencyValue.getFrequency(fftOutput);
+//                    System.out.println(Frequency);
+//                    System.out.println("Audio Data: "+ Arrays.toString(audioData));
+//                    System.out.println("Audio Floats: "+ Arrays.toString(audioFloats));
                 }
-                /** FFT calculation part - WAS HERE **/
-                audioRecord.stop();
+               audioRecord.stop();
 
-                System.out.println("Audio Data: "+ Arrays.toString(audioData));
             } catch (IOException e){
                 e.printStackTrace();
             }finally {
