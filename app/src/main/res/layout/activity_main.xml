@@ -105,15 +105,21 @@
             android:id="@+id/notesTV"
             android:layout_weight="1"
             android:background="#000"
-            android:textColor="#fff"
-<<<<<<< HEAD
-            android:layout_marginStart="2dp"
-=======
->>>>>>> Timer
             android:layout_marginEnd="2dp"
+            android:textColor="#fff"
             android:gravity="center"
             android:textSize="20sp"
             android:textStyle="bold"/>
+        <!--TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#000"
+            android:layout_marginEnd="2dp"
+            android:textColor="#fff"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textStyle="bold"/-->
 
         <TextView
             android:layout_width="0dp"
@@ -122,10 +128,6 @@
             android:layout_weight="1"
             android:background="#000"
             android:textColor="#fff"
-<<<<<<< HEAD
-            android:layout_marginEnd="2dp"
-=======
->>>>>>> Timer
             android:gravity="center"
             android:textSize="20sp"
             android:textStyle="bold"/>

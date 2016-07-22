@@ -85,7 +85,7 @@ public class GraphFragment extends Fragment {
             double heightNormalizer = (canvas.getHeight()/2)*0.00003051757812;
 //            String.format("%.6f",heightNormalizer);
 //            Log.d("VIVZ", String.valueOf(canvas.getHeight()));
-            Log.d("VIVZ", "heightNormalizer :"+String.format("%.6f",heightNormalizer));
+//            Log.d("VIVZ", "heightNormalizer :"+String.format("%.6f",heightNormalizer));
 
             for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
                 graph_height = (float)( playAudioData[i] * heightNormalizer);
@@ -99,7 +99,7 @@ public class GraphFragment extends Fragment {
                 //playBuffIndex++;
                 i++;
             }
-            postInvalidateDelayed(1);
+            postInvalidateDelayed(50);
         }
 
         public void plotRecordingVisualization(Canvas canvas, Paint graphVisualizationPO){
@@ -122,7 +122,7 @@ public class GraphFragment extends Fragment {
                 oldX = newX;oldY = newY;
                 recordBuffIndex++;
             }
-            postInvalidateDelayed(1);
+            postInvalidateDelayed(50);
         }
 
         public void drawMeshLines(Canvas canvas) {
