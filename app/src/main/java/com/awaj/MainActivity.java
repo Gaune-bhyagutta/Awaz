@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     public static int playValueToGraph;
     static TextView timerTV;
     final Timer timerStartObj = new Timer(3000000,1000);
+    static ImageView recLogo;
 
 
     @Override
@@ -68,17 +70,17 @@ public class MainActivity extends AppCompatActivity {
 //        FragmentTransaction fragmentTransaction1 = fragmentManager1.beginTransaction();
 //        fragmentTransaction1.add(R.id.listLayout, listFragment," ");
 //        fragmentTransaction1.commit();
-
         /**Fixed - Missing APP Name*/
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 //        setTitle("A-W-A-J");
 //        setTitle(Html.fromHtml("AWAJ"));
-
         rec = (Button) findViewById(R.id.rec);
         play = (Button) findViewById(R.id.play);
         play.setTextColor(Color.parseColor("#808080"));
         timerTV.setText("00:00:00");
+        recLogo = (ImageView)findViewById(R.id.reclogo);
+        recLogo.setVisibility(View.GONE);
 
         /**Start of Record Button*/
         if(rec !=null) {
@@ -99,14 +101,18 @@ public class MainActivity extends AppCompatActivity {
                         play.setTextColor(Color.parseColor("#808080"));
                         Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_SHORT).show();
 
+                        recLogo.setVisibility(View.VISIBLE);
+
                         timerTV.setText("00:00:00");
                         timerStartObj.start();
+
                     }
 
                     else if (rec_btn_count == 1){
                         /**Code to handle click of "Rec-STOP" button*/
                         isRecording = false;
                         play.setTextColor(Color.parseColor("#00ff00"));
+                        recLogo.setVisibility(View.GONE);
 
                         timerStartObj.cancel();
                         timerStartObj.SS=0L;
