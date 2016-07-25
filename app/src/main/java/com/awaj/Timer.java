@@ -31,7 +31,11 @@ public class Timer extends CountDownTimer {
 
         MainActivity.timerTV.setText(displayTime);
     }
-
     @Override
-    public void onFinish() {}
+    public void onFinish() {
+        MS = 00L;
+        SS = 00L;
+        MM = 00L;
+        HH = 00L;
+    }
 }

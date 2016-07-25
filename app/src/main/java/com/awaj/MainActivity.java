@@ -1,5 +1,6 @@
 package com.awaj;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioFormat;
 import android.media.AudioManager;
@@ -19,8 +20,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.awaj.R;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
@@ -38,9 +37,10 @@ import java.util.Arrays;
 public class MainActivity extends AppCompatActivity {
 
     Button rec, play;
+    ImageView homeIV,listIV,settingsIV;
     int rec_btn_count = 0, play_btn_count =0;
     GraphFragment graphFragment = new GraphFragment();
-    ListFragment listFragment = new ListFragment();
+//    ListFragment listFragment = new ListFragment();
     AudioRecordClass audioRecordClass;
     AudioPlayClass audioPlayClass;
     Boolean isRecording = false;
@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        timerTV = (TextView) findViewById(R.id.timerTV);
         /**GRAPH FRAGMENT*/
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -75,12 +74,25 @@ public class MainActivity extends AppCompatActivity {
 //        setSupportActionBar(toolbar);
 //        setTitle("A-W-A-J");
 //        setTitle(Html.fromHtml("AWAJ"));
+        timerTV = (TextView) findViewById(R.id.timerTV);
         rec = (Button) findViewById(R.id.rec);
         play = (Button) findViewById(R.id.play);
         play.setTextColor(Color.parseColor("#808080"));
         timerTV.setText("00:00:00");
         recLogo = (ImageView)findViewById(R.id.reclogo);
         recLogo.setVisibility(View.GONE);
+
+        homeIV = (ImageView) findViewById(R.id.home);
+        listIV = (ImageView) findViewById(R.id.list);
+
+        /**HOME - LIST - SETTING Button*/
+        listIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent toListTabs = new Intent(MainActivity.this, ListTabs.class);
+                startActivity(toListTabs);
+            }
+        });
 
         /**Start of Record Button*/
         if(rec !=null) {

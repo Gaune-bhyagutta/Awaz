@@ -1,5 +1,6 @@
 package com.awaj;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,17 +34,18 @@ public class ListFragment extends android.support.v4.app.Fragment {
         arrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, nameList);
         // Set The Adapter
         list.setAdapter(arrayAdapter);
+        list.setBackgroundColor(Color.parseColor("#888888"));
     }//End of onActivityCreated
 
     void getNames() {
-        nameList.add("lorem ipsum");
-        nameList.add("lorem ipsum");
-        nameList.add("lorem ipsum");
-        nameList.add("lorem ipsum");
-        nameList.add("lorem ipsum");
-        nameList.add("lorem ipsum");
-        nameList.add("lorem ipsum");
-        nameList.add("lorem ipsum");
+        nameList.add("<Stored Files>");
+//        nameList.add("lorem ipsum");
+//        nameList.add("lorem ipsum");
+//        nameList.add("lorem ipsum");
+//        nameList.add("lorem ipsum");
+//        nameList.add("lorem ipsum");
+//        nameList.add("lorem ipsum");
+//        nameList.add("lorem ipsum");
     }
 }
 /**End of ListFragment Class*/
