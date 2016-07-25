@@ -1,10 +1,7 @@
-package com.example.keshavdulal.a14_simple_drawing;
+package com.awaj;
 
-//
-
-/**
- * Radix-2 FftOutput implementation
- Here the input to the fft is a real number and output is complex number
+/**Radix-2 FftOutput implementation
+ * Here the input to the fft is a real number and output is complex number
  */
 
 public class FftOutput {

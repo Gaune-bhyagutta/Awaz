@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "com.example.keshavdulal.a14_simple_drawing"
+        applicationId "com.awaj"
         minSdkVersion 19
         targetSdkVersion 24
         versionCode 1

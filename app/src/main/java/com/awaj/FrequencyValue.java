@@ -1,8 +1,5 @@
-package com.example.keshavdulal.a14_simple_drawing;
+package com.awaj;
 
-/**
- * Created by imas on 7/6/16.
- */
 public class FrequencyValue{
 
     public static double[] getFrequency (double[] amplitude){
@@ -12,7 +9,4 @@ public class FrequencyValue{
         }
         return frequency;
     }
-
-
-
 }

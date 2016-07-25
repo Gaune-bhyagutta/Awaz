@@ -1,8 +1,5 @@
-package com.example.keshavdulal.a14_simple_drawing;
+package com.awaj;
 
-/**
- * Created by imas on 7/1/16.
- */
 public class Complex {
     private final double re;
     private final double im;
@@ -18,7 +15,6 @@ public class Complex {
         if (im <  0) return re + " - " + (-im) + "i";
         return re + " + " + im + "i";
     }
-
 
     public double abs()   { return Math.sqrt(re*re + im*im); }
     public double phase() { return Math.atan2(im, re); }  // between -pi and pi
@@ -46,7 +42,6 @@ public class Complex {
         double imag = a.re * b.im + a.im * b.re;
         return new Complex(real, imag);
     }
-
 
     // return the real or imaginary part
     public double re() { return re; }

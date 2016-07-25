@@ -1,4 +1,4 @@
-package com.example.keshavdulal.a14_simple_drawing;
+package com.awaj;
 
 import android.graphics.Color;
 import android.media.AudioFormat;
@@ -8,17 +8,17 @@ import android.media.AudioTrack;
 import android.media.MediaRecorder;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Environment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.awaj.R;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

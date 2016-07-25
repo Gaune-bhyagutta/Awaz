@@ -1,4 +1,4 @@
-package com.example.keshavdulal.a14_simple_drawing;
+package com.awaj;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,6 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.awaj.R;
+
 import java.util.ArrayList;
 
 public class ListFragment extends android.support.v4.app.Fragment {

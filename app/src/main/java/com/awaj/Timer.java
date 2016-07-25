@@ -1,4 +1,4 @@
-package com.example.keshavdulal.a14_simple_drawing;
+package com.awaj;
 import android.os.CountDownTimer;
 
 /***Created by keshavdulal on 21/07/16*/

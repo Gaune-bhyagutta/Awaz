@@ -82,7 +82,7 @@
             android:id="@+id/timerTV"
             android:background="#000"
             android:textColor="#fff"
-            android:textSize="17sp"
+            android:textSize="15sp"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="2dp"
             android:gravity="center"
