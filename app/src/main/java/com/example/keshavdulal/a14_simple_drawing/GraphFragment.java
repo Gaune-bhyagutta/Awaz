@@ -91,7 +91,7 @@ public class GraphFragment extends Fragment {
 //                invalidate();
             } else {
                 for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
-                    graph_height = ((float) recordAudioData[recordBuffIndex])/2500;
+                    graph_height = ((float) recordAudioData[recordBuffIndex])/1000;
                    // System.out.println("Graph Height"+graph_height);
                     X2 = X1;
                     Y2 = Y1 - graph_height;
