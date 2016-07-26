@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         play.setTextColor(Color.parseColor("#808080"));
         timerTV.setText("00:00:00");
         recLogo = (ImageView)findViewById(R.id.reclogo);
-        recLogo.setVisibility(View.GONE);
+        recLogo.setVisibility(View.INVISIBLE);
 
         homeIV = (ImageView) findViewById(R.id.home);
         listIV = (ImageView) findViewById(R.id.list);
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                         /**Code to handle click of "Rec-STOP" button*/
                         isRecording = false;
                         play.setTextColor(Color.parseColor("#00ff00"));
-                        recLogo.setVisibility(View.GONE);
+                        recLogo.setVisibility(View.INVISIBLE);
 
                         timerStartObj.cancel();
                         timerStartObj.SS=0L;
