@@ -11,7 +11,88 @@ import java.util.Arrays;
 
 public class FftOutput {
 
-    public static Complex[] makePowerOf2(float[] input) {
+    int n, m;
+    // Lookup tables.  Only need to recompute when size of FFT changes.
+    float[] cos;
+    float[] sin;
+    float[] window;
+    public FftOutput(int n) {
+        this.n = n;
+        this.m = (int)(Math.log(n) / Math.log(2));
+        // Make sure n is a power of 2
+        if(n != (1<<m))
+            throw new RuntimeException("FFT length must be power of 2");
+        // precompute tables
+        cos = new float[n/2];
+        sin = new float[n/2];
+        for(int i=0; i<n/2; i++) {
+            cos[i] = (float)Math.cos(-2*Math.PI*i/n);
+            sin[i] = (float)Math.sin(-2*Math.PI*i/n);
+        }
+        makeWindow();
+    }
+
+    protected void makeWindow() {
+        // Make a blackman window:
+        // w(n)=0.42-0.5cos{(2*PI*n)/(N-1)}+0.08cos{(4*PI*n)/(N-1)};
+        window = new float[n];
+        for(int i = 0; i < window.length; i++)
+            window[i] = (float)(0.42 - 0.5 * Math.cos(2*Math.PI*i/(n-1))+ 0.08 * Math.cos(4*Math.PI*i/(n-1)));
+    }
+    public float[] getWindow() {
+        return window;
+    }
+
+    public void fft(float[] x, float[] y)
+    {
+        int i,j,k,n1,n2,a;
+        float c,s,e,t1,t2;
+
+        // Bit-reverse
+        j = 0;
+        n2 = n/2;
+        for (i=1; i < n - 1; i++) {
+            n1 = n2;
+            while ( j >= n1 ) {
+                j = j - n1;
+                n1 = n1/2;
+            }
+            j = j + n1;
+            if (i < j) {
+                t1 = x[i];
+                x[i] = x[j];
+                x[j] = t1;
+                t1 = y[i];
+                y[i] = y[j];
+                y[j] = t1;
+            }
+        }
+        // FFT
+        n1 = 0;
+        n2 = 1;
+        for (i=0; i < m; i++) {
+            n1 = n2;
+            n2 = n2 + n2;
+            a = 0;
+
+            for (j=0; j < n1; j++) {
+                c = cos[a];
+                s = sin[a];
+                a +=  1 << (m-i-1);
+
+                for (k=j; k < n; k=k+n2) {
+                    t1 = c*x[k+n1] - s*y[k+n1];
+                    t2 = s*x[k+n1] + c*y[k+n1];
+                    x[k+n1] = x[k] - t1;
+                    y[k+n1] = y[k] - t2;
+                    x[k] = x[k] + t1;
+                    y[k] = y[k] + t2;
+                }
+            }
+        }
+    }
+
+    public static float[] makePowerOf2(float[] input) {
         int length =input.length;
         int N=length;
         // checking if length is a power of 2 or not
@@ -25,84 +106,76 @@ public class FftOutput {
             while(newLength < length)//calculating the value of new length to a closest value i.e the power of 2
             {newLength*=2;}
 
-            Complex[] x = new Complex[newLength];// making an array of newLength
+            float[] x = new float[newLength];// making an array of newLength
 
             for (int i = 0; i < length; i++) {
-                x[i] =new Complex(input[i],0);// till the value of previous length the input is converted to complex number
+                x[i] =input[i];// till the value of previous length the input is converted to complex number
             }
 
             for (int i =length ; i < newLength; i++) {// zero padding till the number is power of 2 (from previous length to new length
-                x[i] =new Complex(0,0);
+                x[i] =0;
             }
             return x;
         }
         else{// when length is already a power of 2 where flag =0
-            Complex[] x = new Complex[length];
+            float[] x = new float[length];
             for (int i = 0; i < length; i++) {
-                x[i] =new Complex(input[i],0);
+                x[i] =input[i];
             }
             return x;
         }
     }
 
-    public static Complex[] fft(Complex[] complexInput) {
-        int length = complexInput.length;
-        if (length == 1) return new Complex[] { complexInput[0] };
-        // Splitting the odd and even terms for calculation of Fft
-        // fft of even terms
-        Complex[] even = new Complex[length/2];
-        for (int i = 0; i < length/2; i++) {
-            even[i] = complexInput[2*i];
-        }
-        Complex[] fftEven = fft(even);// recursively calling the method fft to calculate the fft value for the even terms
-
-        // fft of odd terms
-        Complex[] odd  = even;
-        for (int i = 0; i < length/2; i++) {
-            odd[i] = complexInput[2*i + 1];
-        }
-        Complex[] fftOdd = fft(odd);//recursively calling method fft to calculate the fft value for odd terms
-
-        // combine
-        Complex[] y = new Complex[length];
-        for (int i = 0; i < length/2; i++) {
-            double kn = -2 * i * Math.PI / length;
-            Complex twiddleFactor = new Complex((float)Math.cos(kn), (float)Math.sin(kn));// calculating twiddle factor Wn^k= e^(j*2*pi*k/N) = cos(2*pi*k/N)-i*sin(2*pi*k/N)
-            y[i] = fftEven[i].plus(twiddleFactor.times(fftOdd[i]));
-            y[i + length/2] = fftEven[i].minus(twiddleFactor.times(fftOdd[i]));
-        }
-        return y;
-    }
-
-    public static float[] absoluteValue(Complex[] complexInput){//Calculating the absolute value for the complex number array
-        int l = complexInput.length;
-        float[] absoluteValue = new float[l];
-        for(int i=0; i<l;i++){
-            absoluteValue[i]= (complexInput[i].abs());//calling abs method of Complex class
-        }
-        return absoluteValue;
-    }
-
-    public static void windowing(float[] input){//Hamming Window
+    public static void windowing(float[] input){
         float w[]=new float[input.length];
         for(int i=0; i<input.length; i++){
-            w[i] = (float)( 0.54 - 0.46*(Math.cos( 2*Math.PI*i/(input.length-1) ) ));
-            input[i]*=w[i];}
+            w[i] =0;}
+        for(int i=0; i<input.length; i++){
+            if(i>=5&&i<2000) {
+                w[i]=1;
+                //w[i] = (float)( 0.54 - 0.46*(Math.cos( 2*Math.PI*i/(input.length) ) ));
+                input[i] *= w[i];
+                //w[i] = (float)(0.5*(1 - (Math.cos( 2*Math.PI*i/(input.length-1) ) )));
+            }
+            else{
+                w[i]=0;
+                input[i]*=w[i];
+            }
+        }
+
+        for(int i=0;i<input.length;i++){
+            input[i]*=w[i];
+        }
     }
 
-//    public static void print(Complex[] complexInput) {// for printing the complex number
-//
-//        for (int i = 0; i < complexInput.length; i++) {
-//            String toString= complexInput[i].toString();//calling toString method of Complex class to print the complex number
-//            System.out.print(toString+" , ");
-//        }
-//        System.out.println();
-//    }
-public static float[] callMainFft(float[] input){
-        Complex[] fftInput = makePowerOf2(input);// for zero padding if it is not a power of 2
-        Complex[] fftOutput = fft(fftInput);
-        float[] absValue = absoluteValue(fftOutput);
-        //windowing(absValue);
-        return absValue;
+    public float[] absoluteValue(float[] re, float[] im){
+        float[] abs = new float[re.length/2];
+        int i, j=re.length/2;
+        for(i=0;i<re.length/2;i++){
+            abs[i]=(float)(Math.sqrt(Math.pow(re[i],2)+Math.pow(im[i],2)));
+//            j--;
+        }
+        return abs;
+    }
+
+    public static void normalize(float[] input){
+        for(int i=0;i<input.length;i++){
+            input[i]=(float)(input[i]/32768.0);
+        }
+
+    }
+    public static float[] callMainFft(float[] input){
+        //normalize(input);
+        float[] fftInputReal = makePowerOf2(input);// for zero padding if it is not a power of 2
+        float[] fftInputImag = new float[fftInputReal.length];
+        for(int i=0;i<fftInputReal.length;i++){
+            fftInputImag[i]=0;
+        }
+        FftOutput fft = new FftOutput(fftInputReal.length);
+        //float[] window = fft.getWindow();
+        fft.fft(fftInputReal, fftInputImag);
+        float[] fftOutput= fft.absoluteValue(fftInputReal,fftInputImag);
+        //windowing(fftOutput);
+        return fftOutput;
     }
 }

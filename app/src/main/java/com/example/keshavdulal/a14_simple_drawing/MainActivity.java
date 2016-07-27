@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     Boolean isPlaying = false;
     public static int playState = 0;
     public static int samplingRate=44100;
+    public static int noOfSamples=4096;
+    public static float resolution=samplingRate/noOfSamples;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
