@@ -1,5 +1,6 @@
 package com.example.keshavdulal.a14_simple_drawing;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.media.AudioFormat;
 import android.media.AudioManager;
@@ -46,11 +47,18 @@ public class MainActivity extends AppCompatActivity {
     public static int playState = 0;
     public static int recordValueToGraph;
     public static int playValueToGraph;
+
+    DatabaseAdapter databaseAdapter;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //database part
         Stetho.initializeWithDefaults(this);
+        databaseAdapter = new DatabaseAdapter(this);
+
 
         setContentView(R.layout.activity_main);
 
