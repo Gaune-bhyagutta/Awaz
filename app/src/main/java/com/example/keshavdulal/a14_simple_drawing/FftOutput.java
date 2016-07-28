@@ -19,9 +19,6 @@ public class FftOutput {
     public FftOutput(int n) {
         this.n = n;
         this.m = (int)(Math.log(n) / Math.log(2));
-        // Make sure n is a power of 2
-        if(n != (1<<m))
-            throw new RuntimeException("FFT length must be power of 2");
         // precompute tables
         cos = new float[n/2];
         sin = new float[n/2];
@@ -131,16 +128,14 @@ public class FftOutput {
         for(int i=0; i<input.length; i++){
             w[i] =0;}
         for(int i=0; i<input.length; i++){
-            if(i>=5&&i<2000) {
+            if(i>=5&&i<800) {
                 w[i]=1;
                 //w[i] = (float)( 0.54 - 0.46*(Math.cos( 2*Math.PI*i/(input.length) ) ));
-                input[i] *= w[i];
                 //w[i] = (float)(0.5*(1 - (Math.cos( 2*Math.PI*i/(input.length-1) ) )));
             }
             else{
                 w[i]=0;
-                input[i]*=w[i];
-            }
+                }
         }
 
         for(int i=0;i<input.length;i++){
@@ -153,7 +148,7 @@ public class FftOutput {
         int i, j=re.length/2;
         for(i=0;i<re.length/2;i++){
             abs[i]=(float)(Math.sqrt(Math.pow(re[i],2)+Math.pow(im[i],2)));
-//            j--;
+            //j--;
         }
         return abs;
     }
@@ -165,8 +160,8 @@ public class FftOutput {
 
     }
     public static float[] callMainFft(float[] input){
-        //normalize(input);
-        float[] fftInputReal = makePowerOf2(input);// for zero padding if it is not a power of 2
+        normalize(input);
+       float[] fftInputReal = makePowerOf2(input);// for zero padding if it is not a power of 2
         float[] fftInputImag = new float[fftInputReal.length];
         for(int i=0;i<fftInputReal.length;i++){
             fftInputImag[i]=0;

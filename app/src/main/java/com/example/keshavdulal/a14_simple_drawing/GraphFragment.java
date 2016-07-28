@@ -47,7 +47,6 @@ public class GraphFragment extends Fragment {
             Paint graphBoundaryObj = new Paint();//Paint Object
             graphBoundaryObj.setColor(Color.parseColor("#880000"));
             graphBoundaryObj.setStrokeWidth(7);
-
             float X1 = 0;
             float Y1 = canvas.getHeight() ;
             float AX = canvas.getWidth();
@@ -72,14 +71,15 @@ public class GraphFragment extends Fragment {
                 length = length/4;
                 playAudioData = new short[length];
             }
+            double heightNormalizer = ((canvas.getHeight()/2)*1/(100));
             //int recordBuffIndex = (recordAudioData.length/2 - canvas.getWidth()) / 2;
             int recordBuffIndex= 1;
-            int playBuffIndex = (playAudioData.length / 2 - canvas.getWidth()) / 2;
+            int playBuffIndex = (playAudioData.length / 2 - canvas.getWidth())/2;
 
             if (MainActivity.playState() == 1) {
                 for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
                     try {
-                        graph_height = ((float) playAudioData[playBuffIndex]) / 50;
+                        graph_height = (float)(( playAudioData[playBuffIndex]) *heightNormalizer);
                     }
                     catch (NullPointerException e){}
                     X2 = X1;
@@ -91,10 +91,10 @@ public class GraphFragment extends Fragment {
 //                invalidate();
             } else {
                 for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
-                    graph_height = ((float) recordAudioData[recordBuffIndex])/1000;
+                    graph_height =(float) (( recordAudioData[recordBuffIndex])*heightNormalizer);
                    // System.out.println("Graph Height"+graph_height);
                     X2 = X1;
-                    Y2 = Y1 - graph_height;
+                    Y2 = Y1-graph_height;
                     canvas.drawLine(X1, Y1, X2, Y2, graphLinesObj);
                     recordBuffIndex+=1;
                 }
