@@ -147,7 +147,7 @@ public class FftOutput {
         float[] abs = new float[re.length/2];
         int i, j=re.length/2;
         for(i=0;i<re.length/2;i++){
-            abs[i]=(float)(Math.sqrt(Math.pow(re[i],2)+Math.pow(im[i],2)));
+            abs[i]=(float)(Math.sqrt(Math.pow(re[i+1],2)+Math.pow(im[i+1],2)));
             //j--;
         }
         return abs;
@@ -170,7 +170,7 @@ public class FftOutput {
         //float[] window = fft.getWindow();
         fft.fft(fftInputReal, fftInputImag);
         float[] fftOutput= fft.absoluteValue(fftInputReal,fftInputImag);
-        //windowing(fftOutput);
+        windowing(fftOutput);
         return fftOutput;
     }
 }

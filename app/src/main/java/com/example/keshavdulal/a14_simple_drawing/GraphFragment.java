@@ -71,7 +71,7 @@ public class GraphFragment extends Fragment {
                 length = length/4;
                 playAudioData = new short[length];
             }
-            double heightNormalizer = ((canvas.getHeight()/2)*1/(100));
+            double heightNormalizer = ((canvas.getHeight()/2)*1/(200));
             //int recordBuffIndex = (recordAudioData.length/2 - canvas.getWidth()) / 2;
             int recordBuffIndex= 1;
             int playBuffIndex = (playAudioData.length / 2 - canvas.getWidth())/2;
