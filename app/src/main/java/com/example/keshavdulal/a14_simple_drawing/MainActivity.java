@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
 //            11.for that purpose , we can use the array of short datatype
 //            12. Another thing is when we try to open the file via a text editor (notepad /notepad++ used by us) we cannot read
 //                the actual data(short datatype) that we have store in that file.Because we have stored 16bit-16bit-16bit----
-//                and most of the text editor use UTF-8 encoding which is 32-bit.
+//                and most of the text editor use UTF-8 egit branchncoding which is 32-bit.
 //            13.Thus to read the data we have to store it using int datatypte . int-int-int
 //            14.And in this case we have to name the extension as (.txt).But when we store and fetch the data ourselves to mic and speaker
 //                respectively, the extension does not matter at all . To show that I have created Three File
