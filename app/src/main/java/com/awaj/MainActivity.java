@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
+import java.util.StringTokenizer;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -52,11 +53,14 @@ public class MainActivity extends AppCompatActivity {
     final Timer timerStartObj = new Timer(3000000,1000);
     static ImageView recLogo;
 
+    TextView decibel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        decibel = (TextView) findViewById(R.id.decibel);
 
         /**GRAPH FRAGMENT*/
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -178,16 +182,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }/**End of onCreate()*/
 
-    public class AudioRecordClass extends AsyncTask<Void,Void,Void>{
+    public class AudioRecordClass extends AsyncTask<Void,Float,Void>{
         public Boolean recording = true;
 
         @Override
         protected Void doInBackground(Void... voids) {
             startRecord();
+            //publishProgress();
             return null;
         }
 
+        @Override
+        protected void onProgressUpdate(Float... values) {
+            //super.onProgressUpdate(values);
+            decibel.setText(String.valueOf(values[0]));
+        }
+
         public void startRecord(){
+
             Log.d("VIVZ", "Thread - Start record");
         /**RECORDING PROCESS:
             1.Create a file to store that data values that comes from the mic.
@@ -254,12 +266,20 @@ public class MainActivity extends AppCompatActivity {
                     //sending audioData to graph fragment
                     graphFragment.updateRecordGraph(audioData);
 
+                    float decibel =0;
+                    float decibelTotal=0;
                     for(int i = 0; i < numberOfShort; i++){
                         //dataOutputStream.writeShort(audioData[i]); // Store in Sound.haha file as short-short-short--
                         dataOutputStream.writeShort(audioData[i]);
+                        if(audioData[i]!=0)
+                            decibel = (float) (20*Math.log10(Math.abs((int)audioData[i])/32678.0));
+                        decibelTotal = decibel + decibelTotal;
                         recordValueToGraph = (int)audioData[i];//Convert the short to int to store in txt file
                         audioFloats[i] = ((float)Short.reverseBytes(audioData[i])/0x8000);
+
                     }
+                    float decibelAverage = decibelTotal / numberOfShort;
+                    publishProgress(decibelAverage);
 
 
                 }

@@ -131,7 +131,7 @@
             android:gravity="center"
             android:textSize="20sp"
             android:textStyle="bold"/>
-        <!--TextView
+        <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -140,7 +140,9 @@
             android:textColor="#fff"
             android:gravity="center"
             android:textSize="20sp"
-            android:textStyle="bold"/-->
+            android:textStyle="bold"
+            android:text="db"
+            android:id="@+id/decibel"/>
 
         <TextView
             android:layout_width="0dp"

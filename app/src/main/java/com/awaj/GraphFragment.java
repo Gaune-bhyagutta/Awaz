@@ -89,7 +89,10 @@ public class GraphFragment extends Fragment {
 //            Log.d("VIVZ", "heightNormalizer :"+String.format("%.6f",heightNormalizer));
 
             for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
-                graph_height = (float)( playAudioData[i] * heightNormalizer);
+                if((playAudioData[i]>500 || playAudioData[i]<=-500))
+                    graph_height = (float)( playAudioData[i] * heightNormalizer);
+                else
+                    graph_height=0;
                 X2 = X1;
                 Y2 = Y1 - graph_height;
 
@@ -104,6 +107,7 @@ public class GraphFragment extends Fragment {
         }
 
         public void plotRecordingVisualization(Canvas canvas, Paint graphVisualizationPO){
+            int i=0;
             float newX,newY;
             float oldX = 0,oldY = canvas.getHeight()/2;
             int recordBuffIndex = (recordAudioData.length / 2 - canvas.getWidth()) / 2;
@@ -112,8 +116,19 @@ public class GraphFragment extends Fragment {
             float X2, Y2;
             double heightNormalizer = (canvas.getHeight()/2)*0.00003051757812;
 
+            int recordAudioDataTotal=0;
+            int recordAudioAverage =0;
             for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
-                graph_height = (float) (recordAudioData[recordBuffIndex] * heightNormalizer);
+               for(int j=0;j<recordAudioData.length;j++){
+                    recordAudioDataTotal = recordAudioDataTotal + Math.abs(recordAudioData[j]);
+               }
+                recordAudioAverage = recordAudioDataTotal/recordAudioData.length;
+
+               // if((recordAudioData[recordBuffIndex]>=500) || (recordAudioData[recordBuffIndex]<=-500))
+                if(recordAudioAverage>=500)
+                    graph_height = (float) (recordAudioData[recordBuffIndex] * heightNormalizer);
+                else
+                    graph_height =0;
                 X2 = X1;
                 Y2 = Y1 - graph_height;
 //              canvas.drawLine(X2-1, Y2-1, X2, Y2, graphLinesObj);
