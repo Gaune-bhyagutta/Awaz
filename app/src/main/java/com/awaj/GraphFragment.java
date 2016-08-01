@@ -162,10 +162,10 @@ public class GraphFragment extends Fragment {
             } else {
                 /**Freq*/
                 heightNormalizer = 1;
-                recordBuffIndex = 1;
+                recordBuffIndex = 0;
             }
 
-            for (X1 = 0; X1 < canvas.getWidth(); X1++) {
+            for (X1 = 0; X1 < canvas.getWidth(); X1+=(canvas.getWidth()/605)){
                 try {
 //                        Log.d("VIVZ", "I:" + recordBuffIndex + " Rec Aud D: " + recordAudioData[recordBuffIndex]);
                     graph_height = (float) (recordAudioData[recordBuffIndex] * heightNormalizer);
