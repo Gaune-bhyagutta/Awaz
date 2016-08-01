@@ -17,6 +17,7 @@ public class GraphFragment extends Fragment {
 
     public static float graph_height;
     static short[] recordAudioData = null;
+    static short[] recordDecibelData = null ;
     static short[] playAudioData = null;
     static MainActivity mainActivity = new MainActivity();
 
@@ -29,6 +30,8 @@ public class GraphFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        MainActivity a= new MainActivity();
+       // a.is
         LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.rect);
         linearLayout.addView(new myGraphView(getActivity()));
         // Log.d("VIVZ", "Linear Layout - "+linearLayout.getHeight());
@@ -58,6 +61,10 @@ public class GraphFragment extends Fragment {
             if (recordAudioData == null) {
                 int length = mainActivity.getRecordBufferSize();
                 recordAudioData = new short[length];
+            }
+            if (recordDecibelData == null) {
+                int length = mainActivity.getRecordBufferSize();
+                recordDecibelData = new short[length];
             }
             if (playAudioData == null) {
                 int length = mainActivity.getPlayBufferSize();
@@ -137,6 +144,7 @@ public class GraphFragment extends Fragment {
                 canvas.drawLine(oldX,oldY, newX,newY, graphVisualizationPO);
                 oldX = newX;oldY = newY;
                 recordBuffIndex++;
+
             }
             postInvalidateDelayed(50);
         }
@@ -178,6 +186,7 @@ public class GraphFragment extends Fragment {
     //updating audiodata from mainactivity
     public void updateRecordGraph(short[] data) {
         recordAudioData = data;
+        //recordDecibelData= data2;
     }
 
     public void setRecordBufferSize(int size) {

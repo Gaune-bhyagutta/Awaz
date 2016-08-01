@@ -195,15 +195,13 @@
             android:textStyle="italic" />
     </LinearLayout>
 
-    <!--List FRAGMENT -->
-    <!--LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="3"
-        android:id="@+id/listLayout"
-        android:orientation="vertical"
-        android:background="#000"
-        android:layout_margin="5dp">
-    </LinearLayout-->
+
+    <TextView
+        android:layout_width="269dp"
+        android:layout_height="wrap_content"
+        android:text="Decibel"
+        android:id="@+id/decibel" />
+
+
 
 </LinearLayout>
