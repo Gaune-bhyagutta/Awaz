@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 public class GraphFragment extends Fragment {
 
     public static float graph_height;
-
     /**
      * For AMP Visualization
      */
@@ -26,7 +25,6 @@ public class GraphFragment extends Fragment {
 //     */
 //    static float[] recordAudioDataFreq = null;
 //    static short[] playAudioDataFreq = null;
-
 
     static MainActivity mainActivity = new MainActivity();
 
@@ -49,8 +47,6 @@ public class GraphFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        MainActivity a= new MainActivity();
-       // a.is
         LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.rect);
         linearLayout.addView(new myGraphView(getActivity()));
         // Log.d("VIVZ", "Linear Layout - "+linearLayout.getHeight());
@@ -82,10 +78,6 @@ public class GraphFragment extends Fragment {
                 //length=length/2;
                 recordAudioData = new float[length];
             }
-//            if (recordDecibelData == null) {
-//                int length = mainActivity.getRecordBufferSize();
-//                recordDecibelData = new short[length];
-//            }
             if (playAudioData == null) {
                 int length = mainActivity.getPlayBufferSize();
                 length = length / 4;
@@ -120,51 +112,46 @@ public class GraphFragment extends Fragment {
             float X1 = 0;
             float Y1 = canvas.getHeight() / 2;
             float X2, Y2;
+            double heightNormalizer;
+            if (GRAPH_INFO_MODE == 0) {
+                /**Amp*/
+                heightNormalizer = (canvas.getHeight() / 2) * 0.00003051757812;
+            } else {
+                /**Freq*/
+                heightNormalizer = 1;
+                playBuffIndex = 1;
+            }
+            for (X1 = 0; X1 <= canvas.getWidth(); X1++)
+                try {
+                    graph_height = (float) (playAudioData[playBuffIndex] * heightNormalizer);
+//                      Log.d("VIVZ","M:R Graph Height: "+graph_height);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+            X2 = X1;
+            Y2 = Y1 - graph_height;
 
-            double heightNormalizer = (canvas.getHeight() / 2) * 0.00003051757812;
-//            String.format("%.6f",heightNormalizer);
-//            Log.d("VIVZ", String.valueOf(canvas.getHeight()));
-//            Log.d("VIVZ", "heightNormalizer :"+String.format("%.6f",heightNormalizer));
-
-            for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
-                if ((playAudioData[i] > 500 || playAudioData[i] <= -500))
-                    graph_height = (float) (playAudioData[i] * heightNormalizer);
-                else
-                    graph_height = 0;
-                X2 = X1;
-                Y2 = Y1 - graph_height;
-
+            if (GRAPH_VIZ_MODE == 0) {
+                /**Wave View*/
+                canvas.drawLine(X1, Y1, X2, Y2, graphVisualizationPO);
+            } else if (GRAPH_VIZ_MODE == 1) {
+                /**Thread View*/
                 newX = X2;
                 newY = Y2;
                 canvas.drawLine(oldX, oldY, newX, newY, graphVisualizationPO);
                 oldX = newX;
                 oldY = newY;
-
-
-                if (GRAPH_VIZ_MODE == 0) {
-                    /**Wave View*/
-                    canvas.drawLine(X1, Y1, X2, Y2, graphVisualizationPO);
-                } else if (GRAPH_VIZ_MODE == 1) {
-                    /**Thread View*/
-                    newX = X2;
-                    newY = Y2;
-                    canvas.drawLine(oldX, oldY, newX, newY, graphVisualizationPO);
-                    oldX = newX;
-                    oldY = newY;
-                }
-                playBuffIndex++;
-//                i++;
-                postInvalidateDelayed(GRAPH_REFRESH_DELAY);
             }
+            playBuffIndex++;
+//                i++;
+            postInvalidateDelayed(GRAPH_REFRESH_DELAY);
         }
-
 
         public void plotRecordingVisualization(Canvas canvas, Paint graphVisualizationPO) {
             float newX, newY;
             float oldX = 0, oldY = canvas.getHeight() / 2;
             int recordBuffIndex = (recordAudioData.length - canvas.getWidth()) / 2;
 //            int recordBuffIndex = 1;
-
             float X1 = 0;
             float Y1 = canvas.getHeight() / 2;
             float X2, Y2;
@@ -178,20 +165,14 @@ public class GraphFragment extends Fragment {
                 recordBuffIndex = 1;
             }
 
-            int recordAudioDataTotal=0;
-            int recordAudioAverage =0;
-            for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
-               for(int j=0;j<recordAudioData.length;j++){
-                    recordAudioDataTotal = (int) (recordAudioDataTotal + Math.abs(recordAudioData[j]));
-               }
-                recordAudioAverage = recordAudioDataTotal/recordAudioData.length;
-
-               // if((recordAudioData[recordBuffIndex]>=500) || (recordAudioData[recordBuffIndex]<=-500))
-                if(recordAudioAverage>=500)
+            for (X1 = 0; X1 < canvas.getWidth(); X1++) {
+                try {
+//                        Log.d("VIVZ", "I:" + recordBuffIndex + " Rec Aud D: " + recordAudioData[recordBuffIndex]);
                     graph_height = (float) (recordAudioData[recordBuffIndex] * heightNormalizer);
-                else
-                    graph_height =0;
-
+                    //                    Log.d("VIVZ","M:R Graph Height: "+graph_height);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
                 X2 = X1;
                 Y2 = Y1 - graph_height;
 
@@ -207,9 +188,7 @@ public class GraphFragment extends Fragment {
                     oldY = newY;
                 }
                 recordBuffIndex++;
-
                 postInvalidateDelayed(GRAPH_REFRESH_DELAY);
-
             }
         }
 
@@ -295,7 +274,6 @@ public class GraphFragment extends Fragment {
      */
     public void updateRecordGraph(float[] data) {
         recordAudioData = data;
-        //recordDecibelData= data2;
     }
 
     public void updatePlayGraph(float[] data) {
