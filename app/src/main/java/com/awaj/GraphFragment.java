@@ -121,8 +121,8 @@ public class GraphFragment extends Fragment {
                 heightNormalizer = 1;
                 playBuffIndex = 1;
             }
-            for (X1 = 0; X1 <= canvas.getWidth(); X1++)
-                try {
+            for (X1 = 0; X1 < canvas.getWidth(); X1+=(canvas.getWidth()/605))
+            try {
                     graph_height = (float) (playAudioData[playBuffIndex] * heightNormalizer);
 //                      Log.d("VIVZ","M:R Graph Height: "+graph_height);
                 } catch (NullPointerException e) {

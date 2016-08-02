@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -44,23 +45,18 @@ public class MainActivity extends AppCompatActivity {
     Boolean isRecording = false;
     Boolean isPlaying = false;
     public static int playState = 0;
-    //<<<<<<< HEAD:app/src/main/java/com/awaj/MainActivity.java
-    public static int recordValueToGraph;
-    public static int playValueToGraph;
     public static TextView timerTV;
     public final Timer timerStartObj = new Timer(3000000, 1000);
     public static ImageView recLogo;
-    //    =======
     public static int samplingRate = 44100;
     public static int noOfSamples = 4096;
     public static float resolution = samplingRate / noOfSamples;
 
-    public static float frequency;
+    public static float fundamentalFrequency;
 
     /**UI*/
     TextView freqTV;
 
-    //>>>>>>> origin/GraphImprovementB:app/src/main/java/com/example/keshavdulal/a14_simple_drawing/MainActivity.java
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,9 +125,7 @@ public class MainActivity extends AppCompatActivity {
 
                         timerTV.setText("00:00:00");
                         timerStartObj.start();
-
-//                        freqTV.setText(Float.toString(frequency));
-
+                        //freqTV.setText(Float.toString(fundamentalFrequency));
                     } else if (rec_btn_count == 1) {
                         /**Code to handle click of "Rec-STOP" button*/
                         isRecording = false;
@@ -160,7 +154,6 @@ public class MainActivity extends AppCompatActivity {
                         play_btn_count = 1;
                         isPlaying = true;
                         audioPlayClass.execute();
-//<<<<<<< HEAD:app/src/main/java/com/awaj/MainActivity.java
 
                         play.setText("Stop");
                         play.setTextColor(Color.parseColor("#ff0000"));
@@ -170,8 +163,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Playing audio", Toast.LENGTH_SHORT).show();
                         timerTV.setText("00:00:00");
                         timerStartObj.start();
-//=======
-//>>>>>>> origin/GraphImprovementB:app/src/main/java/com/example/keshavdulal/a14_simple_drawing/MainActivity.java
+
                     } else if (play_btn_count == 1) {
                         /**Code to pause/stop the playback*/
                         isPlaying = false;
@@ -204,8 +196,6 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
 
-        public void startRecord() {
-//            Log.d("VIVZ", "Thread - Start record");
             /**RECORDING PROCESS:
              1.Create a file to store that data values that comes from the mic.
              2. Fix the bufferSize and AudioRecord Object.(Will be later in detail later).
@@ -227,6 +217,8 @@ public class MainActivity extends AppCompatActivity {
              ONE- as extension Sound.pcm
              15. AND MOST IMPORTANT THING TO REMEMBER :- OUR AMPLITUDE IS REPRESENTED BY 16 bit. SO WE USE SHORT
              */
+        public void startRecord() {
+//            Log.d("VIVZ", "Thread - Start record");
 
             File filePcm = new File(Environment.getExternalStorageDirectory(), "Sound.pcm");
 
@@ -255,26 +247,19 @@ public class MainActivity extends AppCompatActivity {
                         AudioFormat.ENCODING_PCM_16BIT,
                         minBufferSize);
 
-//<<<<<<< HEAD:app/src/main/java/com/awaj/MainActivity.java
-                /** object of the AudioRecord class calls the startRecording() function so that every is ready and the data can be fetch from mic-buffer-our array of short(audioData)*/
-//=======
                 /** object of the AudioRecord class calls the x() function so that every is ready and the data can be fetch from mic-buffer-our array of short(audioData)
                  */
-//>>>>>>> origin/GraphImprovementB:app/src/main/java/com/example/keshavdulal/a14_simple_drawing/MainActivity.java
                 //setting the size of the audioData array for graph fragment
                 graphFragment.setRecordBufferSize(minBufferSize);
-//                graphFragment.setRecordBufferSizeFreq(minBufferSize);
                 audioRecord.startRecording();
                 //GraphFragment gF = new GraphFragment();
                 // it means while the user have  not pressed the STOP Button
                 while (isRecording) {
-//<<<<<<< HEAD:app/src/main/java/com/awaj/MainActivity.java
                     /**numberOfShort=minBufferSize/2
                      Actually what is happening is the minBufferSize(8 bit Buffer) is being converted to numberOfShort(16 bit buffer)
                      AND THE MOST IMPORTANT PART IS HERE:- The actual value is being store here in the audioData array.
                      */
                     int numberOfShort = audioRecord.read(audioData, 0, minBufferSize);
-
                     for (int i = 0; i < numberOfShort; i++) {
                         dataOutputStream.writeShort(audioData[i]);
                         audioInt[i] = audioData[i];
@@ -290,9 +275,10 @@ public class MainActivity extends AppCompatActivity {
                         graphFragment.updateRecordGraph(fftOutput);
                     }
                     /**Fundamental Frequency*/
-                    frequency = FrequencyValue.getFundamentalFrequency(fftOutput);
+                    float frequency = FrequencyValue.getFundamentalFrequency(fftOutput);
 //                    freqTV.setText(Float.toString(frequency));
-//                    Log.d("FREQUENCY", " " + frequency);
+                    //setFrequency(frequency);
+                    Log.d("FREQUENCY", " " + frequency);
                 }
                 audioRecord.stop();
 
@@ -393,6 +379,7 @@ public class MainActivity extends AppCompatActivity {
                         audioFloats[i]= (float)audioInt[i];
                         i++;
                     }
+                    float[] fftOutput= FftOutput.callMainFft(audioFloats);
                     audioTrack.write(audioData, 0, audioData.length);
                     if(GraphFragment.GRAPH_INFO_MODE == 0){
                         /**Amplitude Mode*/
@@ -400,7 +387,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else if(GraphFragment.GRAPH_INFO_MODE == 1){
                         /**Frequency Mode*/
-                    graphFragment.updatePlayGraph(FftOutput.callMainFft(audioFloats));
+                    graphFragment.updatePlayGraph(fftOutput);
                     }
                 }
                 audioTrack.pause();
@@ -488,6 +475,7 @@ public class MainActivity extends AppCompatActivity {
                 AudioFormat.ENCODING_PCM_16BIT);
         return minBufferSize;
     }
+
 }/**
  * End of MainActivity
  */
