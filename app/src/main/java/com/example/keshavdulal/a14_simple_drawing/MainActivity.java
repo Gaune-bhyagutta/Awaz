@@ -1,6 +1,8 @@
 package com.example.keshavdulal.a14_simple_drawing;
 
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.graphics.Color;
 import android.media.AudioFormat;
 import android.media.AudioManager;
@@ -48,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
     public static int recordValueToGraph;
     public static int playValueToGraph;
 
-    DatabaseAdapter databaseAdapter;
 
+    DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +59,18 @@ public class MainActivity extends AppCompatActivity {
 
         //database part
         Stetho.initializeWithDefaults(this);
-        databaseAdapter = new DatabaseAdapter(this);
+        databaseHelper = new DatabaseHelper(this);
+
+        try{
+            databaseHelper.createDatabase();
+        }catch (IOException e){
+            throw new Error("Unable to create database");
+        }
+        try {
+            databaseHelper.openDatabase();
+        }catch (SQLException e){
+            throw e;
+        }
 
 
         setContentView(R.layout.activity_main);
@@ -395,5 +408,11 @@ public class MainActivity extends AppCompatActivity {
                 AudioFormat.CHANNEL_OUT_MONO,
                 AudioFormat.ENCODING_PCM_16BIT);
         return minBufferSize;
+    }
+    public  void getAllData(long freq){
+        //String s1 = databaseAdapter.getAllData();
+        //String sub1 = s1.substring(0,s1.indexOf(" "));
+        //String sub2 = s1.substring(s1.indexOf(" ")+1);
+
     }
 }//End of MainActivity
