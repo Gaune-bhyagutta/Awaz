@@ -351,11 +351,14 @@ public class MainActivity extends AppCompatActivity {
 
                     float decibel =0;
                     float decibelTotal=0;
+                    int decibelCount=0;
                     for(int i = 0; i < numberOfShort; i++){
                         //dataOutputStream.writeShort(audioData[i]); // Store in Sound.haha file as short-short-short--
                         dataOutputStream.writeShort(audioData[i]);
-                        if(audioData[i]!=0)
-                            decibel = (float) (20*Math.log10(Math.abs((int)audioData[i])/32678.0));
+                        if(audioData[i]!=0) {
+                            decibel = (float) (20 * Math.log10(Math.abs((int) audioData[i]) / 32678.0));
+                            decibelCount++;
+                        }
                         decibelTotal = decibel + decibelTotal;
                         //recordValueToGraph = (int)audioData[i];//Convert the short to int to store in txt file
                         audioInt[i]=(int)audioData[i];
@@ -363,7 +366,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                     }
-                    float decibelAverage = decibelTotal / numberOfShort;
+                    float decibelAverage = decibelTotal / decibelCount;
                     float[] fftOutput = FftOutput.callMainFft(audioFloats);
                     if (GraphFragment.GRAPH_INFO_MODE == 0) {
                         /**Amplitude Mode*/
