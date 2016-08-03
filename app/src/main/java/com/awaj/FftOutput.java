@@ -85,7 +85,6 @@ public class FftOutput {
             {newLength*=2;}
 
             float[] x = new float[newLength];// making an array of newLength
-
             for (int i = 0; i < newLength; i++) {
                 if (i<length){
                 x[i] =input[i];} // till the value of previous length the input is converted to complex number
@@ -109,8 +108,7 @@ public class FftOutput {
                 //w[i] = (float)(0.5*(1 - (Math.cos( 2*Math.PI*i/(input.length-1) ) )));
             }
             else{
-                w[i]=0;
-                }
+                w[i]=0;}
         }
 
         for(int i=0;i<input.length;i++){
@@ -120,12 +118,9 @@ public class FftOutput {
 
     private float[] absoluteValue(float[] re, float[] im){
         float[] abs = new float[re.length];
-        int i, j=re.length/2;
-        for(i=0;i<re.length;i++){
+        for(int i=0;i<re.length;i++){
             abs[i]=(float)(Math.sqrt(Math.pow(re[i],2)+Math.pow(im[i],2)));
-            //j--;
-        }
-        return abs;
+        }return abs;
     }
 
     private static void normalize(float[] input){
