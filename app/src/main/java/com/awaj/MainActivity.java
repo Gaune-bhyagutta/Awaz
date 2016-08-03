@@ -315,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // The array short that will store the Audio data that we get From the mic.
                 short[] audioData = new short[minBufferSizeInBytes];
-                float[] audioFloats= new float[audioData.length];
+                float[] audioFloatsForFFT= new float[audioData.length];
 
                 //Create a Object of the AudioRecord class with the NECESSARY CONFIGURATION
                 audioRecord = new AudioRecord(AUDIO_SOURCE,
@@ -343,10 +343,10 @@ public class MainActivity extends AppCompatActivity {
                     int numberOfShort = audioRecord.read(audioData, 0, minBufferSizeInBytes);
 
                     int[] audioInt = new int[audioData.length];
-                    float[] audioFloat = new float[audioData.length];
+                    float[] audioFloatsForAmp = new float[audioData.length];
 
                     //sending audioData to graph fragment
-                    //graphFragment.updateRecordGraph(audioFloats);
+                    //graphFragment.updateRecordGraph(audioFloatsForFFT);
                     int recordValueToGraph;
 
                     float decibel =0;
@@ -362,17 +362,20 @@ public class MainActivity extends AppCompatActivity {
                         decibelTotal = decibel + decibelTotal;
                         //recordValueToGraph = (int)audioData[i];//Convert the short to int to store in txt file
                         audioInt[i]=(int)audioData[i];
-                        audioFloats[i] = (float) audioInt[i];
-                        audioFloat[i]=(float)audioInt[i];
+                        /**This one is for FFT*/
+                        audioFloatsForFFT[i] = (float) audioInt[i];
+                        /**This one is for Amplitude Visualization*/
+                        audioFloatsForAmp[i]=(float)audioInt[i];
 
 
                     }
                     float decibelAverage = decibelTotal / decibelCount;
 
-                    float[] fftOutput = FftOutput.callMainFft(audioFloats);
+                    float[] fftOutput = FftOutput.callMainFft(audioFloatsForFFT);
+
                     if (GraphFragment.GRAPH_INFO_MODE == 0) {
                         /**Amplitude Mode*/
-                        graphFragment.updateRecordGraph(audioFloat);
+                        graphFragment.updateRecordGraph(audioFloatsForAmp);
                     } else if (GraphFragment.GRAPH_INFO_MODE == 1) {
                         /**Frequency Mode*/
                         graphFragment.updateRecordGraph(fftOutput);
@@ -449,15 +452,11 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "playRecord()");
             File filePcm = new File(Environment.getExternalStorageDirectory(), "Sound.pcm");
 
-
-
             int minBufferSize = getPlayBufferSize();
 
             short[] audioData = new short[minBufferSize/4];
             int audioInt[] = new int[minBufferSize/4];
             float audioFloat[] = new float[minBufferSize/4];
-
-
 
             InputStream inputStream = null;
             BufferedInputStream bufferedInputStream = null;
@@ -479,22 +478,33 @@ public class MainActivity extends AppCompatActivity {
                         AudioTrack.MODE_STREAM);
                 graphFragment.setPlayBufferSize(audioData.length);
                 audioTrack.play();
+
+                float audioFloatsForFFT[] = new float[audioData.length];
+                float audioFloatsForAmp[] = new float[audioData.length];
+
                 while (isPlaying && dataInputStream.available() > 0) {
                     int i = 0;
                     while (dataInputStream.available() > 0 && i < audioData.length) {
                         audioData[i] = dataInputStream.readShort();
                         audioInt[i]=(int)audioData[i];
-                        audioFloat[i]=(int)audioInt[i];
+                        audioFloat[i]=(float) audioInt[i];
                         i++;
+
+                        /**This one is for FFT*/
+                        audioFloatsForFFT[i] = (float) audioInt[i];
+                        /**This one is for Amplitude Visualization*/
+                        audioFloatsForAmp[i]=(float)audioInt[i];
                     }
                     audioTrack.write(audioData, 0, audioData.length);
-                    if(GraphFragment.GRAPH_INFO_MODE == 0){
+
+
                         /**Amplitude Mode*/
-                    graphFragment.updatePlayGraph(audioFloat);
+                    if(GraphFragment.GRAPH_INFO_MODE == 0){
+                    graphFragment.updatePlayGraph(audioFloatsForAmp);
                     }
-                    else if(GraphFragment.GRAPH_INFO_MODE == 1){
                         /**Frequency Mode*/
-                    graphFragment.updatePlayGraph(FftOutput.callMainFft(audioFloat));
+                    else if(GraphFragment.GRAPH_INFO_MODE == 1){
+                    graphFragment.updatePlayGraph(FftOutput.callMainFft(audioFloatsForFFT));
                     }
                 }
                 audioTrack.pause();
