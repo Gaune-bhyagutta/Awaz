@@ -10,7 +10,6 @@ import android.media.MediaRecorder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.IntegerRes;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -18,8 +17,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,8 +35,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.StreamCorruptedException;
-import java.io.StringReader;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -80,6 +79,11 @@ public class MainActivity extends AppCompatActivity {
     public static int noOfSamples = 4096;
     public static float resolution = SAMPLE_RATE_IN_HZ / noOfSamples;
 
+    /**
+     * Objects
+     */
+    Switch domainSwitch, visualizationSwitch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -118,6 +122,12 @@ public class MainActivity extends AppCompatActivity {
 
         homeIV = (ImageView) findViewById(R.id.home);
         listIV = (ImageView) findViewById(R.id.list);
+
+        /**Switches*/
+        domainSwitch = (Switch) findViewById(R.id.domainSwitch);
+        domainSwitch.setText("AMP");
+        visualizationSwitch = (Switch) findViewById(R.id.visualizationSwitch);
+        visualizationSwitch.setText("WAVE");
 
         /**HOME - LIST - SETTING Button*/
         listIV.setOnClickListener(new View.OnClickListener() {
@@ -209,8 +219,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Playing audio", Toast.LENGTH_SHORT).show();
                         timerTV.setText("00:00:00");
                         timerStartObj.start();
-                    }
-                    else if (play_btn_count == 1) {
+                    } else if (play_btn_count == 1) {
                         /**Code to pause/stop the playback*/
                         isPlaying = false;
 
@@ -230,6 +239,48 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * End of onCreate
+     */
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        /**Monitoring Domain Switch States*/
+        domainSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                final boolean isDomainSwitchChecked = domainSwitch.isChecked();
+                if (isDomainSwitchChecked) {
+                    GraphFragment.GRAPH_DOMAIN_MODE = 1;
+                    domainSwitch.setText("Freq");
+                } else {
+                    GraphFragment.GRAPH_DOMAIN_MODE = 0;
+                    domainSwitch.setText("AMP");
+                }
+
+            }
+        });
+
+        /**Monitoring Visualization Switch States*/
+        visualizationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            /**Ctrl+shift+space*/
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                final boolean isVisualizationSwitchChecked = domainSwitch.isChecked();
+                if (isVisualizationSwitchChecked) {
+                    GraphFragment.GRAPH_VIZ_MODE = 1;
+                    visualizationSwitch.setText("Thread");
+                } else {
+                    GraphFragment.GRAPH_VIZ_MODE = 0;
+                    visualizationSwitch.setText("Wave");
+                }
+            }
+        });
+
+    }
+
     // Start of AudioRecordClass (inner Class)
     public class AudioRecordClass extends AsyncTask<Void, Float, Void> {
 
@@ -244,7 +295,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onProgressUpdate(Float... values) {
-            String decibelDispaly = String.valueOf(values[0]).substring(0,6)+"dB";
+            String decibelDispaly = String.valueOf(values[0]).substring(0, 6) + "dB";
             int frequency = Math.round(values[1]);
             String frequencyDisplay = Integer.toString(frequency) + "Hz";
 
@@ -296,8 +347,8 @@ public class MainActivity extends AppCompatActivity {
                 int minBufferSizeInBytes = getRecordBufferSize();//WE CAN FIX THE BUFFER SZIE BY OURSELVES
 
                 // The array short that will store the Audio data that we get From the mic.
-               short[] audioData = new short[minBufferSizeInBytes];
-                float[] audioFloatsForFFT= new float[audioData.length];
+                short[] audioData = new short[minBufferSizeInBytes];
+                float[] audioFloatsForFFT = new float[audioData.length];
 
                 //Create a Object of the AudioRecord class with the NECESSARY CONFIGURATION
                 audioRecord = new AudioRecord(AUDIO_SOURCE,
@@ -356,10 +407,10 @@ public class MainActivity extends AppCompatActivity {
 
                     float[] fftOutput = FftOutput.callMainFft(audioFloatsForFFT);
 
-                    if (GraphFragment.GRAPH_INFO_MODE == 0) {
+                    if (GraphFragment.GRAPH_DOMAIN_MODE == 0) {
                         /**Amplitude Mode*/
                         graphFragment.updateRecordGraph(audioFloatsForAmp);
-                    } else if (GraphFragment.GRAPH_INFO_MODE == 1) {
+                    } else if (GraphFragment.GRAPH_DOMAIN_MODE == 1) {
                         /**Frequency Mode*/
                         graphFragment.updateRecordGraph(fftOutput);
                     }
@@ -417,7 +468,7 @@ public class MainActivity extends AppCompatActivity {
     }//End of AudioRecordClass
 
     //Start of AudioPlayClass
-    public class AudioPlayClass extends AsyncTask<Void,Float,Boolean>{
+    public class AudioPlayClass extends AsyncTask<Void, Float, Boolean> {
 
         Boolean sucessfull;
 
@@ -433,7 +484,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onProgressUpdate(Float... values) {
-            String decibelDispaly = String.valueOf(values[0]).substring(0,6)+"dB";
+            String decibelDispaly = String.valueOf(values[0]).substring(0, 6) + "dB";
             int frequency = Math.round(values[1]);
             String frequencyDisplay = Integer.toString(frequency) + "Hz";
 
@@ -453,9 +504,9 @@ public class MainActivity extends AppCompatActivity {
             short[] audioData = new short[minBufferSize / 4];
             int audioInt[] = new int[minBufferSize / 4];
             float audioFloat[] = new float[minBufferSize / 4];
-            float decibel =0;
-            float decibelTotal=0;
-            int decibelCount=0;
+            float decibel = 0;
+            float decibelTotal = 0;
+            int decibelCount = 0;
 
             InputStream inputStream = null;
             BufferedInputStream bufferedInputStream = null;
@@ -484,13 +535,13 @@ public class MainActivity extends AppCompatActivity {
                     int i = 0;
                     while (dataInputStream.available() > 0 && i < audioData.length) {
                         audioData[i] = dataInputStream.readShort();
-                        if(audioData[i]!=0) {
+                        if (audioData[i] != 0) {
                             decibel = (float) (20 * Math.log10(Math.abs((int) audioData[i]) / 32678.0));
                             decibelCount++;
                         }
                         decibelTotal = decibel + decibelTotal;
-                        audioInt[i]=(int)audioData[i];
-                        audioFloat[i]=(float) audioInt[i];
+                        audioInt[i] = (int) audioData[i];
+                        audioFloat[i] = (float) audioInt[i];
 
                         /**This one is for FFT*/
                         audioFloatsForFFT[i] = (float) audioInt[i];
@@ -498,20 +549,22 @@ public class MainActivity extends AppCompatActivity {
                         audioFloatsForAmp[i] = (float) audioInt[i];
                         i++;
                     }
-                   audioTrack.write(audioData, 0, audioData.length);
+                    audioTrack.write(audioData, 0, audioData.length);
                     float decibelAverage = decibelTotal / decibelCount;
                     float[] fftOutput = FftOutput.callMainFft(audioFloatsForFFT);
 
                     /**Amplitude Mode*/
-                    if (GraphFragment.GRAPH_INFO_MODE == 0) {
+                    if (GraphFragment.GRAPH_DOMAIN_MODE == 0) {
                         graphFragment.updatePlayGraph(audioFloatsForAmp);
                     }
                     /**Frequency Mode*/
-                    else if (GraphFragment.GRAPH_INFO_MODE == 1) {
-                        graphFragment.updatePlayGraph(FftOutput.callMainFft(audioFloatsForFFT));
+                    else if (GraphFragment.GRAPH_DOMAIN_MODE == 1) {
+//                        graphFragment.updatePlayGraph(FftOutput.callMainFft(audioFloatsForFFT));
+                        /**Supports Freq Viz during Playback*/
+                        graphFragment.updatePlayGraph(fftOutput);
                     }
                     frequency = FrequencyValue.getFundamentalFrequency(fftOutput);
-                    publishProgress(decibelAverage,frequency);
+                    publishProgress(decibelAverage, frequency);
                 }
                 audioTrack.pause();
                 audioTrack.flush();

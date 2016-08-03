@@ -61,15 +61,39 @@
 
     </LinearLayout>
 
-    <!--Graph Fragment -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    <Switch
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/domainSwitch"
+        android:layout_weight="1"
+        android:layout_gravity="center_horizontal"
+        android:background="#fff"/>
+
+    <Switch
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/visualizationSwitch"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
+        android:background="#fff"/>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/reclogo"
             android:background="@android:drawable/ic_notification_overlay"
-            android:layout_gravity="right"
+            android:layout_gravity="center_vertical"
             android:layout_margin="2dp"/>
-        <LinearLayout
+
+    </LinearLayout>
+
+    <!--Graph Fragment -->
+    <LinearLayout
             android:id="@+id/graphFragmentLL"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -196,14 +220,6 @@
             android:textSize="20sp"
             android:textStyle="italic" />
     </LinearLayout>
-
-
-    <TextView
-        android:layout_width="269dp"
-        android:layout_height="wrap_content"
-        android:text="Decibel"
-        android:id="@+id/decibel" />
-
 
 
 </LinearLayout>

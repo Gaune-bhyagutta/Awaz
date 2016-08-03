@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +35,7 @@ public class GraphFragment extends Fragment {
     /**
      * 0-AMP 1-FREQ
      */
-    public static int GRAPH_INFO_MODE = 0;
+    public static int GRAPH_DOMAIN_MODE = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,10 +93,11 @@ public class GraphFragment extends Fragment {
             drawMeshLines(canvas);
             if (MainActivity.playState() == 1) {
                 plotPlayBackVisualization(canvas, graphVisualizationPO);
-            } else if(MainActivity.playState() != 1){
+            } else if (MainActivity.playState() != 1) {
                 plotRecordingVisualization(canvas, graphVisualizationPO);
             }
         }
+
         /**
          * End of onDraw
          */
@@ -112,8 +112,8 @@ public class GraphFragment extends Fragment {
             float X2, Y2;
             double heightNormalizer = 0;
             /**Left Side Limiter for Visualization*/
-            int dim = canvas.getHeight()/30;
-            if (GRAPH_INFO_MODE == 0) {
+            int dim = canvas.getHeight() / 30;
+            if (GRAPH_DOMAIN_MODE == 0) {
                 /**Amp*/
                 heightNormalizer = (canvas.getHeight() / 2) * 0.00003051757812;
             } else {
@@ -147,7 +147,7 @@ public class GraphFragment extends Fragment {
         }
 
         public void plotRecordingVisualization(Canvas canvas, Paint graphVisualizationPO) {
-            int recordBuffIndex=0;
+            int recordBuffIndex = 0;
 //            int recordBuffIndex = 1;
             float newX, newY;
             float oldX = 0, oldY = canvas.getHeight() / 2;
@@ -156,12 +156,12 @@ public class GraphFragment extends Fragment {
             float X2, Y2;
             double heightNormalizer = 0;
             /**Left Side Limiter for Visualization*/
-            int dim = canvas.getHeight()/30;
-            if (GRAPH_INFO_MODE == 0) {
+            int dim = canvas.getHeight() / 30;
+            if (GRAPH_DOMAIN_MODE == 0) {
                 /**Amplitude*/
                 heightNormalizer = (canvas.getHeight() / 2) * 0.00003051757812;
 //                recordBuffIndex = (recordAudioData.length - canvas.getWidth()) / 2;
-            } else if(GRAPH_INFO_MODE==1){
+            } else if (GRAPH_DOMAIN_MODE == 1) {
                 /**Freq*/
                 heightNormalizer = 1;
 //                recordBuffIndex = 0;
@@ -229,20 +229,22 @@ public class GraphFragment extends Fragment {
                 canvas.drawLine(i, 0, i, cgh, meshObj);
             }
 
-            if (GRAPH_INFO_MODE == 0) {
+            if (GRAPH_DOMAIN_MODE == 0) {
                 /**AMP*/
                 /**Vertical Labels*/
                 int dbIncrement = -90;
                 float yDecrement = 0;
                 for (i = 0; i < cgh2; i++) {
-                    canvas.drawText(Integer.toString(dbIncrement), 0, cgh2-yDecrement+8, textObj);
+                    canvas.drawText(Integer.toString(dbIncrement), 0, cgh2 - yDecrement + 8, textObj);
                     dbIncrement += 10;
                     yDecrement += meshDim * 2;
                 }
                 /**Midline*/
-            textObj.setColor(Color.WHITE);
-                canvas.drawLine(meshDim-1,cgh2,cgw,cgh2,textObj);
-            } else if (GRAPH_INFO_MODE == 1) {
+                if (GRAPH_VIZ_MODE == 0) {
+                    textObj.setColor(Color.WHITE);
+                    canvas.drawLine(meshDim - 1, cgh2, cgw, cgh2, textObj);
+                }
+            } else if (GRAPH_DOMAIN_MODE == 1) {
                 /**Freq Labels*/
                 /**BASELINE*/
                 canvas.drawLine(0, cgh2, cgw, cgh2, textObj);
@@ -283,23 +285,4 @@ public class GraphFragment extends Fragment {
     public void setPlayBufferSize(int size) {
         playAudioData = new float[size];
     }
-//
-//    /**
-//     * Frequency Visualization
-//     */
-//    public void updateRecordGraphFreq(float[] data) {
-//        recordAudioDataFreq = data;
-//    }
-//
-//    public void updatePlayGraphFreq(short[] data) {
-//        playAudioDataFreq = data;
-//    }
-//
-//    public void setRecordBufferSizeFreq(int size) {
-//        recordAudioDataFreq = new float[size];
-//    }
-//
-//    public void setPlayBufferSizeFreq(int size) {
-//        playAudioDataFreq = new short[size];
-//    }
 }
