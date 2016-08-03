@@ -10,6 +10,7 @@ import android.media.MediaRecorder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.IntegerRes;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -254,7 +255,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(Float... values) {
             String decibelDispaly = String.valueOf(values[0]).substring(0,6)+"dB";
-            String frequencyDisplay = String.valueOf(values[1]) + "Hz";
+            int frequency = Math.round(values[1]);
+            String frequencyDisplay = Integer.toString(frequency) + "Hz";
 
             decibelTV.setText(decibelDispaly);
             frequencyTV.setText(frequencyDisplay);
@@ -356,8 +358,6 @@ public class MainActivity extends AppCompatActivity {
                         audioFloatsForFFT[i] = (float) audioInt[i];
                         /**This one is for Amplitude Visualization*/
                         audioFloatsForAmp[i] = (float) audioInt[i];
-
-
                     }
                     float decibelAverage;
                     decibelAverage = decibelTotal / decibelCount;
@@ -425,7 +425,7 @@ public class MainActivity extends AppCompatActivity {
     }//End of AudioRecordClass
 
     //Start of AudioPlayClass
-    public class AudioPlayClass extends AsyncTask<Void, Void, Boolean> {
+    public class AudioPlayClass extends AsyncTask<Void, Float, Boolean> {
 
         Boolean sucessfull;
 
@@ -437,6 +437,17 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "end of doInBackground");
 
             return sucessfull;
+        }
+
+        @Override
+        protected void onProgressUpdate(Float... values) {
+            String decibelDispaly = String.valueOf(values[0]).substring(0,6)+"dB";
+            int frequency = Math.round(values[1]);
+            String frequencyDisplay = Integer.toString(frequency) + "Hz";
+
+            decibelTV.setText(decibelDispaly);
+            frequencyTV.setText(frequencyDisplay);
+            //notesTV.setText(String.valueOf(values[2]));
         }
 
         //Start of playRecord()
@@ -547,13 +558,6 @@ public class MainActivity extends AppCompatActivity {
         /**
          * End of playRecord()
          */
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
-
-            Log.d(TAG, "onProgressUpdate");
-
-        }
 
         @Override
         protected void onPostExecute(Boolean aVoid) {

@@ -234,10 +234,13 @@ public class GraphFragment extends Fragment {
                 int dbIncrement = -90;
                 float yDecrement = 0;
                 for (i = 0; i < cgh2; i++) {
-                    canvas.drawText(Integer.toString(dbIncrement), 0, cgh2 - yDecrement, textObj);
+                    canvas.drawText(Integer.toString(dbIncrement), 0, cgh2-yDecrement+8, textObj);
                     dbIncrement += 10;
                     yDecrement += meshDim * 2;
                 }
+                /**Midline*/
+            textObj.setColor(Color.WHITE);
+                canvas.drawLine(meshDim-1,cgh2,cgw,cgh2,textObj);
             } else if (GRAPH_INFO_MODE == 1) {
                 /**Freq Labels*/
                 /**BASELINE*/
