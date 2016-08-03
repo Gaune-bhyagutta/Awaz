@@ -156,6 +156,7 @@ public class GraphFragment extends Fragment {
             float X1 = 0;
             float Y1 = canvas.getHeight() / 2;
             float X2, Y2;
+            float xIncrementFactor=1;
             double heightNormalizer = 0;
             if (GRAPH_INFO_MODE == 0) {
                 /**Amplitude*/
@@ -163,11 +164,12 @@ public class GraphFragment extends Fragment {
 //                recordBuffIndex = (recordAudioData.length - canvas.getWidth()) / 2;
             } else if(GRAPH_INFO_MODE==1){
                 /**Freq*/
+                int freq=7000;
                 heightNormalizer = 1;
-//                recordBuffIndex = 0;
+                xIncrementFactor=canvas.getWidth()/(freq/MainActivity.resolution);
             }
 
-            for (X1 = 0; X1 < canvas.getWidth(); X1++){
+            for (X1 = 0; X1 < canvas.getWidth(); X1+=xIncrementFactor){
                 try {
                     graph_height = (float) (recordAudioData[recordBuffIndex] * heightNormalizer);
                 } catch (NullPointerException e) {
