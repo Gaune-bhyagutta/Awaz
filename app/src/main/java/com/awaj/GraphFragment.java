@@ -36,7 +36,7 @@ public class GraphFragment extends Fragment {
     /**
      * 0-AMP 1-FREQ
      */
-    public static int GRAPH_INFO_MODE = 0;
+    public static int GRAPH_INFO_MODE = 1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -103,8 +103,8 @@ public class GraphFragment extends Fragment {
          */
 
         public void plotPlayBackVisualization(Canvas canvas, Paint graphVisualizationPO) {
-            int playBuffIndex = (playAudioData.length - canvas.getWidth()) / 2;
-//            int playBuffIndex = 1;
+//            int playBuffIndex = (playAudioData.length - canvas.getWidth()) / 2;
+            int playBuffIndex = 0;
             float newX, newY;
             float oldX = 0, oldY = canvas.getHeight() / 2;
             float X1 = 0;
@@ -119,28 +119,29 @@ public class GraphFragment extends Fragment {
                 heightNormalizer = 1;
                 playBuffIndex = 1;
             }
-            for (X1 = 0; X1 <= canvas.getWidth(); X1++)
+            for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
                 try {
                     graph_height = (float) (playAudioData[playBuffIndex] * heightNormalizer);
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
-            X2 = X1;
-            Y2 = Y1 - graph_height;
+                X2 = X1;
+                Y2 = Y1 - graph_height;
 
-            if (GRAPH_VIZ_MODE == 0) {
-                /**Wave View*/
-                canvas.drawLine(X1, Y1, X2, Y2, graphVisualizationPO);
-            } else if (GRAPH_VIZ_MODE == 1) {
-                /**Thread View*/
-                newX = X2;
-                newY = Y2;
-                canvas.drawLine(oldX, oldY, newX, newY, graphVisualizationPO);
-                oldX = newX;
-                oldY = newY;
+                if (GRAPH_VIZ_MODE == 0) {
+                    /**Wave View*/
+                    canvas.drawLine(X1, Y1, X2, Y2, graphVisualizationPO);
+                } else if (GRAPH_VIZ_MODE == 1) {
+                    /**Thread View*/
+                    newX = X2;
+                    newY = Y2;
+                    canvas.drawLine(oldX, oldY, newX, newY, graphVisualizationPO);
+                    oldX = newX;
+                    oldY = newY;
+                }
+                playBuffIndex++;
+                postInvalidateDelayed(GRAPH_REFRESH_DELAY);
             }
-            playBuffIndex++;
-            postInvalidateDelayed(GRAPH_REFRESH_DELAY);
         }
 
         public void plotRecordingVisualization(Canvas canvas, Paint graphVisualizationPO) {
