@@ -130,8 +130,9 @@
             android:textColor="#fff"
             android:gravity="center"
             android:textSize="20sp"
-            android:textStyle="bold"/>
-        <!--TextView
+            android:textStyle="bold"
+            android:text="Notes" />
+        <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -140,18 +141,21 @@
             android:textColor="#fff"
             android:gravity="center"
             android:textSize="20sp"
-            android:textStyle="bold"/-->
+            android:textStyle="bold"
+            android:text="db"
+            android:id="@+id/decibel"/>
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:id="@+id/freqTV"
+            android:id="@+id/frequencyTV"
             android:layout_weight="1"
             android:background="#000"
             android:textColor="#fff"
             android:gravity="center"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:text="Frequency" />
     </LinearLayout>
 
     <!--RECORD / PLAY BUTTONS -->
@@ -193,15 +197,13 @@
             android:textStyle="italic" />
     </LinearLayout>
 
-    <!--List FRAGMENT -->
-    <!--LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="3"
-        android:id="@+id/listLayout"
-        android:orientation="vertical"
-        android:background="#000"
-        android:layout_margin="5dp">
-    </LinearLayout-->
+
+    <TextView
+        android:layout_width="269dp"
+        android:layout_height="wrap_content"
+        android:text="Decibel"
+        android:id="@+id/decibel" />
+
+
 
 </LinearLayout>
