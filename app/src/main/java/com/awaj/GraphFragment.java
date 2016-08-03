@@ -147,7 +147,7 @@ public class GraphFragment extends Fragment {
         }
 
         public void plotRecordingVisualization(Canvas canvas, Paint graphVisualizationPO) {
-            int recordBuffIndex = (recordAudioData.length - canvas.getWidth()) / 2;
+            int recordBuffIndex=0;
 //            int recordBuffIndex = 1;
             float newX, newY;
             float oldX = 0, oldY = canvas.getHeight() / 2;
@@ -160,10 +160,11 @@ public class GraphFragment extends Fragment {
             if (GRAPH_INFO_MODE == 0) {
                 /**Amplitude*/
                 heightNormalizer = (canvas.getHeight() / 2) * 0.00003051757812;
+//                recordBuffIndex = (recordAudioData.length - canvas.getWidth()) / 2;
             } else if(GRAPH_INFO_MODE==1){
                 /**Freq*/
                 heightNormalizer = 1;
-                recordBuffIndex = 1;
+//                recordBuffIndex = 0;
             }
 
             for (X1 = dim; X1 < canvas.getWidth(); X1++) {

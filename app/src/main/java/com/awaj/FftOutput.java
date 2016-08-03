@@ -10,7 +10,6 @@ public class FftOutput {
     // Lookup tables.  Only need to recompute when size of FFT changes.
     float[] cos;
     float[] sin;
-    float[] window;
     public FftOutput(int n) {
         this.n = n;
         this.m = (int)(Math.log(n) / Math.log(2));
@@ -21,20 +20,7 @@ public class FftOutput {
             cos[i] = (float)Math.cos(-2*Math.PI*i/n);
             sin[i] = (float)Math.sin(-2*Math.PI*i/n);
         }
-        makeWindow();
     }
-
-    protected void makeWindow() {
-        // Make a blackman window:
-        // w(n)=0.42-0.5cos{(2*PI*n)/(N-1)}+0.08cos{(4*PI*n)/(N-1)};
-        window = new float[n];
-        for(int i = 0; i < window.length; i++)
-            window[i] = (float)(0.42 - 0.5 * Math.cos(2*Math.PI*i/(n-1))+ 0.08 * Math.cos(4*Math.PI*i/(n-1)));
-    }
-    public float[] getWindow() {
-        return window;
-    }
-
     public void fft(float[] x, float[] y)
     {
         int i,j,k,n1,n2,a;
@@ -84,7 +70,7 @@ public class FftOutput {
         }
     }
 
-    public static float[] makePowerOf2(float[] input) {
+    private static float[] makePowerOf2(float[] input) {
         int length =input.length;
         int N=length;
         // checking if length is a power of 2 or not
@@ -99,26 +85,19 @@ public class FftOutput {
             {newLength*=2;}
 
             float[] x = new float[newLength];// making an array of newLength
-
-            for (int i = 0; i < length; i++) {
-                x[i] =input[i];// till the value of previous length the input is converted to complex number
-            }
-
-            for (int i =length ; i < newLength; i++) {// zero padding till the number is power of 2 (from previous length to new length
-                x[i] =0;
+            for (int i = 0; i < newLength; i++) {
+                if (i<length){
+                x[i] =input[i];} // till the value of previous length the input is converted to complex number
+                else { x[i] =0;} // zero padding till the number is power of 2 (from previous length to new length
             }
             return x;
         }
         else{// when length is already a power of 2 where flag =0
-            float[] x = new float[length];
-            for (int i = 0; i < length; i++) {
-                x[i] =input[i];
-            }
-            return x;
+            return input;
         }
     }
 
-    public static void windowing(float[] input){
+    private static void windowing(float[] input){
         float w[]=new float[input.length];
         for(int i=0; i<input.length; i++){
             w[i] =0;}
@@ -129,8 +108,7 @@ public class FftOutput {
                 //w[i] = (float)(0.5*(1 - (Math.cos( 2*Math.PI*i/(input.length-1) ) )));
             }
             else{
-                w[i]=0;
-                }
+                w[i]=0;}
         }
 
         for(int i=0;i<input.length;i++){
@@ -138,17 +116,14 @@ public class FftOutput {
         }
     }
 
-    public float[] absoluteValue(float[] re, float[] im){
+    private float[] absoluteValue(float[] re, float[] im){
         float[] abs = new float[re.length];
-        int i, j=re.length/2;
-        for(i=0;i<re.length;i++){
+        for(int i=0;i<re.length;i++){
             abs[i]=(float)(Math.sqrt(Math.pow(re[i],2)+Math.pow(im[i],2)));
-            //j--;
-        }
-        return abs;
+        }return abs;
     }
 
-    public static void normalize(float[] input){
+    private static void normalize(float[] input){
         for(int i=0;i<input.length;i++){
             input[i]=(float)(input[i]/32768.0);
         }
