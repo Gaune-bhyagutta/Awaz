@@ -346,7 +346,7 @@ public class MainActivity extends AppCompatActivity {
                     float[] audioFloat = new float[audioData.length];
 
                     //sending audioData to graph fragment
-                    graphFragment.updateRecordGraph(audioFloats);
+                    //graphFragment.updateRecordGraph(audioFloats);
                     int recordValueToGraph;
 
                     float decibel =0;

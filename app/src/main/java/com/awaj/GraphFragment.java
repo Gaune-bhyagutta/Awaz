@@ -32,7 +32,7 @@ public class GraphFragment extends Fragment {
      * 0-Wave 1-Thread
      */
     public static int GRAPH_VIZ_MODE = 0;
-    public static int GRAPH_REFRESH_DELAY = 10;
+    public static int GRAPH_REFRESH_DELAY = 1;
     /**
      * 0-AMP 1-FREQ
      */
@@ -155,11 +155,11 @@ public class GraphFragment extends Fragment {
             float X1 = 0;
             float Y1 = canvas.getHeight() / 2;
             float X2, Y2;
-            double heightNormalizer;
+            double heightNormalizer = 0;
             if (GRAPH_INFO_MODE == 0) {
                 /**Amplitude*/
                 heightNormalizer = (canvas.getHeight() / 2) * 0.00003051757812;
-            } else {
+            } else if(GRAPH_INFO_MODE==1){
                 /**Freq*/
                 heightNormalizer = 1;
                 recordBuffIndex = 1;
