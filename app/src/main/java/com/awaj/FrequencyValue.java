@@ -3,8 +3,9 @@ package com.awaj;
 public class FrequencyValue {
     public static float getFundamentalFrequency (float[] amplitude){
         float fundamentalFrequency;
-        //double correctFactor = 0.986;
-        float maxAmplitude=0;int i_max=0;
+        float correctFactor = 1.082f;
+        float maxAmplitude=0;
+        int i_max=0;
         int length=amplitude.length/2;
         float[] harmonics1= downSample(amplitude,2);
         float[] harmonics2= downSample(amplitude,3);
@@ -23,7 +24,7 @@ public class FrequencyValue {
 
         }
 
-        fundamentalFrequency= (float)(i_max*MainActivity.resolution);
+        fundamentalFrequency= (float)(i_max*MainActivity.resolution*correctFactor);
         return fundamentalFrequency;
     }
     public static float[] downSample(float[] input, int downSamplingRate){

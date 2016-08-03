@@ -21,6 +21,7 @@ import android.widget.ImageView;
 
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
@@ -32,21 +33,20 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.StreamCorruptedException;
+import java.io.StringReader;
 
 
 public class MainActivity extends AppCompatActivity {
 
 
-    ImageView homeIV,listIV,settingsIV;
+    ImageView homeIV, listIV, settingsIV;
     static TextView timerTV;
-    final Timer timerStartObj = new Timer(3000000,1000);
+    final Timer timerStartObj = new Timer(3000000, 1000);
     static ImageView recLogo;
 
 
-
-
     public static float frequency;
-
 
 
     //Insatnce Variable And Constants Initialization/Declaration
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     AudioRecordClass audioRecordClass;
     AudioPlayClass audioPlayClass;
 
-    int rec_btn_count = 0, play_btn_count =0;   //To Know Button was Pressed
+    int rec_btn_count = 0, play_btn_count = 0;   //To Know Button was Pressed
     private boolean isRecording = false;    //To Know RECORDING Or STOPPED
     private boolean isPlaying = false;//To Know PLAYING or STOPPED
     private static int playState = 0;   //TO Know RECORDING or PLAYING
@@ -94,14 +94,10 @@ public class MainActivity extends AppCompatActivity {
         play = (Button) findViewById(R.id.play);
 
 
-
-
-
         FragmentManager myFragmentManager = getSupportFragmentManager();
         FragmentTransaction myFragmentTransaction = myFragmentManager.beginTransaction();
         myFragmentTransaction.add(R.id.graphFragmentLL, graphFragment, " ");
         myFragmentTransaction.commit();
-
 
 
         /**LIST FRAGMENT*/
@@ -138,16 +134,14 @@ public class MainActivity extends AppCompatActivity {
         /**Start of Record Button*/
 
 
-        if(rec !=null) {
+        if (rec != null) {
             rec.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v){
+                public void onClick(View v) {
 
                     audioRecordClass = new AudioRecordClass();
 
-                    if (rec_btn_count == 0){
-
-
+                    if (rec_btn_count == 0) {
                         /**Code to handle click of "RECORD" button*/
                         playState = 0;
                         isRecording = true;
@@ -164,9 +158,6 @@ public class MainActivity extends AppCompatActivity {
 
                         timerTV.setText("00:00:00");
                         timerStartObj.start();
-
-//                        freqTV.setText(Float.toString(frequency));
-
                     } else if (rec_btn_count == 1) {
                         /**Code to handle click of "Rec-STOP" button*/
                         isRecording = false;
@@ -175,10 +166,10 @@ public class MainActivity extends AppCompatActivity {
 
                         timerStartObj.cancel();
 
-                        timerStartObj.SS=0L;
-                        timerStartObj.MM=0L;
-                        timerStartObj.HH=0L;
-                        timerStartObj.MS=0L;
+                        timerStartObj.SS = 0L;
+                        timerStartObj.MM = 0L;
+                        timerStartObj.HH = 0L;
+                        timerStartObj.MS = 0L;
 
 
                     }
@@ -195,11 +186,11 @@ public class MainActivity extends AppCompatActivity {
                     audioPlayClass = new AudioPlayClass();
 
 
-                    if(play_btn_count == 0){
+                    if (play_btn_count == 0) {
 
 
                         //PLAY Buttton
-                        playState =1;
+                        playState = 1;
 
                         play_btn_count = 1;
                         Log.d(TAG, "Clicked - play audio");
@@ -222,9 +213,7 @@ public class MainActivity extends AppCompatActivity {
                         timerTV.setText("00:00:00");
                         timerStartObj.start();
 
-                    }
-
-                    else if (play_btn_count == 1){
+                    } else if (play_btn_count == 1) {
 
 
                         /**Code to pause/stop the playback*/
@@ -236,10 +225,10 @@ public class MainActivity extends AppCompatActivity {
 
                         timerStartObj.cancel();
 
-                        timerStartObj.SS=0L;
-                        timerStartObj.MM=0L;
-                        timerStartObj.HH=0L;
-                        timerStartObj.MS=0L;
+                        timerStartObj.SS = 0L;
+                        timerStartObj.MM = 0L;
+                        timerStartObj.HH = 0L;
+                        timerStartObj.MS = 0L;
 
 
                     }
@@ -250,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Start of AudioRecordClass (inner Class)
 
-    public class AudioRecordClass extends AsyncTask<Void,Float,Void>{
+    public class AudioRecordClass extends AsyncTask<Void, Float, Void> {
 
         public Boolean recording = true;
 
@@ -258,20 +247,21 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             startRecord();
-            //publishProgress();
             return null;
         }
 
 
         @Override
-        protected void onProgressUpdate(Float... values ) {
-            //super.onProgressUpdate(values);
-            decibelTV.setText(String.valueOf(values[0]));
-            frequencyTV.setText(String.valueOf(values[1]));
+        protected void onProgressUpdate(Float... values) {
+            String decibelDispaly = String.valueOf(values[0]).substring(0,6)+"dB";
+            String frequencyDisplay = String.valueOf(values[1]) + "Hz";
+
+            decibelTV.setText(decibelDispaly);
+            frequencyTV.setText(frequencyDisplay);
             //notesTV.setText(String.valueOf(values[2]));
         }
 
-        public void startRecord(){
+        public void startRecord() {
 
             Log.d(TAG, "Thread - Start record");
 //        /**RECORDING PROCESS:
@@ -295,7 +285,7 @@ public class MainActivity extends AppCompatActivity {
 //                ONE- as extension Sound.pcm
 //            15. AND MOST IMPORTANT THING TO REMEMBER :- OUR AMPLITUDE IS REPRESENTED BY 16 bit. SO WE USE SHORT
 //         */
-            File filePcm = new File(Environment.getExternalStorageDirectory(),"Sound.pcm");
+            File filePcm = new File(Environment.getExternalStorageDirectory(), "Sound.pcm");
 
 
             OutputStream outputStream = null;
@@ -310,12 +300,12 @@ public class MainActivity extends AppCompatActivity {
                 bufferedOutputStream = new BufferedOutputStream(outputStream);
                 dataOutputStream = new DataOutputStream(bufferedOutputStream);
 
-            /**Call the static class of Audio Record to get the Buffer size in Byte that can handle the Audio data values based on our SAMPLING RATE (44100 hz or frame per second in our case)*/
+                /**Call the static class of Audio Record to get the Buffer size in Byte that can handle the Audio data values based on our SAMPLING RATE (44100 hz or frame per second in our case)*/
                 int minBufferSizeInBytes = getRecordBufferSize();//WE CAN FIX THE BUFFER SZIE BY OURSELVES
 
                 // The array short that will store the Audio data that we get From the mic.
                 short[] audioData = new short[minBufferSizeInBytes];
-                float[] audioFloatsForFFT= new float[audioData.length];
+                float[] audioFloatsForFFT = new float[audioData.length];
 
                 //Create a Object of the AudioRecord class with the NECESSARY CONFIGURATION
                 audioRecord = new AudioRecord(AUDIO_SOURCE,
@@ -332,7 +322,7 @@ public class MainActivity extends AppCompatActivity {
                 audioRecord.startRecording();//Start Recording Based on
 
                 // it means while the user have  not pressed the RECORD-STOP Button
-                while(isRecording){
+                while (isRecording) {
 
 
 //                /** numberOfShort=minBufferSize/2
@@ -349,27 +339,29 @@ public class MainActivity extends AppCompatActivity {
                     //graphFragment.updateRecordGraph(audioFloatsForFFT);
                     int recordValueToGraph;
 
-                    float decibel =0;
-                    float decibelTotal=0;
-                    int decibelCount=0;
-                    for(int i = 0; i < numberOfShort; i++){
+                    float decibel = 0;
+                    float decibelTotal = 0;
+                    int decibelCount = 0;
+                    for (int i = 0; i < numberOfShort; i++) {
                         //dataOutputStream.writeShort(audioData[i]); // Store in Sound.haha file as short-short-short--
                         dataOutputStream.writeShort(audioData[i]);
-                        if(audioData[i]!=0) {
+                        if (audioData[i] != 0) {
                             decibel = (float) (20 * Math.log10(Math.abs((int) audioData[i]) / 32678.0));
                             decibelCount++;
                         }
                         decibelTotal = decibel + decibelTotal;
                         //recordValueToGraph = (int)audioData[i];//Convert the short to int to store in txt file
-                        audioInt[i]=(int)audioData[i];
+                        audioInt[i] = (int) audioData[i];
                         /**This one is for FFT*/
                         audioFloatsForFFT[i] = (float) audioInt[i];
                         /**This one is for Amplitude Visualization*/
-                        audioFloatsForAmp[i]=(float)audioInt[i];
+                        audioFloatsForAmp[i] = (float) audioInt[i];
 
 
                     }
-                    float decibelAverage = decibelTotal / decibelCount;
+                    float decibelAverage;
+                    decibelAverage = decibelTotal / decibelCount;
+//                    String.format("%.2f",decibelAverage);
 
                     float[] fftOutput = FftOutput.callMainFft(audioFloatsForFFT);
 
@@ -382,7 +374,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     /**Fundamental Frequency*/
                     frequency = FrequencyValue.getFundamentalFrequency(fftOutput);
-                    publishProgress(decibelAverage,frequency);
+                    publishProgress(decibelAverage, frequency);
 
                 }
                 audioRecord.stop();
@@ -425,7 +417,7 @@ public class MainActivity extends AppCompatActivity {
             play.setEnabled(true);
 //            Toast.makeText(getApplicationContext(), "Audio recorded successfully",Toast.LENGTH_SHORT).show();
 
-            rec_btn_count =0;
+            rec_btn_count = 0;
 
             Log.d(TAG, "onPost execute stop recording");
 
@@ -433,9 +425,10 @@ public class MainActivity extends AppCompatActivity {
     }//End of AudioRecordClass
 
     //Start of AudioPlayClass
-    public class AudioPlayClass extends AsyncTask<Void,Void,Boolean>{
+    public class AudioPlayClass extends AsyncTask<Void, Void, Boolean> {
 
         Boolean sucessfull;
+
         @Override
         protected Boolean doInBackground(Void... voids) {
             sucessfull = false;
@@ -447,16 +440,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //Start of playRecord()
-        public void playRecord(){
+        public void playRecord() {
 
             Log.d(TAG, "playRecord()");
             File filePcm = new File(Environment.getExternalStorageDirectory(), "Sound.pcm");
 
             int minBufferSize = getPlayBufferSize();
 
-            short[] audioData = new short[minBufferSize/4];
-            int audioInt[] = new int[minBufferSize/4];
-            float audioFloat[] = new float[minBufferSize/4];
+            short[] audioData = new short[minBufferSize / 4];
+            int audioInt[] = new int[minBufferSize / 4];
+            float audioFloat[] = new float[minBufferSize / 4];
 
             InputStream inputStream = null;
             BufferedInputStream bufferedInputStream = null;
@@ -485,25 +478,25 @@ public class MainActivity extends AppCompatActivity {
                     int i = 0;
                     while (dataInputStream.available() > 0 && i < audioData.length) {
                         audioData[i] = dataInputStream.readShort();
-                        audioInt[i]=(int)audioData[i];
-                        audioFloat[i]=(float) audioInt[i];
+                        audioInt[i] = (int) audioData[i];
+                        audioFloat[i] = (float) audioInt[i];
 
                         /**This one is for FFT*/
                         audioFloatsForFFT[i] = (float) audioInt[i];
                         /**This one is for Amplitude Visualization*/
-                        audioFloatsForAmp[i]=(float)audioInt[i];
+                        audioFloatsForAmp[i] = (float) audioInt[i];
                         i++;
                     }
                     audioTrack.write(audioData, 0, audioData.length);
 
 
-                        /**Amplitude Mode*/
-                    if(GraphFragment.GRAPH_INFO_MODE == 0){
-                    graphFragment.updatePlayGraph(audioFloatsForAmp);
+                    /**Amplitude Mode*/
+                    if (GraphFragment.GRAPH_INFO_MODE == 0) {
+                        graphFragment.updatePlayGraph(audioFloatsForAmp);
                     }
-                        /**Frequency Mode*/
-                    else if(GraphFragment.GRAPH_INFO_MODE == 1){
-                    graphFragment.updatePlayGraph(FftOutput.callMainFft(audioFloatsForFFT));
+                    /**Frequency Mode*/
+                    else if (GraphFragment.GRAPH_INFO_MODE == 1) {
+                        graphFragment.updatePlayGraph(FftOutput.callMainFft(audioFloatsForFFT));
                     }
                 }
                 audioTrack.pause();
@@ -512,7 +505,7 @@ public class MainActivity extends AppCompatActivity {
                 audioTrack.release();
 
 
-                sucessfull=true;
+                sucessfull = true;
 
                 Log.d(TAG, "end of playrecord()");
 
@@ -571,9 +564,9 @@ public class MainActivity extends AppCompatActivity {
             play_btn_count = 0;
 
 
-           Log.d(TAG, "onPostExecute");
+            Log.d(TAG, "onPostExecute");
 
-            isPlaying=false;
+            isPlaying = false;
 
             timerStartObj.cancel();
             timerStartObj.SS = 0L;
@@ -586,18 +579,19 @@ public class MainActivity extends AppCompatActivity {
     }//End Of AudioPlayClass
 
 
-    public static int playState(){
+    public static int playState() {
         return playState;
     }
 
     // Returns the minimum buffer size required for the successful creation of an AudioRecord object, in byte units.
-    public int getRecordBufferSize(){
+    public int getRecordBufferSize() {
         int minBufferSize = AudioRecord.getMinBufferSize(SAMPLE_RATE_IN_HZ,
                 CHANNELS_CONFIGURATION,
                 AUDIO_ENCODING);
         return minBufferSize;
     }
-    public int getPlayBufferSize(){
+
+    public int getPlayBufferSize() {
         int minBufferSize = AudioTrack.getMinBufferSize(SAMPLE_RATE_IN_HZ,
                 CHANNELS_CONFIGURATION,
                 AUDIO_ENCODING);

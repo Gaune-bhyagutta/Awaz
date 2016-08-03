@@ -36,7 +36,7 @@ public class GraphFragment extends Fragment {
     /**
      * 0-AMP 1-FREQ
      */
-    public static int GRAPH_INFO_MODE = 1;
+    public static int GRAPH_INFO_MODE = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -111,6 +111,8 @@ public class GraphFragment extends Fragment {
             float Y1 = canvas.getHeight() / 2;
             float X2, Y2;
             double heightNormalizer = 0;
+            /**Left Side Limiter for Visualization*/
+            int dim = canvas.getHeight()/30;
             if (GRAPH_INFO_MODE == 0) {
                 /**Amp*/
                 heightNormalizer = (canvas.getHeight() / 2) * 0.00003051757812;
@@ -119,7 +121,7 @@ public class GraphFragment extends Fragment {
                 heightNormalizer = 1;
                 playBuffIndex = 1;
             }
-            for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
+            for (X1 = dim; X1 <= canvas.getWidth(); X1++) {
                 try {
                     graph_height = (float) (playAudioData[playBuffIndex] * heightNormalizer);
                 } catch (NullPointerException e) {
@@ -153,6 +155,8 @@ public class GraphFragment extends Fragment {
             float Y1 = canvas.getHeight() / 2;
             float X2, Y2;
             double heightNormalizer = 0;
+            /**Left Side Limiter for Visualization*/
+            int dim = canvas.getHeight()/30;
             if (GRAPH_INFO_MODE == 0) {
                 /**Amplitude*/
                 heightNormalizer = (canvas.getHeight() / 2) * 0.00003051757812;
@@ -162,7 +166,7 @@ public class GraphFragment extends Fragment {
                 recordBuffIndex = 1;
             }
 
-            for (X1 = 0; X1 < canvas.getWidth(); X1++) {
+            for (X1 = dim; X1 < canvas.getWidth(); X1++) {
                 try {
                     graph_height = (float) (recordAudioData[recordBuffIndex] * heightNormalizer);
                 } catch (NullPointerException e) {
@@ -226,25 +230,18 @@ public class GraphFragment extends Fragment {
 
             if (GRAPH_INFO_MODE == 0) {
                 /**AMP*/
+                /**Vertical Labels*/
+                int dbIncrement = -90;
+                float yDecrement = 0;
+                for (i = 0; i < cgh2; i++) {
+                    canvas.drawText(Integer.toString(dbIncrement), 0, cgh2 - yDecrement, textObj);
+                    dbIncrement += 10;
+                    yDecrement += meshDim * 2;
+                }
             } else if (GRAPH_INFO_MODE == 1) {
                 /**Freq Labels*/
                 /**BASELINE*/
                 canvas.drawLine(0, cgh2, cgw, cgh2, textObj);
-
-                /**Vertical Labels*/
-                float dbIncrement = 0;
-                float yDecrement = 0;
-                for (i = 0; i < cgh2; i++) {
-                    canvas.drawText(Float.toString(dbIncrement), 0, cgh2, textObj);
-
-
-                }
-//                canvas.drawText("10",0,cgh2-100,textObj);
-//                canvas.drawText("20",0,cgh2-200,textObj);
-//                canvas.drawText("30",0,cgh2-300,textObj);
-//                canvas.drawText("40",0,cgh2-400,textObj);
-//                canvas.drawText("50",0,cgh2-500,textObj);
-//                canvas.drawText("60",0,cgh2-600,textObj);
 
                 /**Horizontal Labels*/
                 float freqValue = 0;
