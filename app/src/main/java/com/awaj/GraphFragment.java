@@ -105,7 +105,7 @@ public class GraphFragment extends Fragment {
         public void plotPlayBackVisualization(Canvas canvas, Paint graphVisualizationPO) {
 //            int playBuffIndex = (playAudioData.length - canvas.getWidth()) / 2;
             int playBuffIndex = 0;
-            float newX, newY;
+            float newX, newY, xIncrementFactor=1;
             float oldX = 0, oldY = canvas.getHeight() / 2;
             float X1 = 0;
             float Y1 = canvas.getHeight() / 2;
@@ -116,14 +116,15 @@ public class GraphFragment extends Fragment {
                 heightNormalizer = (canvas.getHeight() / 2) * 0.00003051757812;
             } else {
                 /**Freq*/
+                int freq=7000;
                 heightNormalizer = 1;
-                playBuffIndex = 1;
+                xIncrementFactor=canvas.getWidth()/(freq/MainActivity.resolution);
             }
 //<<<<<<< HEAD
 //            for (X1 = 0; X1 < canvas.getWidth(); X1+=(canvas.getWidth()/605))
 //            try {
 //=======
-            for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
+            for (X1 = 0; X1 <= canvas.getWidth(); X1+=xIncrementFactor) {
                 try {
                     graph_height = (float) (playAudioData[playBuffIndex] * heightNormalizer);
                 } catch (NullPointerException e) {

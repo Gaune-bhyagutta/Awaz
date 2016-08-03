@@ -508,7 +508,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                         /**Frequency Mode*/
                     else if(GraphFragment.GRAPH_INFO_MODE == 1){
-                    graphFragment.updatePlayGraph(FftOutput.callMainFft(audioFloatsForFFT));
+                    graphFragment.updatePlayGraph(fftOutput);
                     }
                     frequency = FrequencyValue.getFundamentalFrequency(fftOutput);
                     publishProgress(decibelAverage,frequency);
