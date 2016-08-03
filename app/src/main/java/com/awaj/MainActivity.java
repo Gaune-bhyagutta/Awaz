@@ -363,14 +363,16 @@ public class MainActivity extends AppCompatActivity {
                         //recordValueToGraph = (int)audioData[i];//Convert the short to int to store in txt file
                         audioInt[i]=(int)audioData[i];
                         audioFloats[i] = (float) audioInt[i];
+                        audioFloat[i]=(float)audioInt[i];
 
 
                     }
                     float decibelAverage = decibelTotal / decibelCount;
+
                     float[] fftOutput = FftOutput.callMainFft(audioFloats);
                     if (GraphFragment.GRAPH_INFO_MODE == 0) {
                         /**Amplitude Mode*/
-                        graphFragment.updateRecordGraph(audioFloats);
+                        graphFragment.updateRecordGraph(audioFloat);
                     } else if (GraphFragment.GRAPH_INFO_MODE == 1) {
                         /**Frequency Mode*/
                         graphFragment.updateRecordGraph(fftOutput);

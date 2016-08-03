@@ -5,6 +5,7 @@ public class FrequencyValue {
         float fundamentalFrequency;
         //double correctFactor = 0.986;
         float maxAmplitude=0;int i_max=0;
+        int length=amplitude.length/2;
         float[] harmonics1= downSample(amplitude,2);
         float[] harmonics2= downSample(amplitude,3);
         float[] harmonics3= downSample(amplitude,4);
@@ -12,7 +13,7 @@ public class FrequencyValue {
         float[] sum=new float[amplitude.length];
 
 
-        for(int i=0;i<amplitude.length;i++){
+        for(int i=0;i<length;i++){
             sum[i]=amplitude[i]*harmonics1[i]*harmonics2[i]*harmonics3[i]*harmonics4[i];
 
             if(sum[i]>maxAmplitude){
@@ -26,7 +27,7 @@ public class FrequencyValue {
         return fundamentalFrequency;
     }
     public static float[] downSample(float[] input, int downSamplingRate){
-        int N= input.length;
+        int N= input.length/2;
         float[] downSampledSignal = new float[N];
         for(int i=0;i<N;i++){
             if((i)*downSamplingRate<N) {
