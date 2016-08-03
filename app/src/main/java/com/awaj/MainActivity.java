@@ -481,19 +481,18 @@ public class MainActivity extends AppCompatActivity {
 
                 float audioFloatsForFFT[] = new float[audioData.length];
                 float audioFloatsForAmp[] = new float[audioData.length];
-
                 while (isPlaying && dataInputStream.available() > 0) {
                     int i = 0;
                     while (dataInputStream.available() > 0 && i < audioData.length) {
                         audioData[i] = dataInputStream.readShort();
                         audioInt[i]=(int)audioData[i];
                         audioFloat[i]=(float) audioInt[i];
-                        i++;
 
                         /**This one is for FFT*/
                         audioFloatsForFFT[i] = (float) audioInt[i];
                         /**This one is for Amplitude Visualization*/
                         audioFloatsForAmp[i]=(float)audioInt[i];
+                        i++;
                     }
                     audioTrack.write(audioData, 0, audioData.length);
 

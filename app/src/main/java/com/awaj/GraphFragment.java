@@ -94,11 +94,10 @@ public class GraphFragment extends Fragment {
             drawMeshLines(canvas);
             if (MainActivity.playState() == 1) {
                 plotPlayBackVisualization(canvas, graphVisualizationPO);
-            } else {
+            } else if(MainActivity.playState() != 1){
                 plotRecordingVisualization(canvas, graphVisualizationPO);
             }
         }
-
         /**
          * End of onDraw
          */
@@ -106,13 +105,12 @@ public class GraphFragment extends Fragment {
         public void plotPlayBackVisualization(Canvas canvas, Paint graphVisualizationPO) {
             int playBuffIndex = (playAudioData.length - canvas.getWidth()) / 2;
 //            int playBuffIndex = 1;
-            int i = 0;
             float newX, newY;
             float oldX = 0, oldY = canvas.getHeight() / 2;
             float X1 = 0;
             float Y1 = canvas.getHeight() / 2;
             float X2, Y2;
-            double heightNormalizer;
+            double heightNormalizer = 0;
             if (GRAPH_INFO_MODE == 0) {
                 /**Amp*/
                 heightNormalizer = (canvas.getHeight() / 2) * 0.00003051757812;
@@ -124,7 +122,6 @@ public class GraphFragment extends Fragment {
             for (X1 = 0; X1 <= canvas.getWidth(); X1++)
                 try {
                     graph_height = (float) (playAudioData[playBuffIndex] * heightNormalizer);
-//                      Log.d("VIVZ","M:R Graph Height: "+graph_height);
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
@@ -143,15 +140,14 @@ public class GraphFragment extends Fragment {
                 oldY = newY;
             }
             playBuffIndex++;
-//                i++;
             postInvalidateDelayed(GRAPH_REFRESH_DELAY);
         }
 
         public void plotRecordingVisualization(Canvas canvas, Paint graphVisualizationPO) {
-            float newX, newY;
-            float oldX = 0, oldY = canvas.getHeight() / 2;
             int recordBuffIndex = (recordAudioData.length - canvas.getWidth()) / 2;
 //            int recordBuffIndex = 1;
+            float newX, newY;
+            float oldX = 0, oldY = canvas.getHeight() / 2;
             float X1 = 0;
             float Y1 = canvas.getHeight() / 2;
             float X2, Y2;
@@ -167,9 +163,7 @@ public class GraphFragment extends Fragment {
 
             for (X1 = 0; X1 < canvas.getWidth(); X1++) {
                 try {
-//                        Log.d("VIVZ", "I:" + recordBuffIndex + " Rec Aud D: " + recordAudioData[recordBuffIndex]);
                     graph_height = (float) (recordAudioData[recordBuffIndex] * heightNormalizer);
-                    //                    Log.d("VIVZ","M:R Graph Height: "+graph_height);
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
