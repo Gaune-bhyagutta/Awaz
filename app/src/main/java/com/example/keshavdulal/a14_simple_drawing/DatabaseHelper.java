@@ -18,18 +18,22 @@ import java.io.OutputStream;
 
         private static final String DATABASE_NAME = "awajDatabase.db";
         private static final String DATABASE_PATH = "data/data/com.example.keshavdulal.a14_simple_drawing/databases/";
-        private static final String TABLE_NAME = "NOTE_TABLE";
+        private static final String TABLE_NAME = "NOTE_TBL";
         private static final String UID = "_id";
-        private static final String NOTE = "Note";
-        private static final String FREQ = "Freq";
-        private static final String MIN_FREQ ="Min_Freq";
-        private static final String MAX_FREQ ="Max_Freq";
+        private static final String NOTE = "note";
+        private static final String FREQ = "freq";
+        private static final String MIN_FREQ ="min_freq";
+        private static final String MAX_FREQ ="max_freq";
         private static final int DATABASE_VERSION = 1;
         private static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "(" + UID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NOTE +
                 " VARCHAR(255), "+FREQ+" FLOAT, "+MIN_FREQ+" FLOAT, "+MAX_FREQ+" FLOAT)";
         private Context context;
         private static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
         private SQLiteDatabase myDatabase;
+        double freq[]= new double[107];
+        double min_freq[]=new double[107];
+        double max_freq[]=new double[107];
+        String note[] = new String[107];
 
         DatabaseHelper(Context context) {
             //calling the super class constructor
@@ -117,40 +121,35 @@ import java.io.OutputStream;
 
         public void getAllData(){
             SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-            String note = null;
-            float freq,min_freq,max_freq;
+
+
             //select id,note,frequency from table
             String[] columns = {UID, NOTE, FREQ,MIN_FREQ,MAX_FREQ };
             Cursor cursor =sqLiteDatabase.query(TABLE_NAME, columns, null, null, null, null, null);
+            int i = 0;
             while (cursor.moveToNext()){
                 int index1 = cursor.getColumnIndex(NOTE);
                 int index2 = cursor.getColumnIndex(FREQ);
                 int index3 = cursor.getColumnIndex(MIN_FREQ);
                 int index4 = cursor.getColumnIndex(MAX_FREQ);
                 int cid = cursor.getInt(0);
-                note = cursor.getString(index1);
-                freq = cursor.getFloat(index2);
-                min_freq = cursor.getFloat(index3);
-                max_freq = cursor.getFloat(index4);
+                note[i] = cursor.getString(index1);
+                freq[i] = cursor.getFloat(index2);
+                min_freq[i] = cursor.getFloat(index3);
+                max_freq[i] = cursor.getFloat(index4);
+                i++;
             }
         }
 
-        public String getNote(float freq){
-            SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-            String note = null;
-            // String freqString = ((String) freq);
-            //select id,note,frequency from table
-            String[] columns = {UID, NOTE,FREQ, MIN_FREQ, MAX_FREQ };
-            // String[] selectionArgs = {freq, freq};
-            //Cursor cursor =sqLiteDatabase.query(databaseHelper.TABLE_NAME, columns, "?>"+databaseHelper.MIN_FREQ+" AND ?<"
-            // +databaseHelper.MAX_FREQ, selectionArgs, null, null, null,null);
-            //while (cursor.moveToNext()){
-            // int index1 = cursor.getColumnIndex(databaseHelper.NOTE);
-            // note = cursor.getString(index1);
-            //}
-            return note;
+       public int matchFreq(double freq){
+            int i,j,match=200;
+            for (i=0;i<107;i++){
+                if(freq<max_freq[i] && freq>min_freq[i]){
+                    match = i;
+                }
+            }
+            return match;
         }
-
 
  }
 

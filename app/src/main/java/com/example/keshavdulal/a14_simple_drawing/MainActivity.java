@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         Stetho.initializeWithDefaults(this);
         databaseHelper = new DatabaseHelper(this);
 
+
         try{
             databaseHelper.createDatabase();
         }catch (IOException e){
@@ -71,7 +72,10 @@ public class MainActivity extends AppCompatActivity {
         }catch (SQLException e){
             throw e;
         }
-
+        databaseHelper.getAllData();
+        double freqTest =20.7;
+        int match = databaseHelper.matchFreq(freqTest);
+        Log.d("VIVZ", "match="+match);
 
         setContentView(R.layout.activity_main);
 
