@@ -1,10 +1,17 @@
 package com.awaj;
 
+import java.util.Arrays;
+
 public class FrequencyValue {
     public static float getFundamentalFrequency (float[] amplitude){
-
+        int[]  peakIndices = FrequencyValue.findLargest(amplitude,5);
+        System.out.println("Amplitude peak Values");
+        for(int i=0;i<peakIndices.length;i++) {
+            System.out.println(peakIndices[i] + " amplitude = "+ amplitude[peakIndices[i]] + " frequency "+ (peakIndices[i]*MainActivity.resolution));
+        }
         float fundamentalFrequency, maxAmplitude=0;
         float correctFactor = 1.082f;
+//        float correctFactor=1;
         int i_max=0, length =amplitude.length/2;
 
         float[] harmonics1= downSample(amplitude,2);
@@ -38,11 +45,41 @@ public class FrequencyValue {
 
     }
 
+    public static int[] findLargest(float[] array, int numberOfMaximumValues){
+        int length= array.length/2;
+        float max=0 , largest=100;
+        int i_max=0;
+        int[] indices= new int[numberOfMaximumValues];
+        for(int i=0;i<indices.length;i++){
+            for(int j=0;j<length;j++){
+                if(array[j]<largest && array[j]>max){
+                    max=array[j];
+                    i_max=j;
+                }
+            }
+            largest=max;
+            max =0;
+            indices[i]=i_max;
+        }
+        return indices;
+
+    }
+
+    public static float findMaxValue(float[] array){
+        float max=0;
+        for(int i=0;i<array.length;i++){
+            if(array[i]>max){
+                max=array[i];
+            }
+        }
+        return max;
+    }
+
 
 }
 //    public static float getFundamentalFrequency(float[] amplitude) {
 //        float fundamentalFrequency=0;
-//        float correction_factor=1.082f;
+//        double correction_factor=1.082;
 //        int i_max=0;
 //        float max=0;
 //        for(int i=0;i<amplitude.length/2;i++){
@@ -51,7 +88,7 @@ public class FrequencyValue {
 //                i_max =i;
 //            }
 //        }
-//        fundamentalFrequency= (i_max)*MainActivity.resolution*correction_factor;
+//        fundamentalFrequency= ((i_max)*MainActivity.resolution*(float)correction_factor);
 //
 //        return fundamentalFrequency;
 //    }

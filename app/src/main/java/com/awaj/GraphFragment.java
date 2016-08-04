@@ -31,7 +31,7 @@ public class GraphFragment extends Fragment {
      * 0-Wave 1-Thread
      */
     public static int GRAPH_VIZ_MODE = 0;
-    public static int GRAPH_REFRESH_DELAY = 0;
+    public static int GRAPH_REFRESH_DELAY = 10;
     /**
      * 0-AMP 1-FREQ
      */
@@ -101,12 +101,11 @@ public class GraphFragment extends Fragment {
         public void plotPlayBackVisualization(Canvas canvas, Paint graphVisualizationPO) {
 //            int playBuffIndex = (playAudioData.length - canvas.getWidth()) / 2;
             int playBuffIndex = 0;
-            float newX, newY;
+            float newX, newY, xIncrementFactor = 1;
             float oldX = 0, oldY = canvas.getHeight() / 2;
             float X1 = 0;
             float Y1 = canvas.getHeight() / 2;
             float X2, Y2;
-            float xIncrementFactor = 1;
             double heightNormalizer = 0;
 
             /**Left Side Limiter for Visualization*/
@@ -114,14 +113,14 @@ public class GraphFragment extends Fragment {
             if (GRAPH_DOMAIN_MODE == 0) {
                 /**Amp*/
                 heightNormalizer = (canvas.getHeight() / 2) * 0.00003051757812;
-            } else {
+            } else if(GRAPH_VIZ_MODE == 1){
                 /**Freq*/
-                heightNormalizer = 1;
-                playBuffIndex = 1;
                 int freq = 7000;
-                xIncrementFactor = canvas.getWidth()/(freq/MainActivity.resolution);
+                heightNormalizer = 1;
+                playBuffIndex = 0;
+                xIncrementFactor = canvas.getWidth() / (freq / MainActivity.resolution);
             }
-            for (X1 = dim; X1 <= canvas.getWidth(); X1+=xIncrementFactor) {
+            for (X1 = dim; X1 <= canvas.getWidth(); X1 += xIncrementFactor) {
                 try {
                     graph_height = (float) (playAudioData[playBuffIndex] * heightNormalizer);
                 } catch (NullPointerException e) {
@@ -144,6 +143,11 @@ public class GraphFragment extends Fragment {
                 playBuffIndex++;
                 postInvalidateDelayed(GRAPH_REFRESH_DELAY);
             }
+            int maxValue = (int) (FrequencyValue.findMaxValue(playAudioData) * heightNormalizer);
+            int horizontalBarHeight = (int) ((canvas.getHeight() / 2) - maxValue);
+            graphVisualizationPO.setColor(Color.parseColor("#ff0000"));
+            graphVisualizationPO.setStrokeWidth(2);
+            canvas.drawLine(0, horizontalBarHeight, canvas.getWidth(), horizontalBarHeight, graphVisualizationPO);
         }
 
         public void plotRecordingVisualization(Canvas canvas, Paint graphVisualizationPO) {
@@ -154,8 +158,8 @@ public class GraphFragment extends Fragment {
             float X1 = 0;
             float Y1 = canvas.getHeight() / 2;
             float X2, Y2;
-            double heightNormalizer = 0;
             float xIncrementFactor = 1;
+            double heightNormalizer = 0;
             /**Left Side Limiter for Visualization*/
             int dim = canvas.getHeight() / 30;
             if (GRAPH_DOMAIN_MODE == 0) {
@@ -164,16 +168,15 @@ public class GraphFragment extends Fragment {
 //                recordBuffIndex = (recordAudioData.length - canvas.getWidth()) / 2;
             } else if (GRAPH_DOMAIN_MODE == 1) {
                 /**Freq*/
+                int freq = 7000;
                 heightNormalizer = 1;
 //                recordBuffIndex = 0;
-                int freq = 7000;
-                xIncrementFactor = canvas.getWidth()/(freq/MainActivity.resolution);
+                xIncrementFactor = canvas.getWidth() / (freq / MainActivity.resolution);
             }
 
-            for (X1 = dim; X1 <= canvas.getWidth(); X1+=xIncrementFactor) {
+            for (X1 = dim; X1 <= canvas.getWidth(); X1 += xIncrementFactor) {
                 try {
                     graph_height = (float) (recordAudioData[recordBuffIndex] * heightNormalizer);
-
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
@@ -183,13 +186,6 @@ public class GraphFragment extends Fragment {
                 if (GRAPH_VIZ_MODE == 0) {
                     /**Wave View*/
                     canvas.drawLine(X1, Y1, X2, Y2, graphVisualizationPO);
-
-                    /**Expt*/
-//                    int horizontalBarHeight =(int) ((canvas.getHeight()/2)-graph_height);
-//                    canvas.drawLine(0,horizontalBarHeight,canvas.getWidth(),horizontalBarHeight,graphVisualizationPO);
-//                    graphVisualizationPO.setColor(Color.parseColor("#dddddd"));
-//                    canvas.drawLine(0,horizontalBarHeight,canvas.getWidth(),horizontalBarHeight,graphVisualizationPO);
-
                 } else if (GRAPH_VIZ_MODE == 1) {
                     /**Thread View*/
                     newX = X2;
@@ -201,6 +197,12 @@ public class GraphFragment extends Fragment {
                 recordBuffIndex++;
                 postInvalidateDelayed(GRAPH_REFRESH_DELAY);
             }
+            /**Expt*/
+            int maxValue = (int) (FrequencyValue.findMaxValue(recordAudioData) * heightNormalizer);
+            int horizontalBarHeight = (int) ((canvas.getHeight() / 2) - maxValue);
+            graphVisualizationPO.setColor(Color.parseColor("#ff0000"));
+            graphVisualizationPO.setStrokeWidth(2);
+            canvas.drawLine(0, horizontalBarHeight, canvas.getWidth(), horizontalBarHeight, graphVisualizationPO);
         }
     }
 
