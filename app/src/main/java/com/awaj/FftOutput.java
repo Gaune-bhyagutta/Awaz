@@ -6,30 +6,29 @@ package com.awaj;
 
 public class FftOutput {
 
-    int n, m;
-    // Lookup tables.  Only need to recompute when size of FFT changes.
+    int length, stages;
     float[] cos;
     float[] sin;
-    public FftOutput(int n) {
-        this.n = n;
-        this.m = (int)(Math.log(n) / Math.log(2));
+    public FftOutput(int length) {
+        this.length= length;
+        this.stages = (int)(Math.log(length) / Math.log(2));
         // precompute tables
-        cos = new float[n/2];
-        sin = new float[n/2];
-        for(int i=0; i<n/2; i++) {
-            cos[i] = (float)Math.cos(-2*Math.PI*i/n);
-            sin[i] = (float)Math.sin(-2*Math.PI*i/n);
+        cos = new float[length/2];
+        sin = new float[length/2];
+        double alpha=-2*Math.PI/length;
+        for(int i=0; i<length/2; i++) {
+            cos[i] = (float)Math.cos(alpha*i);
+            sin[i] = (float)Math.sin(alpha*i);
         }
     }
-    public void fft(float[] x, float[] y)
+    public void fft(float[] real, float[] imag)
     {
-        int i,j,k,n1,n2,a;
+        int k,n1,n2,a;
         float c,s,e,t1,t2;
-
+        int j=0;
         // Bit-reverse
-        j = 0;
-        n2 = n/2;
-        for (i=1; i < n - 1; i++) {
+        n2 = length/2;
+        for (int i=1; i < length - 1; i++) {
             n1 = n2;
             while ( j >= n1 ) {
                 j = j - n1;
@@ -37,18 +36,18 @@ public class FftOutput {
             }
             j = j + n1;
             if (i < j) {
-                t1 = x[i];
-                x[i] = x[j];
-                x[j] = t1;
-                t1 = y[i];
-                y[i] = y[j];
-                y[j] = t1;
+                t1 = real[i];
+                real[i] = real[j];
+                real[j] = t1;
+                t1 = imag[i];
+                imag[i] = imag[j];
+                imag[j] = t1;
             }
         }
         // FFT
         n1 = 0;
         n2 = 1;
-        for (i=0; i < m; i++) {
+        for (int i=0; i < stages; i++) {
             n1 = n2;
             n2 = n2 + n2;
             a = 0;
@@ -56,18 +55,31 @@ public class FftOutput {
             for (j=0; j < n1; j++) {
                 c = cos[a];
                 s = sin[a];
-                a +=  1 << (m-i-1);
+                a +=  1 << (stages-i-1);
 
-                for (k=j; k < n; k=k+n2) {
-                    t1 = c*x[k+n1] - s*y[k+n1];
-                    t2 = s*x[k+n1] + c*y[k+n1];
-                    x[k+n1] = x[k] - t1;
-                    y[k+n1] = y[k] - t2;
-                    x[k] = x[k] + t1;
-                    y[k] = y[k] + t2;
+                for (k=j; k < length; k=k+n2) {
+                    t1 = c*real[k+n1] - s*imag[k+n1];
+                    t2 = s*real[k+n1] + c*imag[k+n1];
+                    real[k+n1] = real[k] - t1;
+                    imag[k+n1] = imag[k] - t2;
+                    real[k] = real[k] + t1;
+                    imag[k] = imag[k] + t2;
                 }
             }
         }
+    }
+
+    public static int ReverseBits(int n, int bitsCount)
+    {
+        int reversed = 0;
+        for (int i = 0; i < bitsCount; i++)
+        {
+            int nextBit = n & 1;
+            n >>= 1;
+            reversed <<= 1;
+            reversed |= nextBit;
+        }
+        return reversed;
     }
 
     private static float[] makePowerOf2(float[] input) {

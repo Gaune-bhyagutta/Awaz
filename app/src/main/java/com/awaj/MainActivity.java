@@ -32,6 +32,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;
 
 
-    public static int noOfSamples = 4096;
+    public static int noOfSamples = getRecordBufferSize();
     public static float resolution = SAMPLE_RATE_IN_HZ / noOfSamples;
 
     @Override
@@ -591,7 +592,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Returns the minimum buffer size required for the successful creation of an AudioRecord object, in byte units.
-    public int getRecordBufferSize(){
+    public static int getRecordBufferSize(){
         int minBufferSize = AudioRecord.getMinBufferSize(SAMPLE_RATE_IN_HZ,
                 CHANNELS_CONFIGURATION,
                 AUDIO_ENCODING);
