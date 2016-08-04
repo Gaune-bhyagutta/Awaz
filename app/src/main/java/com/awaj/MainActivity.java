@@ -3,103 +3,87 @@ package com.awaj;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioFormat;
-import android.media.AudioManager;
 import android.media.AudioRecord;
 import android.media.AudioTrack;
 import android.media.MediaRecorder;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-
 import android.widget.ImageView;
-
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-
 public class MainActivity extends AppCompatActivity {
 
-    ImageView homeIV,listIV,settingsIV;
-
-    public static float frequency;
-
     //Insatnce Variable And Constants Initialization/Declaration
-    static TextView decibelTV;   //To Show Average of the decibel value after each buffer
-    static TextView frequencyTV;
-    TextView notesTV;
 
-    static Button rec;
-    static Button play;
+    private static ImageView homeIV,listIV,settingsIV;
+    private static ImageView recLogo;
 
-    public static GraphFragment graphFragment = new GraphFragment();
-    ListFragment listFragment = new ListFragment();
-
-    //Reference of AudioRecordClass and AudioPlayClass created which are INNER classes.
-    AudioRecordClass audioRecordClass;
-    AudioPlayClass audioPlayClass;
-
+    private static TextView decibelTV;   //To Show Average of the decibel value after each buffer
+    private static TextView frequencyTV;
+    private static TextView notesTV;
     public static TextView timerTV;
+
+    private static Button rec;
+    private static Button play;
+
+    static GraphFragment graphFragment = new GraphFragment();
+    private static ListFragment listFragment = new ListFragment();
+
+    private static AudioRecordClass audioRecordClass;
+    private static AudioPlayClass audioPlayClass;
+
     public static final Timer timerStartObj = new Timer(3000000, 1000);
-    public static ImageView recLogo;
-    static int rec_btn_count = 0;
-    static int play_btn_count =0;   //To Know Button was Pressed
-    public static boolean isRecording = false;    //To Know RECORDING Or STOPPED
-    public static boolean isPlaying = false;//To Know PLAYING or STOPPED
+
+    private static int rec_btn_count = 0;
+    private static int play_btn_count =0;   //To Know Button was Pressed
+    private static boolean isRecording = false;    //To Know RECORDING Or STOPPED
+    private static boolean isPlaying = false;//To Know PLAYING or STOPPED
     private static int playState = 0;   //TO Know RECORDING or PLAYING
 
-    final String TAG = MainActivity.class.getSimpleName();
+    private final String TAG = MainActivity.class.getSimpleName();
 
     //START---Audio Record and Play Parameters-----
-    public static final int AUDIO_SOURCE = MediaRecorder.AudioSource.MIC;
-    public static final int SAMPLE_RATE_IN_HZ = 44100;
-    public static final int CHANNELS_CONFIGURATION = AudioFormat.CHANNEL_IN_MONO;
-    public static final int AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;
+    // THE DEFINETIONS ARE DEFINED IN THE RESPECTIVE FUNCTION
+    private static final int AUDIO_SOURCE = setAudioSource(MediaRecorder.AudioSource.MIC);
+    private static final int SAMPLE_RATE_IN_HZ = setSampleRateInHz(44100);
+    private static final int CHANNELS_CONFIGURATION = setChannelsConfiguration(AudioFormat.CHANNEL_IN_MONO);
+    private static final int AUDIO_ENCODING = setAudioEncoding(AudioFormat.ENCODING_PCM_16BIT);
 
-
-    public static int noOfSamples = 4096;
-    public static float resolution = SAMPLE_RATE_IN_HZ / noOfSamples;
-
+    private static final int NO_OF_SAMPLES = setNoOfSamples(4096);
+    private static final float RESOLUTION = setResolution(SAMPLE_RATE_IN_HZ / NO_OF_SAMPLES);
     //END---Audio Record and Play Parameters-----
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        /**Referencing UI Elements*/
         decibelTV = (TextView) findViewById(R.id.decibel);
         frequencyTV = (TextView) findViewById(R.id.frequencyTV);
         notesTV = (TextView) findViewById(R.id.notesTV);
 
         rec = (Button) findViewById(R.id.rec);
         play = (Button) findViewById(R.id.play);
-
-        FragmentManager myFragmentManager = getSupportFragmentManager();
-        FragmentTransaction myFragmentTransaction = myFragmentManager.beginTransaction();
-        myFragmentTransaction.add(R.id.graphFragmentLL, graphFragment, " ");
-        myFragmentTransaction.commit();
-
-        /**LIST FRAGMENT*/
-//        FragmentManager fragmentManager1 = getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction1 = fragmentManager1.beginTransaction();
-//        fragmentTransaction1.add(R.id.listLayout, listFragment," ");
-//        fragmentTransaction1.commit();
-        /**Fixed - Missing APP Name*/
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-
-        /**Referencing UI Elements*/
-        rec = (Button) findViewById(R.id.rec);
-        play = (Button) findViewById(R.id.play);
         play.setTextColor(Color.parseColor("#808080"));
+//        /**LIST FRAGMENT*/
+////        FragmentManager fragmentManager1 = getSupportFragmentManager();
+////        FragmentTransaction fragmentTransaction1 = fragmentManager1.beginTransaction();
+////        fragmentTransaction1.add(R.id.listLayout, listFragment," ");
+////        fragmentTransaction1.commit();
+//        /**Fixed - Missing APP Name*/
+////        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+////        setSupportActionBar(toolbar);
         /**Timer UI Setups*/
         timerTV = (TextView) findViewById(R.id.timerTV);
         timerTV.setText("00:00:00");
+
         /**Recording Logo*/
         recLogo = (ImageView) findViewById(R.id.reclogo);
         recLogo.setVisibility(View.INVISIBLE);
@@ -117,8 +101,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         /**Start of Record Button*/
-
-
         if(rec !=null) {
             rec.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -127,8 +109,6 @@ public class MainActivity extends AppCompatActivity {
                     audioRecordClass = new AudioRecordClass();
 
                     if (rec_btn_count == 0){
-
-
                         /**Code to handle click of "RECORD" button*/
                         playState = 0;
                         isRecording = true;
@@ -206,10 +186,6 @@ public class MainActivity extends AppCompatActivity {
                         /**Code to pause/stop the playback*/
                         isPlaying = false;
 
-//                        Log.d("VIVZ", "Clicked - Stop audio");
-//                        Log.d("VIVZ", "isPlaying="+isPlaying);
-//                        Toast.makeText(getApplicationContext(), "Stopping audio", Toast.LENGTH_SHORT).show();
-
                         timerStartObj.cancel();
 
                         timerStartObj.SS=0L;
@@ -224,43 +200,49 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    // METHOD/FUNCTION DEFINITION SECTION
     public static int playState(){
         return playState;
     }
 
     // Returns the minimum buffer size required for the successful creation of an AudioRecord object, in byte units.
-    public int getRecordBufferSize(){
-        int minBufferSize = AudioRecord.getMinBufferSize(SAMPLE_RATE_IN_HZ,
-                CHANNELS_CONFIGURATION,
-                AUDIO_ENCODING);
+    public static int getRecordBufferSize(){
+//        int minBufferSize = AudioRecord.getMinBufferSize(SAMPLE_RATE_IN_HZ,
+//                CHANNELS_CONFIGURATION,
+//                AUDIO_ENCODING);
+        int minBufferSize = NO_OF_SAMPLES * 2;
         return minBufferSize;
     }
-    public int getPlayBufferSize(){
-        int minBufferSize = AudioTrack.getMinBufferSize(SAMPLE_RATE_IN_HZ,
-                CHANNELS_CONFIGURATION,
-                AUDIO_ENCODING);
-
+    public static int getPlayBufferSize(){
+//        int minBufferSize = AudioTrack.getMinBufferSize(SAMPLE_RATE_IN_HZ,
+//                CHANNELS_CONFIGURATION,
+//                AUDIO_ENCODING);
+        int minBufferSize = NO_OF_SAMPLES * 2;
         return minBufferSize;
     }
 
     public static void updateDecibel(float decibel){
+        //The CALCULATED DECIBEL VALUE IN AudioPlayClass/AudioRecordClass is SENT to show in TEXTVIEW
         decibelTV.setText(String.valueOf(decibel));
     }
 
     public static void updateFrequncy(float frequency){
+        //The CALCULATED FREQUNCY VALUE IN AudioPlayClass/AudioRecordClass is SENT to show in TEXTVIEW
         frequencyTV.setText(String.valueOf(frequency));
+    }
+    public static void updateNotes(String notes){
+        //The CALCULATED FREQUNCY VALUE IN AudioPlayClass/AudioRecordClass is SENT to show in TEXTVIEW
+        frequencyTV.setText(String.valueOf(notes));
     }
 
     public static  void updateRecordState(){
         rec.setText("RECORD");
         rec.setTextColor(Color.parseColor("#ffffff"));
         play.setEnabled(true);
-//            Toast.makeText(getApplicationContext(), "Audio recorded successfully",Toast.LENGTH_SHORT).show();
 
         rec_btn_count =0;
     }
-
-
 
     public  static  void updatePlayState(){
         rec.setTextColor(Color.parseColor("#ffffff"));
@@ -278,6 +260,50 @@ public class MainActivity extends AppCompatActivity {
         timerStartObj.MS = 0L;
     }
 
+
+    public static int setAudioSource(int x){
+        return  x;
+    };
+    public static int getAudioSource(){
+        return  AUDIO_SOURCE;
+    }
+    public static int setSampleRateInHz(int x){
+        return  x;
+    }
+    public static int getSampleRateInHz(){
+        return  SAMPLE_RATE_IN_HZ;
+    }
+    public static int setChannelsConfiguration(int x){
+        return  x;
+    }
+    public static int getChannelsConfiguration(){
+        return  CHANNELS_CONFIGURATION;
+    }
+    public static int setAudioEncoding(int x){
+        return  x;
+    }
+    public static int getAudioEncoding(){
+        return  AUDIO_ENCODING;
+    }
+    public static int setNoOfSamples(int x){
+        return  x;
+    }
+    public static int getNoOfSamples(){
+        return  NO_OF_SAMPLES;
+    }
+    public static float setResolution(float x){
+        return  x;
+    }
+    public static float getResolution(){
+        return  RESOLUTION;
+    }
+
+    public static boolean getValueOfisRecording(){
+        return isRecording;
+    }
+    public static boolean getValueOfisPlaying(){
+        return isPlaying;
+    }
 
 
 

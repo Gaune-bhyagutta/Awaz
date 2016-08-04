@@ -21,14 +21,11 @@ import java.io.OutputStream;
 
 public class AudioRecordClass extends AsyncTask<Void,Float,Void> {
 
-    public Boolean recording = true;
     final String TAG = AudioRecordClass.class.getSimpleName();
-
 
     @Override
     protected Void doInBackground(Void... voids) {
         startRecord();
-        //publishProgress();
         return null;
     }
 
@@ -37,7 +34,7 @@ public class AudioRecordClass extends AsyncTask<Void,Float,Void> {
         //super.onProgressUpdate(values);
         MainActivity.updateDecibel(values[0]);
         MainActivity.updateFrequncy(values[1]);
-        //notesTV.setText(String.valueOf(values[2]));
+        //MainActivity.updateNotes(values[1]);
     }
 
     public void startRecord(){
@@ -66,7 +63,6 @@ public class AudioRecordClass extends AsyncTask<Void,Float,Void> {
 //         */
         File filePcm = new File(Environment.getExternalStorageDirectory(),"Sound.pcm");
 
-
         OutputStream outputStream = null;
         BufferedOutputStream bufferedOutputStream = null;
         DataOutputStream dataOutputStream = null;
@@ -81,17 +77,17 @@ public class AudioRecordClass extends AsyncTask<Void,Float,Void> {
 
             /**Call the static class of Audio Record to get the Buffer size in Byte that can handle the Audio data values based on our SAMPLING RATE (44100 hz or frame per second in our case)*/
             //int minBufferSizeInBytes = getRecordBufferSize();//WE CAN FIX THE BUFFER SZIE BY OURSELVES
-            int minBufferSizeInBytes = MainActivity.noOfSamples*2;//FIXED THE BUFFER SZIE BY OURSELVES
+            int minBufferSizeInBytes = MainActivity.getRecordBufferSize();//FIXED THE BUFFER SZIE BY OURSELVES
 
             // The array short that will store the Audio data that we get From the mic.
             short[] audioData = new short[minBufferSizeInBytes];
             float[] audioFloatsForFFT= new float[audioData.length];
 
             //Create a Object of the AudioRecord class with the NECESSARY CONFIGURATION
-            audioRecord = new AudioRecord(MainActivity.AUDIO_SOURCE,
-                    MainActivity.SAMPLE_RATE_IN_HZ,
-                    MainActivity.CHANNELS_CONFIGURATION,
-                    MainActivity.AUDIO_ENCODING,
+            audioRecord = new AudioRecord(MainActivity.getAudioSource(),
+                    MainActivity.getSampleRateInHz(),
+                    MainActivity.getChannelsConfiguration(),
+                    MainActivity.getAudioEncoding(),
                     minBufferSizeInBytes);
 
 //            /** object of the AudioRecord class calls the startRecording() function so that every is ready and the
@@ -102,7 +98,7 @@ public class AudioRecordClass extends AsyncTask<Void,Float,Void> {
             audioRecord.startRecording();//Start Recording Based on
 
             // it means while the user have  not pressed the RECORD-STOP Button
-            while(MainActivity.isRecording){
+            while(MainActivity.getValueOfisRecording()){
 
 
 //                /** numberOfShort=minBufferSize/2
@@ -115,7 +111,8 @@ public class AudioRecordClass extends AsyncTask<Void,Float,Void> {
                 int[] audioInt = new int[audioData.length];
                 float[] audioFloatsForAmp = new float[audioData.length];
 
-                //sending audioData to graph fragment
+                //sending audioData to graph fra
+                // gment
                 //graphFragment.updateRecordGraph(audioFloatsForFFT);
                 int recordValueToGraph;
 

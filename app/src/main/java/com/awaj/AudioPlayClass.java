@@ -49,7 +49,7 @@ public class AudioPlayClass extends AsyncTask<Void,Float,Boolean> {
         File filePcm = new File(Environment.getExternalStorageDirectory(), "Sound.pcm");
 
         //int minBufferSize = getPlayBufferSize();
-        int minBufferSize = MainActivity.noOfSamples*2;
+        int minBufferSize = MainActivity.getPlayBufferSize();
 
         short[] audioData = new short[minBufferSize/4];
         int audioInt[] = new int[minBufferSize/4];
@@ -69,9 +69,7 @@ public class AudioPlayClass extends AsyncTask<Void,Float,Boolean> {
 
             audioTrack = new AudioTrack(
                     AudioManager.STREAM_MUSIC,
-
-                    MainActivity.SAMPLE_RATE_IN_HZ,
-
+                    MainActivity.getSampleRateInHz(),
                     AudioFormat.CHANNEL_OUT_MONO,
                     AudioFormat.ENCODING_PCM_16BIT,
                     minBufferSize,
@@ -81,7 +79,7 @@ public class AudioPlayClass extends AsyncTask<Void,Float,Boolean> {
 
             float audioFloatsForFFT[] = new float[audioData.length];
             float audioFloatsForAmp[] = new float[audioData.length];
-            while (MainActivity.isPlaying && dataInputStream.available() > 0) {
+            while (MainActivity.getValueOfisPlaying() && dataInputStream.available() > 0) {
                 int i = 0;
                 while (dataInputStream.available() > 0 && i < audioData.length) {
                     audioData[i] = dataInputStream.readShort();

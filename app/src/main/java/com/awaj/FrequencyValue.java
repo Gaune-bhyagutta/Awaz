@@ -19,7 +19,7 @@ public class FrequencyValue {
             }
 
         }
-        fundamentalFrequency= (i_max*MainActivity.resolution)*correctFactor;
+        fundamentalFrequency= (i_max*MainActivity.getResolution())*correctFactor;
         return fundamentalFrequency;
     }
 
