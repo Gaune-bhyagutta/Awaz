@@ -113,7 +113,7 @@ public class GraphFragment extends Fragment {
             if (GRAPH_DOMAIN_MODE == 0) {
                 /**Amp*/
                 heightNormalizer = (canvas.getHeight() / 2) * 0.00003051757812;
-            } else if(GRAPH_VIZ_MODE == 1){
+            } else if (GRAPH_VIZ_MODE == 1) {
                 /**Freq*/
                 int freq = 7000;
                 heightNormalizer = 1;
@@ -159,12 +159,15 @@ public class GraphFragment extends Fragment {
             float Y1 = canvas.getHeight() / 2;
             float X2, Y2;
             float xIncrementFactor = 1;
-            double heightNormalizer = 0;
+            double heightNormalizer = 0, decibelNormalizer = 0;
+            int maxHeight;
+            int horizontalBarHeight =0;
             /**Left Side Limiter for Visualization*/
             int dim = canvas.getHeight() / 30;
             if (GRAPH_DOMAIN_MODE == 0) {
                 /**Amplitude*/
                 heightNormalizer = (canvas.getHeight() / 2) * 0.00003051757812;
+                decibelNormalizer = (canvas.getHeight() / 2) * (-0.01111111111);
 //                recordBuffIndex = (recordAudioData.length - canvas.getWidth()) / 2;
             } else if (GRAPH_DOMAIN_MODE == 1) {
                 /**Freq*/
@@ -194,12 +197,13 @@ public class GraphFragment extends Fragment {
                     oldX = newX;
                     oldY = newY;
                 }
+                maxHeight = (int) ((20 * Math.log10(Math.abs((int) recordAudioData[recordBuffIndex]) / 32678.0)) * decibelNormalizer);
+                horizontalBarHeight = (int) (maxHeight);
                 recordBuffIndex++;
                 postInvalidateDelayed(GRAPH_REFRESH_DELAY);
             }
             /**Expt*/
-            int maxValue = (int) (FrequencyValue.findMaxValue(recordAudioData) * heightNormalizer);
-            int horizontalBarHeight = (int) ((canvas.getHeight() / 2) - maxValue);
+            //int maxValue = (int) (FrequencyValue.findMaxValue(recordAudioData) * heightNormalizer);
             graphVisualizationPO.setColor(Color.parseColor("#ff0000"));
             graphVisualizationPO.setStrokeWidth(2);
             canvas.drawLine(0, horizontalBarHeight, canvas.getWidth(), horizontalBarHeight, graphVisualizationPO);

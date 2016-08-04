@@ -2,4 +2,5 @@
     <string name="app_name">Awaz</string>
     <string name="record_button_name">Record</string>
     <string name="play_button_name">Play</string>
+    <string name="splash">SPLASH !!!</string>
 </resources>
