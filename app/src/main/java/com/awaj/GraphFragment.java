@@ -174,7 +174,6 @@ public class GraphFragment extends Fragment {
                 try {
                     graph_height = (float) (recordAudioData[recordBuffIndex] * heightNormalizer);
 
-                    /**Expt*/
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
@@ -184,6 +183,13 @@ public class GraphFragment extends Fragment {
                 if (GRAPH_VIZ_MODE == 0) {
                     /**Wave View*/
                     canvas.drawLine(X1, Y1, X2, Y2, graphVisualizationPO);
+
+                    /**Expt*/
+//                    int horizontalBarHeight =(int) ((canvas.getHeight()/2)-graph_height);
+//                    canvas.drawLine(0,horizontalBarHeight,canvas.getWidth(),horizontalBarHeight,graphVisualizationPO);
+//                    graphVisualizationPO.setColor(Color.parseColor("#dddddd"));
+//                    canvas.drawLine(0,horizontalBarHeight,canvas.getWidth(),horizontalBarHeight,graphVisualizationPO);
+
                 } else if (GRAPH_VIZ_MODE == 1) {
                     /**Thread View*/
                     newX = X2;
