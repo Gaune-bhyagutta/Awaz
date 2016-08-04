@@ -44,12 +44,14 @@ public class Timer extends CountDownTimer {
 //        displayTime.append(String.format("%02d",MS));
 
         MainActivity.timerTV.setText(displayTime);
-        if (state == true) {
-            MainActivity.recLogo.setVisibility(View.VISIBLE);
-            state = false;
-        } else {
-            MainActivity.recLogo.setVisibility(View.INVISIBLE);
-            state = true;
+        if (MainActivity.playState() != 1) {
+            if (state == true) {
+                MainActivity.recLogo.setVisibility(View.VISIBLE);
+                state = false;
+            } else {
+                MainActivity.recLogo.setVisibility(View.INVISIBLE);
+                state = true;
+            }
         }
     }
 

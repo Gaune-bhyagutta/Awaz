@@ -79,10 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static int noOfSamples = getRecordBufferSize();
     public static float resolution = SAMPLE_RATE_IN_HZ / noOfSamples;
-
-    /**
-     * Objects
-     */
+    /***Objects*/
     Switch domainSwitch, visualizationSwitch;
 
     @Override
@@ -126,9 +123,6 @@ public class MainActivity extends AppCompatActivity {
 
         /**Switches*/
         domainSwitch = (Switch) findViewById(R.id.domainSwitch);
-//        domainSwitch.setText("AMP");
-//        visualizationSwitch = (Switch) findViewById(R.id.visualizationSwitch);
-//        visualizationSwitch.setText("WAVE");
 
         /**HOME - LIST - SETTING Button*/
         listIV.setOnClickListener(new View.OnClickListener() {
@@ -162,8 +156,6 @@ public class MainActivity extends AppCompatActivity {
                         play.setTextColor(Color.parseColor("#808080"));
                         Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_SHORT).show();
 
-//                        recLogo.setVisibility(View.VISIBLE);
-
                         timerTV.setText("00:00:00");
                         timerStartObj.start();
 
@@ -174,13 +166,10 @@ public class MainActivity extends AppCompatActivity {
                         recLogo.setVisibility(View.INVISIBLE);
 
                         timerStartObj.cancel();
-
                         timerStartObj.SS = 0L;
                         timerStartObj.MM = 0L;
                         timerStartObj.HH = 0L;
                         timerStartObj.MS = 0L;
-
-
                     }
                 }
             });
@@ -191,16 +180,9 @@ public class MainActivity extends AppCompatActivity {
             play.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     audioPlayClass = new AudioPlayClass();
-
-
                     if (play_btn_count == 0) {
-
-
-                        //PLAY Buttton
                         playState = 1;
-
                         play_btn_count = 1;
                         Log.d(TAG, "Clicked - play audio");
                         Toast.makeText(getApplicationContext(), "Playing audio", Toast.LENGTH_SHORT).show();
@@ -216,24 +198,20 @@ public class MainActivity extends AppCompatActivity {
                         play.setTextColor(Color.parseColor("#ff0000"));
                         rec.setEnabled(false);
                         rec.setTextColor(Color.parseColor("#808080"));
-//                        Log.d("VIVZ", "Clicked - play audio");
                         Toast.makeText(getApplicationContext(), "Playing audio", Toast.LENGTH_SHORT).show();
                         timerTV.setText("00:00:00");
                         timerStartObj.start();
+                        recLogo.setVisibility(View.INVISIBLE);
                     } else if (play_btn_count == 1) {
                         /**Code to pause/stop the playback*/
                         isPlaying = false;
-
-//                        Log.d("VIVZ", "Clicked - Stop audio");
-//                        Log.d("VIVZ", "isPlaying="+isPlaying);
-//                        Toast.makeText(getApplicationContext(), "Stopping audio", Toast.LENGTH_SHORT).show();
-
                         timerStartObj.cancel();
-
                         timerStartObj.SS = 0L;
                         timerStartObj.MM = 0L;
                         timerStartObj.HH = 0L;
                         timerStartObj.MS = 0L;
+
+                        recLogo.setVisibility(View.INVISIBLE);
                     }
                 }/**End of Play Button*/
             });
@@ -263,23 +241,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-        /**Monitoring Visualization Switch States*/
-//        visualizationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            /**Ctrl+shift+space*/
-//            @Override
-//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-//                final boolean isVisualizationSwitchChecked = domainSwitch.isChecked();
-//                if (isVisualizationSwitchChecked) {
-//                    GraphFragment.GRAPH_VIZ_MODE = 1;
-//                    visualizationSwitch.setText("Thread");
-//                } else {
-//                    GraphFragment.GRAPH_VIZ_MODE = 0;
-//                    visualizationSwitch.setText("Wave");
-//                }
-//            }
-//        });
-
     }
 
     // Start of AudioRecordClass (inner Class)

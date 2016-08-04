@@ -3,4 +3,6 @@
     <string name="record_button_name">Record</string>
     <string name="play_button_name">Play</string>
     <string name="splash">SPLASH !!!</string>
+    <string name="appName">AWAJ</string>
+    <string name="tap_to_continue">Tap to continue...</string>
 </resources>
