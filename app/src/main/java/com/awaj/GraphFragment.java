@@ -31,7 +31,7 @@ public class GraphFragment extends Fragment {
      * 0-Wave 1-Thread
      */
     public static int GRAPH_VIZ_MODE = 0;
-    public static int GRAPH_REFRESH_DELAY = 1;
+    public static int GRAPH_REFRESH_DELAY = 0;
     /**
      * 0-AMP 1-FREQ
      */
@@ -59,7 +59,7 @@ public class GraphFragment extends Fragment {
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
-            canvas.drawColor(Color.BLACK);
+            canvas.drawColor(Color.parseColor("#dddddd"));
 
             /**Boundary Paint Object*/
 //            Paint graphBoundaryPO = new Paint();
@@ -67,7 +67,7 @@ public class GraphFragment extends Fragment {
 //            graphBoundaryPO.setStrokeWidth(7);
             /**Visualization Paint Object*/
             Paint graphVisualizationPO = new Paint();
-            graphVisualizationPO.setColor(Color.parseColor("#ffffff"));
+            graphVisualizationPO.setColor(Color.parseColor("#333333"));
             graphVisualizationPO.setStrokeWidth(1);
             /**Midline - Divider*/
             //canvas.drawLine(X1, Y1, AX, AY, graphBoundaryPO);
@@ -82,17 +82,10 @@ public class GraphFragment extends Fragment {
                 length = length / 4;
                 playAudioData = new float[length];
             }
-            //int playBuffIndex = (playAudioData.length / 2 - canvas.getWidth()) / 2;
-
-            /**Not my Section*/
-//            double heightNormalizer = ((canvas.getHeight()/2)*1/(200));
-//            int recordBuffIndex = (recordAudioData.length/2 - canvas.getWidth()) / 2;
-//            int recordBuffIndex = 1;
 
             /**ACTUAL PLOTS*/
-//            drawMeshLines(canvas);
-            DrawMeshLines dml = new DrawMeshLines(GRAPH_DOMAIN_MODE);
-            dml.DrawMesh(canvas);
+            DrawMeshLines dml = new DrawMeshLines();
+            dml.DrawMesh(canvas, GRAPH_DOMAIN_MODE);
 
             if (MainActivity.playState() == 1) {
                 plotPlayBackVisualization(canvas, graphVisualizationPO);
@@ -113,7 +106,9 @@ public class GraphFragment extends Fragment {
             float X1 = 0;
             float Y1 = canvas.getHeight() / 2;
             float X2, Y2;
+            float xIncrementFactor = 1;
             double heightNormalizer = 0;
+
             /**Left Side Limiter for Visualization*/
             int dim = canvas.getHeight() / 30;
             if (GRAPH_DOMAIN_MODE == 0) {
@@ -123,8 +118,10 @@ public class GraphFragment extends Fragment {
                 /**Freq*/
                 heightNormalizer = 1;
                 playBuffIndex = 1;
+                int freq = 7000;
+                xIncrementFactor = canvas.getWidth()/(freq/MainActivity.resolution);
             }
-            for (X1 = dim; X1 <= canvas.getWidth(); X1++) {
+            for (X1 = dim; X1 <= canvas.getWidth(); X1+=xIncrementFactor) {
                 try {
                     graph_height = (float) (playAudioData[playBuffIndex] * heightNormalizer);
                 } catch (NullPointerException e) {
@@ -158,6 +155,7 @@ public class GraphFragment extends Fragment {
             float Y1 = canvas.getHeight() / 2;
             float X2, Y2;
             double heightNormalizer = 0;
+            float xIncrementFactor = 1;
             /**Left Side Limiter for Visualization*/
             int dim = canvas.getHeight() / 30;
             if (GRAPH_DOMAIN_MODE == 0) {
@@ -168,11 +166,15 @@ public class GraphFragment extends Fragment {
                 /**Freq*/
                 heightNormalizer = 1;
 //                recordBuffIndex = 0;
+                int freq = 7000;
+                xIncrementFactor = canvas.getWidth()/(freq/MainActivity.resolution);
             }
 
-            for (X1 = dim; X1 < canvas.getWidth(); X1++) {
+            for (X1 = dim; X1 <= canvas.getWidth(); X1+=xIncrementFactor) {
                 try {
                     graph_height = (float) (recordAudioData[recordBuffIndex] * heightNormalizer);
+
+                    /**Expt*/
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
@@ -194,75 +196,6 @@ public class GraphFragment extends Fragment {
                 postInvalidateDelayed(GRAPH_REFRESH_DELAY);
             }
         }
-
-//        public void drawMeshLines(Canvas canvas) {
-//            //Mesh Lines
-//            int cgh = canvas.getHeight();
-//            int cgw = canvas.getWidth();
-//            int cgh2 = cgh / 2;
-//            int cgw2 = cgw / 2;
-//            int meshDim = cgh / 30;
-//            int i;
-//            /**Mesh Paint Object*/
-//            Paint meshObj = new Paint();
-//            meshObj.setColor(Color.parseColor("#333333"));
-//            meshObj.setStrokeWidth(1);
-//
-//            /**Text Paint Object*/
-//            Paint textObj = new Paint();
-//            textObj.isAntiAlias();
-//            textObj.setColor(Color.parseColor("#ff0000"));
-//            textObj.setTextSize(20);
-//
-//            //Horizontal Lines - Top Segment
-//            for (i = cgh2; i >= 0; i -= meshDim) {
-//                canvas.drawLine(0, i, cgw, i, meshObj);
-//            }
-//            //Horizontal Lines - Bottom Segment
-//            for (i = cgh2; i <= cgh; i += meshDim) {
-//                canvas.drawLine(0, i, cgw, i, meshObj);
-//            }
-//
-//            //Vertical Lines - Left Segment
-//            for (i = cgw2; i >= 0; i -= meshDim) {
-//                canvas.drawLine(i, 0, i, cgh, meshObj);
-//            }
-//            //Vertical Lines - Right Segment
-//            for (i = cgw2; i <= cgw; i += meshDim) {
-//                canvas.drawLine(i, 0, i, cgh, meshObj);
-//            }
-//
-//            if (GRAPH_DOMAIN_MODE == 0) {
-//                /**AMP*/
-//                /**Vertical Labels*/
-//                int dbIncrement = -90;
-//                float yDecrement = 0;
-//                for (i = 0; i < cgh2; i++) {
-//                    canvas.drawText(Integer.toString(dbIncrement), 0, cgh2 - yDecrement + 8, textObj);
-//                    dbIncrement += 10;
-//                    yDecrement += meshDim * 2;
-//                }
-//                /**Midline*/
-//                if (GRAPH_VIZ_MODE == 0) {
-//                    textObj.setColor(Color.WHITE);
-//                    canvas.drawLine(meshDim - 1, cgh2, cgw, cgh2, textObj);
-//                }
-//            } else if (GRAPH_DOMAIN_MODE == 1) {
-//                /**Freq Labels*/
-//                /**BASELINE*/
-//                canvas.drawLine(0, cgh2, cgw, cgh2, textObj);
-//
-//                /**Horizontal Labels*/
-//                float freqValue = 0;
-//                float xIncrement = 0;
-//                for (i = 0; i < cgw; i++) {
-//                    /**Move in X-Axis only*/
-//                    canvas.drawText(Float.toString(freqValue), xIncrement, cgh2 + 20, textObj);
-//                    freqValue += 0.5;
-//                    xIncrement += meshDim * 2;
-//                }
-//            }
-//        }
     }
 
     /**

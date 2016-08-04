@@ -102,7 +102,7 @@ public class FftOutput {
         for(int i=0; i<input.length; i++){
             w[i] =0;}
         for(int i=0; i<input.length; i++){
-            if(i>=5&&i<800) {
+            if(i>=0&&i<800) {
                 w[i]=1;
                 //w[i] = (float)( 0.54 - 0.46*(Math.cos( 2*Math.PI*i/(input.length) ) ));
                 //w[i] = (float)(0.5*(1 - (Math.cos( 2*Math.PI*i/(input.length-1) ) )));

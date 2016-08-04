@@ -6,15 +6,14 @@ import android.graphics.Paint;
 
 /*** Created by keshavdulal on 04/08/16*/
 public class DrawMeshLines {
-    private int GRAPH_DOMAIN_MODE;
+//    private int GRAPH_DOMAIN_MODE;
 
     /**Constructor*/
-    public DrawMeshLines(int graphDomainMode) {
-        GRAPH_DOMAIN_MODE = graphDomainMode;
+    public DrawMeshLines() {
     }
 
     /**Draws outline in the canvas*/
-    public void DrawMesh(Canvas canvas) {
+    public void DrawMesh(Canvas canvas,int GRAPH_DOMAIN_MODE) {
         //Mesh Lines
         int cgh = canvas.getHeight();
         int cgw = canvas.getWidth();
@@ -24,13 +23,13 @@ public class DrawMeshLines {
         int i;
         /**Mesh Paint Object*/
         Paint meshObj = new Paint();
-        meshObj.setColor(Color.parseColor("#333333"));
+        meshObj.setColor(Color.parseColor("#aaaaaa"));
         meshObj.setStrokeWidth(1);
 
         /**Text Paint Object*/
         Paint textObj = new Paint();
         textObj.isAntiAlias();
-        textObj.setColor(Color.parseColor("#ff0000"));
+        textObj.setColor(Color.parseColor("#aa0000"));
         textObj.setTextSize(20);
 
         //Horizontal Lines - Top Segment

@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
                         play.setTextColor(Color.parseColor("#808080"));
                         Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_SHORT).show();
 
-                        recLogo.setVisibility(View.VISIBLE);
+//                        recLogo.setVisibility(View.VISIBLE);
 
                         timerTV.setText("00:00:00");
                         timerStartObj.start();
