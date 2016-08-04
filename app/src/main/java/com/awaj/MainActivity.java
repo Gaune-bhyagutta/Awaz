@@ -125,9 +125,9 @@ public class MainActivity extends AppCompatActivity {
 
         /**Switches*/
         domainSwitch = (Switch) findViewById(R.id.domainSwitch);
-        domainSwitch.setText("AMP");
-        visualizationSwitch = (Switch) findViewById(R.id.visualizationSwitch);
-        visualizationSwitch.setText("WAVE");
+//        domainSwitch.setText("AMP");
+//        visualizationSwitch = (Switch) findViewById(R.id.visualizationSwitch);
+//        visualizationSwitch.setText("WAVE");
 
         /**HOME - LIST - SETTING Button*/
         listIV.setOnClickListener(new View.OnClickListener() {
@@ -254,30 +254,30 @@ public class MainActivity extends AppCompatActivity {
                 final boolean isDomainSwitchChecked = domainSwitch.isChecked();
                 if (isDomainSwitchChecked) {
                     GraphFragment.GRAPH_DOMAIN_MODE = 1;
-                    domainSwitch.setText("Freq");
+//                    domainSwitch.setText("Freq");
                 } else {
                     GraphFragment.GRAPH_DOMAIN_MODE = 0;
-                    domainSwitch.setText("AMP");
+//                    domainSwitch.setText("AMP");
                 }
 
             }
         });
 
         /**Monitoring Visualization Switch States*/
-        visualizationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            /**Ctrl+shift+space*/
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                final boolean isVisualizationSwitchChecked = domainSwitch.isChecked();
-                if (isVisualizationSwitchChecked) {
-                    GraphFragment.GRAPH_VIZ_MODE = 1;
-                    visualizationSwitch.setText("Thread");
-                } else {
-                    GraphFragment.GRAPH_VIZ_MODE = 0;
-                    visualizationSwitch.setText("Wave");
-                }
-            }
-        });
+//        visualizationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            /**Ctrl+shift+space*/
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                final boolean isVisualizationSwitchChecked = domainSwitch.isChecked();
+//                if (isVisualizationSwitchChecked) {
+//                    GraphFragment.GRAPH_VIZ_MODE = 1;
+//                    visualizationSwitch.setText("Thread");
+//                } else {
+//                    GraphFragment.GRAPH_VIZ_MODE = 0;
+//                    visualizationSwitch.setText("Wave");
+//                }
+//            }
+//        });
 
     }
 
