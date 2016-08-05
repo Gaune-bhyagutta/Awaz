@@ -1,53 +1,224 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--PARENT LAYOUT -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/biggestLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/biggestLayout"
+    android:background="#000"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        app:titleTextColor="@android:color/white"
-        android:background="@color/colorPrimary"
+    <!--APP Title -->
+    <!--LinearLayout
+        android:id="@+id/appnameLL"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:background="#fff">
 
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="#000"
+            app:titleTextColor="#fff" />
+    </LinearLayout-->
+
+    <!--TABS CONTROL -->
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/tabsLL"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4"
-        android:id="@+id/graphLayout"
-        android:orientation="vertical">
+        android:layout_marginBottom="2dp"
+        android:layout_weight="0.75"
+        android:background="#fff"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/home"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="1dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginTop="1dp"
+            android:layout_weight="1"
+            android:background="#000"
+            android:scaleType="fitCenter"
+            android:src="@drawable/homebutton" />
+
+        <ImageView
+            android:id="@+id/list"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_weight="1"
+            android:background="#000"
+            android:src="@drawable/listviewbutton" />
+
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:id="@+id/buttonsLayout"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <Button
+
+        <Switch
+            android:id="@+id/domainSwitch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:background="#fff"
+            android:textOn="FREQ"
+            android:textOff="AMP"/>
+
+        <!--<Switch-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/visualizationSwitch"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:background="#fff"-->
+        <!--android:layout_marginStart="10dp"-->
+        <!--android:layout_marginEnd="10dp"/>-->
+
+        <ImageView
+            android:id="@+id/reclogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@android:drawable/ic_notification_overlay" />
+
+    </LinearLayout>
+
+    <!--Graph Fragment -->
+    <LinearLayout
+        android:id="@+id/graphFragmentLL"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:background="#000"
+        android:orientation="vertical"></LinearLayout>
+
+    <!--TIMER -->
+    <LinearLayout
+        android:id="@+id/timerLL"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.65"
+        android:background="#fff"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/timerTV"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:id="@+id/rec"
-            android:text="@string/record_button_name"
-            android:layout_weight="1"/>
-        <Button
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_weight="1"
+            android:background="#000"
+            android:gravity="center"
+            android:textColor="#fff"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:background="#000"></LinearLayout>
+
+    </LinearLayout>
+
+    <!--NOTES & Frequency -->
+
+    <LinearLayout
+        android:id="@+id/infoLL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:background="#fff"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/notesTV"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="2dp"
+            android:layout_weight="1"
+            android:background="#000"
+            android:gravity="center"
+            android:text="Notes"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/decibel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="2dp"
+            android:layout_weight="1"
+            android:background="#000"
+            android:gravity="center"
+            android:text="db"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/frequencyTV"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:id="@+id/play"
-            android:text="@string/play_button_name" />
+            android:background="#000"
+            android:gravity="center"
+            android:text="Frequency"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
+    <!--RECORD / PLAY BUTTONS -->
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/buttonsLayout"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
-        android:id="@+id/listLayout"
-        android:orientation="vertical">
+        android:layout_weight="1.25"
+        android:background="#fff"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/rec"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_weight="1"
+            android:background="#000"
+
+            android:text="@string/record_button_name"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:textStyle="italic" />
+
+        <Button
+            android:id="@+id/play"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_weight="1"
+            android:background="#000"
+
+            android:text="@string/play_button_name"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:textStyle="italic" />
     </LinearLayout>
+
 
 </LinearLayout>

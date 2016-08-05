@@ -15,6 +15,5 @@
         android:background="#444"
         android:id="@+id/rect"
         android:orientation="vertical">
-
     </LinearLayout>
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package com.example.keshavdulal.a14_simple_drawing;
+package com.awaj;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

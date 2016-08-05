@@ -1,4 +1,4 @@
-package com.example.keshavdulal.a14_simple_drawing;
+package com.awaj;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.example.keshavdulal.a14_simple_drawing;
+package com.awaj;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -17,7 +17,7 @@ import java.io.OutputStream;
  class DatabaseHelper extends SQLiteOpenHelper {
 
         private static final String DATABASE_NAME = "awajDatabase.db";
-        private static final String DATABASE_PATH = "data/data/com.example.keshavdulal.a14_simple_drawing/databases/";
+        private static final String DATABASE_PATH = "data/data/com.awaj/databases/";
         private static final String TABLE_NAME = "NOTE_TBL";
         private static final String UID = "_id";
         private static final String NOTE = "note";
@@ -64,6 +64,7 @@ import java.io.OutputStream;
                 checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
             }catch (SQLiteException e){
                 //database doesn't exist yet
+                Log.d("VIVZ", "database doesn't exist");
             }
             if(checkDB != null){
                 checkDB.close();
