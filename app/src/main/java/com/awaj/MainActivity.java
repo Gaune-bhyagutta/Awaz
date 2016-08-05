@@ -42,6 +42,7 @@ import java.io.OutputStream;
 
 public class MainActivity extends AppCompatActivity {
 
+    //datbaseHelper
     DatabaseHelper databaseHelper;
 
     ImageView homeIV, listIV, settingsIV;
@@ -108,9 +109,12 @@ public class MainActivity extends AppCompatActivity {
             throw e;
         }
         databaseHelper.getAllData();
+        //frequency match test
         double freqTest =20.7;
         int match = databaseHelper.matchFreq(freqTest);
         Log.d("VIVZ", "match="+match);
+
+        //end of database part
 
         setContentView(R.layout.activity_main);
         decibelTV = (TextView) findViewById(R.id.decibel);
