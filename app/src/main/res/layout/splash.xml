@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:onClick="goToMainActivity"
+
     android:background="@color/colorPrimary">
 
     <TextView
@@ -12,25 +12,11 @@
         android:text="@string/appName"
         android:id="@+id/textView"
         android:layout_gravity="center_horizontal"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="31dp"
         android:textStyle="bold|italic"
         android:textSize="60sp"
-        android:textColor="@color/d"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/tap_to_continue"
-        android:id="@+id/textView2"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/textView"
-        android:layout_marginBottom="25dp"
-        android:textSize="25sp"
-        android:textStyle="italic"
-        android:textColor="@color/a"
-        />
+        android:textColor="@color/d"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
     <ImageView
         android:layout_width="wrap_content"

@@ -2,6 +2,7 @@ package com.awaj;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
@@ -21,25 +22,26 @@ public class Splash extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
         splashIcon = (ImageView) findViewById(R.id.splashIcon);
-    }
 
-    public void goToMainActivity(View view){
-        Intent toMainActivity = new Intent(Splash.this,MainActivity.class);
-        startActivity(toMainActivity);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startActivity(new Intent(Splash.this,MainActivity.class));
+                finish();
+            }
+        },1000);
+
     }
 //
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//
+//    public void goToMainActivity(View view){
+//        Intent toMainActivity = new Intent(Splash.this,MainActivity.class);
+//        startActivity(toMainActivity);
 //    }
 
-
     @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        /**Animation Begins*/
-        Animation splashAnimation = AnimationUtils.loadAnimation(Splash.this,R.layout.splash_animation);
+    protected void onStart() {
+        super.onStart();
+        Animation splashAnimation = AnimationUtils.loadAnimation(Splash.this, R.anim.splash_animation);
         splashIcon.startAnimation(splashAnimation);
     }
 }
