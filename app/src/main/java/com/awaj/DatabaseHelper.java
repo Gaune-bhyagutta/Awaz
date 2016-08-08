@@ -142,14 +142,37 @@ import java.io.OutputStream;
             }
         }
 
-       public int matchFreq(double freq){
-            int i,j,match=200;
-            for (i=0;i<107;i++){
-                if(freq<max_freq[i] && freq>min_freq[i]){
-                    match = i;
-                }
-            }
+       public int matchFreq(double frequency){
+           int i=0,match=200;
+           if(frequency<max_freq[54] && frequency>min_freq[54]){
+               match = 54;
+           }
+           else if(frequency<freq[54]){
+               for (i=0;i<54;i++){
+                   if(frequency<max_freq[i] && frequency>min_freq[i]){
+                       match = i;
+                       break;
+                   }
+               }
+           }
+           else if (frequency>freq[54]){
+               for (i=54;i<107;i++){
+                   if(frequency<max_freq[i] && frequency>min_freq[i]){
+                       match = i;
+                       break;
+                   }
+               }
+           }
             return match;
+        }
+
+        public String getNote(int match){
+            if (match<200){
+                return note[match];
+            }
+            else{
+                return "none";
+            }
         }
 
  }

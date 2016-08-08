@@ -327,9 +327,12 @@ public class MainActivity extends AppCompatActivity {
             int frequency = Math.round(values[1]);
             String frequencyDisplay = Integer.toString(frequency) + "Hz";
 
+            int match = databaseHelper.matchFreq(frequency);
+            String note = databaseHelper.getNote(match);
+
             decibelTV.setText(decibelDispaly);
             frequencyTV.setText(frequencyDisplay);
-            //notesTV.setText(String.valueOf(values[2]));
+            notesTV.setText(note);
         }
 
         public void startRecord() {
