@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.media.AudioFormat;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -70,6 +72,13 @@ public class MainActivity extends AppCompatActivity {
         rec = (Button) findViewById(R.id.rec);
         play = (Button) findViewById(R.id.play);
         play.setTextColor(Color.parseColor("#808080"));
+
+        /**GRAPH FRAGMENT*/
+        FragmentManager myFragmentManager = getSupportFragmentManager();
+        FragmentTransaction myFragmentTransaction = myFragmentManager.beginTransaction();
+        myFragmentTransaction.add(R.id.graphFragmentLL, graphFragment, " ");
+        myFragmentTransaction.commit();
+
 //        /**LIST FRAGMENT*/
 ////        FragmentManager fragmentManager1 = getSupportFragmentManager();
 ////        FragmentTransaction fragmentTransaction1 = fragmentManager1.beginTransaction();

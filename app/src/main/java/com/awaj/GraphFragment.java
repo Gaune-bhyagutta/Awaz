@@ -34,7 +34,7 @@ public class GraphFragment extends Fragment {
     /**
      * 0-AMP 1-FREQ
      */
-    private int GRAPH_INFO_MODE = 0;
+    private int GRAPH_INFO_MODE = 1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
