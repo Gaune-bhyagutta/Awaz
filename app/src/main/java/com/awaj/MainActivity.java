@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     final String TAG = MainActivity.class.getSimpleName();
     //Audio Record Parameters
     private static final int AUDIO_SOURCE = MediaRecorder.AudioSource.MIC;
-    public static final int SAMPLE_RATE_IN_HZ = 44100;
+    public static final int SAMPLE_RATE_IN_HZ = 22050;
     private static final int CHANNELS_CONFIGURATION = AudioFormat.CHANNEL_IN_MONO;
     private static final int AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;
 
