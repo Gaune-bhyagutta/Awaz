@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    //Insatnce Variable And Constants Initialization/Declaration
+    //Instance Variable And Constants Initialization/Declaration
 
     private static ImageView homeIV,listIV,settingsIV;
     private static ImageView recLogo;
@@ -64,39 +64,17 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        /**Referencing UI Elements*/
-        decibelTV = (TextView) findViewById(R.id.decibel);
-        frequencyTV = (TextView) findViewById(R.id.frequencyTV);
-        notesTV = (TextView) findViewById(R.id.notesTV);
 
-        rec = (Button) findViewById(R.id.rec);
-        play = (Button) findViewById(R.id.play);
-        play.setTextColor(Color.parseColor("#808080"));
+        /**START-Referencing UI Elements*/
+            referenceToUIElements();
+        /**End-Referencing UI Elements*/
 
-        /**GRAPH FRAGMENT*/
+        /**Start-GRAPH FRAGMENT*/
         FragmentManager myFragmentManager = getSupportFragmentManager();
         FragmentTransaction myFragmentTransaction = myFragmentManager.beginTransaction();
         myFragmentTransaction.add(R.id.graphFragmentLL, graphFragment, " ");
         myFragmentTransaction.commit();
-
-//        /**LIST FRAGMENT*/
-////        FragmentManager fragmentManager1 = getSupportFragmentManager();
-////        FragmentTransaction fragmentTransaction1 = fragmentManager1.beginTransaction();
-////        fragmentTransaction1.add(R.id.listLayout, listFragment," ");
-////        fragmentTransaction1.commit();
-//        /**Fixed - Missing APP Name*/
-////        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-////        setSupportActionBar(toolbar);
-        /**Timer UI Setups*/
-        timerTV = (TextView) findViewById(R.id.timerTV);
-        timerTV.setText("00:00:00");
-
-        /**Recording Logo*/
-        recLogo = (ImageView) findViewById(R.id.reclogo);
-        recLogo.setVisibility(View.INVISIBLE);
-
-        homeIV = (ImageView) findViewById(R.id.home);
-        listIV = (ImageView) findViewById(R.id.list);
+        /**End-GRAPH FRAGMENT*/
 
         /**HOME - LIST - SETTING Button*/
         listIV.setOnClickListener(new View.OnClickListener() {
@@ -107,106 +85,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Setting To be made before Recording,Playing and Graph Plotting
         graphFragment.setMinBufferSizeInBytes(MIN_BUFFER_SIZE_BYTES);
+
         /**Start of Record Button*/
-        if(rec !=null) {
-            rec.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v){
-
-                    audioRecordClass = new AudioRecordClass();
-
-                    if (rec_btn_count == 0){
-                        /**Code to handle click of "RECORD" button*/
-                        playState = 0;
-                        isRecording = true;
-                        audioRecordClass.execute();
-                        rec_btn_count = 1;
-
-                        rec.setText("STOP");
-                        rec.setTextColor(Color.parseColor("#ff0000"));
-                        play.setEnabled(false);
-                        play.setTextColor(Color.parseColor("#808080"));
-                        Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_SHORT).show();
-
-                        recLogo.setVisibility(View.VISIBLE);
-
-                        timerTV.setText("00:00:00");
-                        timerStartObj.start();
-
-                    } else if (rec_btn_count == 1) {
-                        /**Code to handle click of "Rec-STOP" button*/
-                        isRecording = false;
-                        play.setTextColor(Color.parseColor("#00ff00"));
-                        recLogo.setVisibility(View.INVISIBLE);
-
-                        timerStartObj.cancel();
-
-                        timerStartObj.SS=0L;
-                        timerStartObj.MM=0L;
-                        timerStartObj.HH=0L;
-                        timerStartObj.MS=0L;
-
-
-                    }
-                }
-            });
-        }/**End of Record Button*/
+        record();
+        /**End of Record Button*/
 
         /**Start of Play Button*/
-        if (play != null) {
-            play.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        record();
+        /**End of Play Button*/
 
-                    audioPlayClass = new AudioPlayClass();
-
-
-                    if(play_btn_count == 0){
-
-
-                        //PLAY Buttton
-                        playState =1;
-
-                        play_btn_count = 1;
-                        Log.d(TAG, "Clicked - play audio");
-                        Toast.makeText(getApplicationContext(), "Playing audio", Toast.LENGTH_SHORT).show();
-                        play.setText("Stop");
-                        play.setTextColor(Color.parseColor("#ff0000"));
-                        rec.setEnabled(false);
-
-                        isPlaying = true;
-
-                        audioPlayClass.execute();
-
-                        play.setText("Stop");
-                        play.setTextColor(Color.parseColor("#ff0000"));
-                        rec.setEnabled(false);
-                        rec.setTextColor(Color.parseColor("#808080"));
-//                        Log.d("VIVZ", "Clicked - play audio");
-                        Toast.makeText(getApplicationContext(), "Playing audio", Toast.LENGTH_SHORT).show();
-                        timerTV.setText("00:00:00");
-                        timerStartObj.start();
-                    }
-
-                    else if (play_btn_count == 1){
-
-                        /**Code to pause/stop the playback*/
-                        isPlaying = false;
-
-                        timerStartObj.cancel();
-
-                        timerStartObj.SS=0L;
-                        timerStartObj.MM=0L;
-                        timerStartObj.HH=0L;
-                        timerStartObj.MS=0L;
-
-
-                    }
-                }/**End of Play Button*/
-            });
-        }
-    }
+    }//End-onCreate()
 
 
     // METHOD/FUNCTION DEFINITION SECTION
@@ -323,6 +213,139 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //END OF Graph Fragment Section
+
+    //Start-Functions in MainActivity
+    //Start-record()
+    public void record(){
+        if(rec !=null) {
+            rec.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v){
+
+                    audioRecordClass = new AudioRecordClass();
+
+                    if (rec_btn_count == 0){
+                        /**Code to handle click of "RECORD" button*/
+                        playState = 0;
+                        isRecording = true;
+                        audioRecordClass.execute();
+                        rec_btn_count = 1;
+
+                        rec.setText("STOP");
+                        rec.setTextColor(Color.parseColor("#ff0000"));
+                        play.setEnabled(false);
+                        play.setTextColor(Color.parseColor("#808080"));
+                        Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_SHORT).show();
+
+                        recLogo.setVisibility(View.VISIBLE);
+
+                        timerTV.setText("00:00:00");
+                        timerStartObj.start();
+
+                    } else if (rec_btn_count == 1) {
+                        /**Code to handle click of "Rec-STOP" button*/
+                        isRecording = false;
+                        play.setTextColor(Color.parseColor("#00ff00"));
+                        recLogo.setVisibility(View.INVISIBLE);
+
+                        timerStartObj.cancel();
+
+                        timerStartObj.SS=0L;
+                        timerStartObj.MM=0L;
+                        timerStartObj.HH=0L;
+                        timerStartObj.MS=0L;
+
+
+                    }
+                }
+            });
+        }
+    }//End-record()
+
+    //Start-play()
+    public  void play(){
+
+        if (play != null) {
+            play.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    audioPlayClass = new AudioPlayClass();
+
+
+                    if(play_btn_count == 0){
+
+
+                        //PLAY Buttton
+                        playState =1;
+
+                        play_btn_count = 1;
+                        Log.d(TAG, "Clicked - play audio");
+                        Toast.makeText(getApplicationContext(), "Playing audio", Toast.LENGTH_SHORT).show();
+                        play.setText("Stop");
+                        play.setTextColor(Color.parseColor("#ff0000"));
+                        rec.setEnabled(false);
+
+                        isPlaying = true;
+
+                        audioPlayClass.execute();
+
+                        play.setText("Stop");
+                        play.setTextColor(Color.parseColor("#ff0000"));
+                        rec.setEnabled(false);
+                        rec.setTextColor(Color.parseColor("#808080"));
+//                        Log.d("VIVZ", "Clicked - play audio");
+                        Toast.makeText(getApplicationContext(), "Playing audio", Toast.LENGTH_SHORT).show();
+                        timerTV.setText("00:00:00");
+                        timerStartObj.start();
+                    }
+
+                    else if (play_btn_count == 1){
+
+                        /**Code to pause/stop the playback*/
+                        isPlaying = false;
+
+                        timerStartObj.cancel();
+
+                        timerStartObj.SS=0L;
+                        timerStartObj.MM=0L;
+                        timerStartObj.HH=0L;
+                        timerStartObj.MS=0L;
+
+
+                    }
+                }
+            });
+        }
+    }
+    //End-play()
+
+    public void referenceToUIElements(){
+        //Start-To Show Decibels,Frequncy and Notes
+        decibelTV = (TextView) findViewById(R.id.decibel);
+        frequencyTV = (TextView) findViewById(R.id.frequencyTV);
+        notesTV = (TextView) findViewById(R.id.notesTV);
+        //End- To Show Decibels,Frequncy and Notes
+
+        //Start-To Record and Play
+        rec = (Button) findViewById(R.id.rec);
+        play = (Button) findViewById(R.id.play);
+        play.setTextColor(Color.parseColor("#808080"));
+        //End-To Record and Play
+
+        /**Start-Timer UI Setups*/
+        timerTV = (TextView) findViewById(R.id.timerTV);
+        timerTV.setText("00:00:00");
+        /**End-Timer UI Setups*/
+
+        /**Start-Recording Logo*/
+        recLogo = (ImageView) findViewById(R.id.reclogo);
+        recLogo.setVisibility(View.INVISIBLE);
+
+        homeIV = (ImageView) findViewById(R.id.home);
+        listIV = (ImageView) findViewById(R.id.list);
+        /**End-Recording Logo*/
+    }
 
 }/**
  * End of MainActivity

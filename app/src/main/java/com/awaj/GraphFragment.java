@@ -72,12 +72,12 @@ public class GraphFragment extends Fragment {
             //canvas.drawLine(X1, Y1, AX, AY, graphBoundaryPO);
 
             if (recordAudioData == null) {
-                int length = MainActivity.getMinBufferSizeInBytes();
-                length=length/2;
+                int length = MainActivity.getMinBufferSizeInBytes()/2;
+                //length=length/2;
                 recordAudioData = new float[length];
             }
             if (playAudioData == null) {
-                int length = MainActivity.getMinBufferSizeInBytes();
+                int length = MainActivity.getMinBufferSizeInBytes()/2;
                 //length = length / 4;
                 playAudioData = new float[length];
             }
