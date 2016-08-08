@@ -35,8 +35,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Arrays;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -87,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         decibelTV = (TextView) findViewById(R.id.decibel);
         frequencyTV = (TextView) findViewById(R.id.frequencyTV);
         notesTV = (TextView) findViewById(R.id.notesTV);

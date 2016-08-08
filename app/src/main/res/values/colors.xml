@@ -1,7 +1,8 @@
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#1b7894</color>
+    <color name="colorPrimary">#F44336</color>
+    <color name="colorPrimaryDark">#E53935</color>
+    <color name="colorSecondaryDark">#D32F2F</color>
+    <color name="colorAccent">#3F51B5</color>
 
     <color name="white">#ffffff</color>
     <color name="f">#ffffff</color>
@@ -21,5 +22,14 @@
     <color name="one">#111111</color>
     <color name="zero">#000000</color>
     <color name="black">#000000</color>
+    <color name="holo_red_dark">#d32f2f</color>
+    
+    <color name="dark_red">#B71C1C</color>
+    <color name="dark_purple">#4A148C</color>
+    <color name="dark_green">#1B5E20</color>
+    <color name="dark_blue">#01579B</color>
+    <color name="dark_indigo">#1A237E</color>
+    <color name="dark_orange">#BF360C</color>
+
 
 </resources>

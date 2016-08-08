@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -21,22 +23,19 @@ public class Splash extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
+
         splashIcon = (ImageView) findViewById(R.id.splashIcon);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(Splash.this,MainActivity.class));
+                startActivity(new Intent(Splash.this,Home.class));
                 finish();
             }
         },1000);
-
     }
-//
-//    public void goToMainActivity(View view){
-//        Intent toMainActivity = new Intent(Splash.this,MainActivity.class);
-//        startActivity(toMainActivity);
-//    }
 
     @Override
     protected void onStart() {
