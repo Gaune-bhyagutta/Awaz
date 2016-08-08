@@ -78,11 +78,11 @@ public class AudioRecordClass extends AsyncTask<Void,Float,Void> {
 
             /**Call the static class of Audio Record to get the Buffer size in Byte that can handle the Audio data values based on our SAMPLING RATE (44100 hz or frame per second in our case)*/
             //int minBufferSizeInBytes = getRecordBufferSize();//WE CAN FIX THE BUFFER SZIE BY OURSELVES
-            minBufferSizeInBytes = MainActivity.getMinBufferSizeInBytes()/2;//FIXED THE BUFFER SZIE BY OURSELVES
+            minBufferSizeInBytes = MainActivity.getMinBufferSizeInBytes();//FIXED THE BUFFER SZIE BY OURSELVES
 
             // The array short that will store the Audio data that we get From the mic.
             short[] audioData = new short[minBufferSizeInBytes];
-            float[] audioFloatsForFFT= new float[audioData.length];
+
 
             //Create a Object of the AudioRecord class with the NECESSARY CONFIGURATION
             audioRecord = new AudioRecord(MainActivity.getAudioSource(),
@@ -108,8 +108,10 @@ public class AudioRecordClass extends AsyncTask<Void,Float,Void> {
                 //Writes short values into short Array and returns numberOfShort
                 int numberOfShort = audioRecord.read(audioData, 0, minBufferSizeInBytes);
                 //int numberOfShort = minBufferSizeInBytes/2;
-                int[] audioInt = new int[audioData.length];
-                float[] audioFloatsForAmp = new float[audioData.length];
+                int[] audioDataHalf = new int[audioData.length/2];
+                int[] audioInt = new int[audioData.length/2];
+                float[] audioFloatsForAmp = new float[audioData.length/2];
+                float[] audioFloatsForFFT= new float[audioData.length/2];
 
                 //sending audioData to graph fragment
                 //graphFragment.updateRecordGraph(audioFloatsForFFT);
@@ -121,18 +123,15 @@ public class AudioRecordClass extends AsyncTask<Void,Float,Void> {
                     //dataOutputStream.writeShort(audioData[i]); // Store in Sound.haha file as short-short-short--
 
                     dataOutputStream.writeShort(audioData[i]);
-
+                    audioDataHalf[i] = audioData[i];
                     audioInt[i]=(int)audioData[i];
                     /**This one is for FFT*/
                     audioFloatsForFFT[i] = (float) audioInt[i];
                     /**This one is for Amplitude Visualization*/
                     audioFloatsForAmp[i]=(float)audioInt[i];
-
-
-
                 }
-                float decibelValue = decibelCalculation.decibelCalculation(audioData);
 
+                float decibelValue = decibelCalculation.decibelCalculation(audioData);
                 float[] fftOutput = FftOutput.callMainFft(audioFloatsForFFT);
 
                 /**Fundamental Frequency*/
