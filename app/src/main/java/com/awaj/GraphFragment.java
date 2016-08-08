@@ -228,7 +228,7 @@ public class GraphFragment extends Fragment {
                 /**Freq*/
                 int freq = 7000;
                 heightNormalizer = 1;
-                playBuffIndex = 0;
+//                playBuffIndex = 0;
                 xIncrementFactor = canvas.getWidth() / (freq / MainActivity.resolution);
             }
             for (X1 = dim; X1 <= canvas.getWidth(); X1 += xIncrementFactor) {

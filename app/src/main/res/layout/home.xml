@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/audio_record"
+        android:id="@+id/audioRecord"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:onClick="callAudioRecorder"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/audio_monitor"
+        android:id="@+id/audioMonitor"
+        android:layout_below="@+id/audioRecord"
+        android:onClick="callAudioMonitor"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/scale_tester"
+        android:id="@+id/scaleTester"
+        android:layout_below="@+id/audioMonitor"
+        android:onClick="callScaleTester"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/note_generator"
+        android:id="@+id/noteGenerator"
+        android:layout_below="@+id/scaleTester"
+        android:onClick="callNoteGenerator"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/guitar_tuner"
+        android:id="@+id/guitarTuner"
+        android:layout_below="@+id/noteGenerator"
+        android:onClick="callGuitarTuner"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/uc"
+        android:id="@+id/toneGenerator"
+        android:layout_below="@+id/guitarTuner"
+        android:onClick="callToneGenerator"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/current_main_activity"
+        android:id="@+id/mainActivityLauncher"
+        android:layout_below="@+id/toneGenerator"
+        android:layout_alignParentStart="true"
+        android:onClick="callMainActivity"/>
+</RelativeLayout>

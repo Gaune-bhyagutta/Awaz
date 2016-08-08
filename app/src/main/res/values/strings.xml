@@ -5,4 +5,11 @@
     <string name="splash">SPLASH !!!</string>
     <string name="appName">AWAJ</string>
     <string name="tap_to_continue">Tap to continue...</string>
+    <string name="audio_record">Audio Record</string>
+    <string name="audio_monitor">Audio Monitor</string>
+    <string name="scale_tester">Scale Tester</string>
+    <string name="note_generator">Note Generator</string>
+    <string name="guitar_tuner">Guitar Tuner</string>
+    <string name="uc">UC</string>
+    <string name="current_main_activity">MAIN ACTIVITY</string>
 </resources>
