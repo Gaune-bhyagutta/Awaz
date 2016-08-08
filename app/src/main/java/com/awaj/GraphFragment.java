@@ -26,8 +26,6 @@ public class GraphFragment extends Fragment {
 //    static float[] recordAudioDataFreq = null;
 //    static short[] playAudioDataFreq = null;
 
-    static MainActivity mainActivity = new MainActivity();
-
     /**
      * 0-Wave 1-Thread
      */
@@ -75,12 +73,12 @@ public class GraphFragment extends Fragment {
 
             if (recordAudioData == null) {
                 int length = MainActivity.getMinBufferSizeInBytes();
-                //length=length/2;
+                length=length/2;
                 recordAudioData = new float[length];
             }
             if (playAudioData == null) {
                 int length = MainActivity.getMinBufferSizeInBytes();
-                length = length / 4;
+                //length = length / 4;
                 playAudioData = new float[length];
             }
             //int playBuffIndex = (playAudioData.length / 2 - canvas.getWidth()) / 2;

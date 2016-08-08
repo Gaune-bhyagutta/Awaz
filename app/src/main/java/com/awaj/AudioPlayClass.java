@@ -54,9 +54,7 @@ public class AudioPlayClass extends AsyncTask<Void,Float,Boolean> {
         short[] audioData = new short[minBufferSize/2];
         int audioInt[] = new int[minBufferSize/2];
         float audioFloat[] = new float[minBufferSize/2];
-        float decibel =0;
-        float decibelTotal=0;
-        int decibelCount=0;
+
 
         InputStream inputStream = null;
         BufferedInputStream bufferedInputStream = null;
