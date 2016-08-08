@@ -93,17 +93,13 @@ public class MainActivity extends AppCompatActivity {
         /**End of Record Button*/
 
         /**Start of Play Button*/
-        record();
+        play();
         /**End of Play Button*/
 
     }//End-onCreate()
 
 
     // METHOD/FUNCTION DEFINITION SECTION
-
-    public static int playState(){
-        return playState;
-    }
 
     // Returns the minimum buffer size required for the successful creation of an AudioRecord object, in byte units.
     public static  int setMinBufferSizeInBytes(int x){
@@ -205,10 +201,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (graphFragment.getGraphFragmentMode() == 0) {
             /**Amplitude Mode*/
-            graphFragment.updateRecordGraph(audioFloatsForAmp);
+            graphFragment.updateGraph(audioFloatsForAmp);
         } else if (graphFragment.getGraphFragmentMode() == 1) {
             /**Frequency Mode*/
-            graphFragment.updateRecordGraph(fftOutput);
+            graphFragment.updateGraph(fftOutput);
         }
     }
 

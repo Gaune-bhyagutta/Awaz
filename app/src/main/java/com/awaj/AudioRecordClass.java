@@ -78,7 +78,7 @@ public class AudioRecordClass extends AsyncTask<Void,Float,Void> {
 
             /**Call the static class of Audio Record to get the Buffer size in Byte that can handle the Audio data values based on our SAMPLING RATE (44100 hz or frame per second in our case)*/
             //int minBufferSizeInBytes = getRecordBufferSize();//WE CAN FIX THE BUFFER SZIE BY OURSELVES
-            minBufferSizeInBytes = MainActivity.getMinBufferSizeInBytes();//FIXED THE BUFFER SZIE BY OURSELVES
+            minBufferSizeInBytes = MainActivity.getMinBufferSizeInBytes()/2;//FIXED THE BUFFER SZIE BY OURSELVES
 
             // The array short that will store the Audio data that we get From the mic.
             short[] audioData = new short[minBufferSizeInBytes];
@@ -131,8 +131,6 @@ public class AudioRecordClass extends AsyncTask<Void,Float,Void> {
 
 
                 }
-                //Log.d(TAG, String.valueOf(audioData));
-                System.out.println(audioData);
                 float decibelValue = decibelCalculation.decibelCalculation(audioData);
 
                 float[] fftOutput = FftOutput.callMainFft(audioFloatsForFFT);
