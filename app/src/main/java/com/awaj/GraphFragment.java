@@ -36,7 +36,7 @@ public class GraphFragment extends Fragment {
     /**
      * 0-AMP 1-FREQ
      */
-    public static int GRAPH_INFO_MODE = 0;
+    private int GRAPH_INFO_MODE = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,7 +52,7 @@ public class GraphFragment extends Fragment {
         // Log.d("VIVZ", "Linear Layout - "+linearLayout.getHeight());
     }
 
-    public static class myGraphView extends View {
+    public class myGraphView extends View {
         public myGraphView(Context context) {
             super(context);
         }
@@ -74,12 +74,12 @@ public class GraphFragment extends Fragment {
             //canvas.drawLine(X1, Y1, AX, AY, graphBoundaryPO);
 
             if (recordAudioData == null) {
-                int length = mainActivity.getRecordBufferSize();
+                int length = MainActivity.getMinBufferSizeInBytes();
                 //length=length/2;
                 recordAudioData = new float[length];
             }
             if (playAudioData == null) {
-                int length = mainActivity.getPlayBufferSize();
+                int length = MainActivity.getMinBufferSizeInBytes();
                 length = length / 4;
                 playAudioData = new float[length];
             }
@@ -280,13 +280,16 @@ public class GraphFragment extends Fragment {
         playAudioData = data;
     }
 
-    public void setRecordBufferSize(int size) {
+    public void setMinBufferSizeInBytes(int size) {
         recordAudioData = new float[size];
-    }
-
-    public void setPlayBufferSize(int size) {
         playAudioData = new float[size];
     }
+
+    public int getGraphFragmentMode(){
+        return GRAPH_INFO_MODE;
+    }
+
+
 //
 //    /**
 //     * Frequency Visualization

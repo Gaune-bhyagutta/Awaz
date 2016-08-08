@@ -1,6 +1,5 @@
 package com.awaj;
 
-import android.graphics.Color;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
@@ -24,6 +23,7 @@ public class AudioPlayClass extends AsyncTask<Void,Float,Boolean> {
 
     final String TAG = AudioPlayClass.class.getSimpleName();
     Boolean sucessfull;
+
     @Override
     protected Boolean doInBackground(Void... voids) {
         sucessfull = false;
@@ -49,11 +49,11 @@ public class AudioPlayClass extends AsyncTask<Void,Float,Boolean> {
         File filePcm = new File(Environment.getExternalStorageDirectory(), "Sound.pcm");
 
         //int minBufferSize = getPlayBufferSize();
-        int minBufferSize = MainActivity.getPlayBufferSize();
+        int minBufferSize = MainActivity.getMinBufferSizeInBytes();
 
-        short[] audioData = new short[minBufferSize/4];
-        int audioInt[] = new int[minBufferSize/4];
-        float audioFloat[] = new float[minBufferSize/4];
+        short[] audioData = new short[minBufferSize/2];
+        int audioInt[] = new int[minBufferSize/2];
+        float audioFloat[] = new float[minBufferSize/2];
         float decibel =0;
         float decibelTotal=0;
         int decibelCount=0;
@@ -74,20 +74,18 @@ public class AudioPlayClass extends AsyncTask<Void,Float,Boolean> {
                     AudioFormat.ENCODING_PCM_16BIT,
                     minBufferSize,
                     AudioTrack.MODE_STREAM);
-            MainActivity.graphFragment.setPlayBufferSize(audioData.length);
+
             audioTrack.play();
 
             float audioFloatsForFFT[] = new float[audioData.length];
             float audioFloatsForAmp[] = new float[audioData.length];
+
+            DecibelCalculation decibelCalculation = new DecibelCalculation();
             while (MainActivity.getValueOfisPlaying() && dataInputStream.available() > 0) {
                 int i = 0;
                 while (dataInputStream.available() > 0 && i < audioData.length) {
                     audioData[i] = dataInputStream.readShort();
-                    if(audioData[i]!=0) {
-                        decibel = (float) (20 * Math.log10(Math.abs((int) audioData[i]) / 32678.0));
-                        decibelCount++;
-                    }
-                    decibelTotal = decibel + decibelTotal;
+
                     audioInt[i]=(int)audioData[i];
                     audioFloat[i]=(float) audioInt[i];
 
@@ -98,19 +96,12 @@ public class AudioPlayClass extends AsyncTask<Void,Float,Boolean> {
                     i++;
                 }
                 audioTrack.write(audioData, 0, audioData.length);
-                float decibelAverage = decibelTotal / decibelCount;
+                float decibelValue = decibelCalculation.decibelCalculation(audioData);
                 float[] fftOutput = FftOutput.callMainFft(audioFloatsForFFT);
 
-                /**Amplitude Mode*/
-                if(GraphFragment.GRAPH_INFO_MODE == 0){
-                    MainActivity.graphFragment.updatePlayGraph(audioFloatsForAmp);
-                }
-                /**Frequency Mode*/
-                else if(GraphFragment.GRAPH_INFO_MODE == 1){
-                    MainActivity.graphFragment.updatePlayGraph(FftOutput.callMainFft(audioFloatsForFFT));
-                }
                 float frequency = FrequencyValue.getFundamentalFrequency(fftOutput);
-                publishProgress(decibelAverage,frequency);
+                MainActivity.plotGraph(audioFloatsForAmp,audioFloatsForFFT);
+                publishProgress(decibelValue,frequency);
             }
             audioTrack.pause();
             audioTrack.flush();

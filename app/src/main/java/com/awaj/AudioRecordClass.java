@@ -1,6 +1,5 @@
 package com.awaj;
 
-import android.graphics.Color;
 import android.media.AudioRecord;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -17,11 +16,12 @@ import java.io.OutputStream;
  * Created by amitgupta on 8/4/2016.
  */
 
-// Start of AudioRecordClass (inner Class)
-
+// Start of AudioRecordClass
 public class AudioRecordClass extends AsyncTask<Void,Float,Void> {
 
     final String TAG = AudioRecordClass.class.getSimpleName();
+
+    int minBufferSizeInBytes;
 
     @Override
     protected Void doInBackground(Void... voids) {
@@ -70,6 +70,7 @@ public class AudioRecordClass extends AsyncTask<Void,Float,Void> {
         AudioRecord audioRecord = null;
         try {
             filePcm.createNewFile();
+
             // Mechanism to store fetch data from mic and store it.
             outputStream = new FileOutputStream(filePcm);
             bufferedOutputStream = new BufferedOutputStream(outputStream);
@@ -77,7 +78,7 @@ public class AudioRecordClass extends AsyncTask<Void,Float,Void> {
 
             /**Call the static class of Audio Record to get the Buffer size in Byte that can handle the Audio data values based on our SAMPLING RATE (44100 hz or frame per second in our case)*/
             //int minBufferSizeInBytes = getRecordBufferSize();//WE CAN FIX THE BUFFER SZIE BY OURSELVES
-            int minBufferSizeInBytes = MainActivity.getRecordBufferSize();//FIXED THE BUFFER SZIE BY OURSELVES
+            minBufferSizeInBytes = MainActivity.getMinBufferSizeInBytes();//FIXED THE BUFFER SZIE BY OURSELVES
 
             // The array short that will store the Audio data that we get From the mic.
             short[] audioData = new short[minBufferSizeInBytes];
@@ -93,8 +94,7 @@ public class AudioRecordClass extends AsyncTask<Void,Float,Void> {
 //            /** object of the AudioRecord class calls the startRecording() function so that every is ready and the
 //             * data can be fetch from mic-buffer-our array of short(audioData)*/
 
-            //setting the size of the audioData array for graph fragment
-            MainActivity.graphFragment.setRecordBufferSize(minBufferSizeInBytes);
+
             audioRecord.startRecording();//Start Recording Based on
 
             // it means while the user have  not pressed the RECORD-STOP Button
@@ -107,28 +107,21 @@ public class AudioRecordClass extends AsyncTask<Void,Float,Void> {
 //                 */
                 //Writes short values into short Array and returns numberOfShort
                 int numberOfShort = audioRecord.read(audioData, 0, minBufferSizeInBytes);
-
+                //int numberOfShort = minBufferSizeInBytes/2;
                 int[] audioInt = new int[audioData.length];
                 float[] audioFloatsForAmp = new float[audioData.length];
 
-                //sending audioData to graph fra
-                // gment
+                //sending audioData to graph fragment
                 //graphFragment.updateRecordGraph(audioFloatsForFFT);
                 int recordValueToGraph;
 
-                float decibel =0;
-                float decibelTotal=0;
-                int decibelCount=0;
+
+                DecibelCalculation decibelCalculation = new DecibelCalculation();
                 for(int i = 0; i < numberOfShort; i++){
                     //dataOutputStream.writeShort(audioData[i]); // Store in Sound.haha file as short-short-short--
 
                     dataOutputStream.writeShort(audioData[i]);
-                    if(audioData[i]!=0) {
-                        decibel = (float) (20 * Math.log10(Math.abs((int) audioData[i]) / 32678.0));
-                        decibelCount++;
-                    }
-                    decibelTotal = decibel + decibelTotal;
-                    //recordValueToGraph = (int)audioData[i];//Convert the short to int to store in txt file
+
                     audioInt[i]=(int)audioData[i];
                     /**This one is for FFT*/
                     audioFloatsForFFT[i] = (float) audioInt[i];
@@ -136,22 +129,19 @@ public class AudioRecordClass extends AsyncTask<Void,Float,Void> {
                     audioFloatsForAmp[i]=(float)audioInt[i];
 
 
+
                 }
-                float decibelAverage = decibelTotal / decibelCount;
+                //Log.d(TAG, String.valueOf(audioData));
+                System.out.println(audioData);
+                float decibelValue = decibelCalculation.decibelCalculation(audioData);
 
                 float[] fftOutput = FftOutput.callMainFft(audioFloatsForFFT);
 
-                if (GraphFragment.GRAPH_INFO_MODE == 0) {
-                    /**Amplitude Mode*/
-                    MainActivity.graphFragment.updateRecordGraph(audioFloatsForAmp);
-                } else if (GraphFragment.GRAPH_INFO_MODE == 1) {
-                    /**Frequency Mode*/
-                    MainActivity.graphFragment.updateRecordGraph(fftOutput);
-                }
                 /**Fundamental Frequency*/
 
                 float frequency = FrequencyValue.getFundamentalFrequency(fftOutput);
-                publishProgress(decibelAverage,frequency);
+                MainActivity.plotGraph(audioFloatsForAmp,audioFloatsForFFT);
+                publishProgress(decibelValue,frequency);
 
             }
             audioRecord.stop();

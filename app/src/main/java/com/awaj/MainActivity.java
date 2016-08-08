@@ -3,12 +3,8 @@ package com.awaj;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioFormat;
-import android.media.AudioRecord;
-import android.media.AudioTrack;
 import android.media.MediaRecorder;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -24,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private static ImageView homeIV,listIV,settingsIV;
     private static ImageView recLogo;
 
-    private static TextView decibelTV;   //To Show Average of the decibel value after each buffer
+    public static TextView decibelTV;   //To Show Average of the decibel value after each buffer
     private static TextView frequencyTV;
     private static TextView notesTV;
     public static TextView timerTV;
@@ -32,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private static Button rec;
     private static Button play;
 
-    static GraphFragment graphFragment = new GraphFragment();
+    private static GraphFragment graphFragment = new GraphFragment();
     private static ListFragment listFragment = new ListFragment();
 
     private static AudioRecordClass audioRecordClass;
@@ -57,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int NO_OF_SAMPLES = setNoOfSamples(4096);
     private static final float RESOLUTION = setResolution(SAMPLE_RATE_IN_HZ / NO_OF_SAMPLES);
+
+    private static final int MIN_BUFFER_SIZE_BYTES = setMinBufferSizeInBytes(NO_OF_SAMPLES*2);
     //END---Audio Record and Play Parameters-----
 
     @Override
@@ -100,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        graphFragment.setMinBufferSizeInBytes(MIN_BUFFER_SIZE_BYTES);
         /**Start of Record Button*/
         if(rec !=null) {
             rec.setOnClickListener(new View.OnClickListener() {
@@ -125,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
                         timerTV.setText("00:00:00");
                         timerStartObj.start();
-                        //freqTV.setText(Float.toString(fundamentalFrequency));
+
                     } else if (rec_btn_count == 1) {
                         /**Code to handle click of "Rec-STOP" button*/
                         isRecording = false;
@@ -202,24 +201,17 @@ public class MainActivity extends AppCompatActivity {
 
 
     // METHOD/FUNCTION DEFINITION SECTION
+
     public static int playState(){
         return playState;
     }
 
     // Returns the minimum buffer size required for the successful creation of an AudioRecord object, in byte units.
-    public static int getRecordBufferSize(){
-//        int minBufferSize = AudioRecord.getMinBufferSize(SAMPLE_RATE_IN_HZ,
-//                CHANNELS_CONFIGURATION,
-//                AUDIO_ENCODING);
-        int minBufferSize = NO_OF_SAMPLES * 2;
-        return minBufferSize;
+    public static  int setMinBufferSizeInBytes(int x){
+        return x;
     }
-    public static int getPlayBufferSize(){
-//        int minBufferSize = AudioTrack.getMinBufferSize(SAMPLE_RATE_IN_HZ,
-//                CHANNELS_CONFIGURATION,
-//                AUDIO_ENCODING);
-        int minBufferSize = NO_OF_SAMPLES * 2;
-        return minBufferSize;
+    public static  int getMinBufferSizeInBytes(){
+        return MIN_BUFFER_SIZE_BYTES;
     }
 
     public static void updateDecibel(float decibel){
@@ -261,6 +253,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    //START OF AUDIO RECORD-PLAY SECTION
     public static int setAudioSource(int x){
         return  x;
     };
@@ -305,7 +298,22 @@ public class MainActivity extends AppCompatActivity {
         return isPlaying;
     }
 
+    //END OF AUDIO RECORD-PLAY SECTION
 
+
+    //START OF Graph Fragment Section
+    public static void plotGraph(float[] audioFloatsForAmp,float[] fftOutput){
+
+        if (graphFragment.getGraphFragmentMode() == 0) {
+            /**Amplitude Mode*/
+            graphFragment.updateRecordGraph(audioFloatsForAmp);
+        } else if (graphFragment.getGraphFragmentMode() == 1) {
+            /**Frequency Mode*/
+            graphFragment.updateRecordGraph(fftOutput);
+        }
+    }
+
+    //END OF Graph Fragment Section
 
 }/**
  * End of MainActivity
