@@ -116,14 +116,11 @@ public class GraphFragment extends Fragment {
                 heightNormalizer = (canvas.getHeight() / 2) * 0.00003051757812;
             } else {
                 /**Freq*/
-                int freq=7000;
+                int freq=6500;
                 heightNormalizer = 1;
                 xIncrementFactor=canvas.getWidth()/(freq/MainActivity.resolution);
             }
-//<<<<<<< HEAD
-//            for (X1 = 0; X1 < canvas.getWidth(); X1+=(canvas.getWidth()/605))
-//            try {
-//=======
+
             for (X1 = 0; X1 <= canvas.getWidth(); X1+=xIncrementFactor) {
                 try {
                     graph_height = (float) (playAudioData[playBuffIndex] * heightNormalizer);
@@ -165,7 +162,7 @@ public class GraphFragment extends Fragment {
 //                recordBuffIndex = (recordAudioData.length - canvas.getWidth()) / 2;
             } else if(GRAPH_INFO_MODE==1){
                 /**Freq*/
-                int freq=7000;
+                int freq=6500;
                 heightNormalizer = 1;
                 xIncrementFactor=canvas.getWidth()/(freq/MainActivity.resolution);
             }

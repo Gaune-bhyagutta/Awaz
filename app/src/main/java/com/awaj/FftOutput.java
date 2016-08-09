@@ -6,39 +6,25 @@ package com.awaj;
 
 public class FftOutput {
 
-    static int length, stages;
-    static float[] cos;
-    static float[] sin;
-    public FftOutput(int length) {
-        this.length= length;
-        this.stages = (int)(Math.log(length) / Math.log(2));
-        // precompute tables
-        cos = new float[length/2];
-        sin = new float[length/2];
-        double alpha=-2*Math.PI/length;
-        for(int i=0; i<length/2; i++) {
-            cos[i] = (float)Math.cos(alpha*i);
-            sin[i] = (float)Math.sin(alpha*i);
-        }
-    }
-    public static void fft(float[] real, float[] imag)
+   public static void fft(float[] real, float[] imag)
     {
-        int n1,n2,a;
-        float cosPart,sinPart,t1,t2;
-        // Bit-reverse
-       ReverseBits(real,imag);
+        int n1,n2;
+        int length, stages;
+        float alpha, cosPart,sinPart,t1,t2;
+
+        length= real.length;//length of fft
+        stages = (int)(Math.log(length) / Math.log(2));// number of fft stages
+        alpha=(float)(-2*Math.PI);// for calculating twiddle factor
+
+        ReverseBits(real);// function for reversing bit position in the given data
         // FFT
         n2 = 1;
         for (int i=0; i < stages; i++) {
             n1 = n2;
             n2 = n2 + n2;
-            a = 0;
-
             for (int j=0; j < n1; j++) {
-                cosPart = cos[a];
-                sinPart = sin[a];
-                a +=  1 << (stages-i-1);
-
+                cosPart = (float)Math.cos(alpha/n2*j);
+                sinPart = (float)Math.sin(alpha/n2*j);
                 for (int k=j; k < length; k=k+n2) {
                     t1 = cosPart*real[k+n1] - sinPart*imag[k+n1];
                     t2 = sinPart*real[k+n1] + cosPart*imag[k+n1];
@@ -51,9 +37,9 @@ public class FftOutput {
         }
     }
 
-    private static void ReverseBits(float[] real, float[] imag)
+    private static void ReverseBits(float[] real)
     {
-        int n1,n2, reversedBit=0;
+        int n1,n2, reversedBit=0, length =real.length;
         float temp;
         n2 = length/2;
         for (int i=1; i < length - 1; i++) {
@@ -76,9 +62,9 @@ public class FftOutput {
         int N=length;
         // checking if length is a power of 2 or not
         int flag=0;// flag to check if the length of the array is a power of 2 or not, flag = 0 initially
-        for(int i=0 ; i<N;i++){
-            if (N%2==0){N=N/2;}
-            else{flag=1;}// when the value of length is not a power of 2 set flag =1
+        float stage=(float)(Math.log(length) / Math.log(2));
+        if((stage-(int)stage)!=0){
+            flag=1;//when the value of length is not a power of 2 set flag =1
         }
         if(flag==1){// if length is not a power of 2
             int newLength = 1;
@@ -101,8 +87,6 @@ public class FftOutput {
     private static void windowing(float[] input){
         float w[]=new float[input.length];
         for(int i=0; i<input.length; i++){
-            w[i] =0;}
-        for(int i=0; i<input.length; i++){
             if(i>=0&&i<800) {
                 w[i]=1;
                 //w[i] = (float)( 0.54 - 0.46*(Math.cos( 2*Math.PI*i/(input.length) ) ));
@@ -110,14 +94,12 @@ public class FftOutput {
             }
             else{
                 w[i]=0;}
-        }
-
-        for(int i=0;i<input.length;i++){
             input[i]*=w[i];
         }
+
     }
 
-    private float[] absoluteValue(float[] re, float[] im){
+    private static float[] absoluteValue(float[] re, float[] im){
         float[] abs = new float[re.length];
         for(int i=0;i<re.length;i++){
             abs[i]=(float)(Math.sqrt(Math.pow(re[i],2)+Math.pow(im[i],2)));
@@ -137,10 +119,9 @@ public class FftOutput {
         for(int i=0;i<fftInputReal.length;i++){
             fftInputImag[i]=0;
         }
-        FftOutput fft = new FftOutput(fftInputReal.length);
-        //float[] window = fft.getWindow();
-        fft.fft(fftInputReal, fftInputImag);
-        float[] fftOutput= fft.absoluteValue(fftInputReal,fftInputImag);
+                //float[] window = fft.getWindow();
+        fft(fftInputReal, fftInputImag);
+        float[] fftOutput= absoluteValue(fftInputReal,fftInputImag);
         windowing(fftOutput);
         return fftOutput;
     }
