@@ -107,6 +107,7 @@ public class AudioRecordClass extends AsyncTask<Void,Float,Void> {
 //                 */
                 //Writes short values into short Array and returns numberOfShort
                 int numberOfShort = audioRecord.read(audioData, 0, minBufferSizeInBytes);
+                numberOfShort = minBufferSizeInBytes/2;
                 //int numberOfShort = minBufferSizeInBytes/2;
                 int[] audioDataHalf = new int[audioData.length/2];
                 int[] audioInt = new int[audioData.length/2];
