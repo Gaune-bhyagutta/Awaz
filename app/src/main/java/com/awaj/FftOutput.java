@@ -6,9 +6,9 @@ package com.awaj;
 
 public class FftOutput {
 
-    int length, stages;
-    float[] cos;
-    float[] sin;
+    static int length, stages;
+    static float[] cos;
+    static float[] sin;
     public FftOutput(int length) {
         this.length= length;
         this.stages = (int)(Math.log(length) / Math.log(2));
@@ -21,45 +21,27 @@ public class FftOutput {
             sin[i] = (float)Math.sin(alpha*i);
         }
     }
-    public void fft(float[] real, float[] imag)
+    public static void fft(float[] real, float[] imag)
     {
-        int k,n1,n2,a;
-        float c,s,e,t1,t2;
-        int j=0;
+        int n1,n2,a;
+        float cosPart,sinPart,t1,t2;
         // Bit-reverse
-        n2 = length/2;
-        for (int i=1; i < length - 1; i++) {
-            n1 = n2;
-            while ( j >= n1 ) {
-                j = j - n1;
-                n1 = n1/2;
-            }
-            j = j + n1;
-            if (i < j) {
-                t1 = real[i];
-                real[i] = real[j];
-                real[j] = t1;
-                t1 = imag[i];
-                imag[i] = imag[j];
-                imag[j] = t1;
-            }
-        }
+       ReverseBits(real,imag);
         // FFT
-        n1 = 0;
         n2 = 1;
         for (int i=0; i < stages; i++) {
             n1 = n2;
             n2 = n2 + n2;
             a = 0;
 
-            for (j=0; j < n1; j++) {
-                c = cos[a];
-                s = sin[a];
+            for (int j=0; j < n1; j++) {
+                cosPart = cos[a];
+                sinPart = sin[a];
                 a +=  1 << (stages-i-1);
 
-                for (k=j; k < length; k=k+n2) {
-                    t1 = c*real[k+n1] - s*imag[k+n1];
-                    t2 = s*real[k+n1] + c*imag[k+n1];
+                for (int k=j; k < length; k=k+n2) {
+                    t1 = cosPart*real[k+n1] - sinPart*imag[k+n1];
+                    t2 = sinPart*real[k+n1] + cosPart*imag[k+n1];
                     real[k+n1] = real[k] - t1;
                     imag[k+n1] = imag[k] - t2;
                     real[k] = real[k] + t1;
@@ -69,17 +51,24 @@ public class FftOutput {
         }
     }
 
-    public static int ReverseBits(int n, int bitsCount)
+    private static void ReverseBits(float[] real, float[] imag)
     {
-        int reversed = 0;
-        for (int i = 0; i < bitsCount; i++)
-        {
-            int nextBit = n & 1;
-            n >>= 1;
-            reversed <<= 1;
-            reversed |= nextBit;
+        int n1,n2, reversedBit=0;
+        float temp;
+        n2 = length/2;
+        for (int i=1; i < length - 1; i++) {
+            n1 = n2;
+            while ( reversedBit >= n1 ) {
+                reversedBit = reversedBit - n1;
+                n1 = n1/2;
+            }
+            reversedBit = reversedBit + n1;
+            if (i < reversedBit) {
+                temp = real[i];
+                real[i] = real[reversedBit];
+                real[reversedBit] = temp;
+            }
         }
-        return reversed;
     }
 
     private static float[] makePowerOf2(float[] input) {
