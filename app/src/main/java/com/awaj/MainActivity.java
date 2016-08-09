@@ -77,7 +77,9 @@ public class MainActivity extends AppCompatActivity {
 
     public static int noOfSamples = getRecordBufferSize();
     public static float resolution = SAMPLE_RATE_IN_HZ / noOfSamples;
-    /***Objects*/
+    /***
+     * Objects
+     */
     Switch domainSwitch, visualizationSwitch;
 
     @Override
@@ -158,6 +160,11 @@ public class MainActivity extends AppCompatActivity {
                         timerTV.setText("00:00:00");
                         timerStartObj.start();
 
+//                        while (isRecording) {
+////                            String currentTime = timerStartObj.updateTimerTextView();
+//                            timerTV.setText("KAWA");
+//                        }
+
                     } else if (rec_btn_count == 1) {
                         /**Code to handle click of "Rec-STOP" button*/
                         isRecording = false;
@@ -198,6 +205,7 @@ public class MainActivity extends AppCompatActivity {
                         rec.setEnabled(false);
                         rec.setTextColor(Color.parseColor("#808080"));
                         Toast.makeText(getApplicationContext(), "Playing audio", Toast.LENGTH_SHORT).show();
+
                         timerTV.setText("00:00:00");
                         timerStartObj.start();
                         recLogo.setVisibility(View.INVISIBLE);
@@ -605,7 +613,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Returns the minimum buffer size required for the successful creation of an AudioRecord object, in byte units.
-    public static int getRecordBufferSize(){
+    public static int getRecordBufferSize() {
         int minBufferSize = AudioRecord.getMinBufferSize(SAMPLE_RATE_IN_HZ,
                 CHANNELS_CONFIGURATION,
                 AUDIO_ENCODING);

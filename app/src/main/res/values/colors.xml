@@ -1,9 +1,80 @@
 <resources>
-    <color name="colorPrimary">#F44336</color>
-    <color name="colorPrimaryDark">#E53935</color>
-    <color name="colorSecondaryDark">#D32F2F</color>
-    <color name="colorAccent">#3F51B5</color>
+    <!--<color name="colorPrimary">#F44336</color>-->
+    <!--<color name="colorPrimaryDark">#E53935</color>-->
+    <!--<color name="colorSecondaryDark">#D32F2F</color>-->
+    <!--<color name="colorAccent">#3F51B5</color>-->
 
+    <!--Teal & Red as primary base-->
+    <color name="colorPrimary">#009688</color>
+    <color name="colorPrimaryDark">#00796B</color>
+    <color name="colorPrimaryLight">#B2DFDB</color>
+    <color name="colorAccent">#FF5252</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#BDBDBD</color>
+
+    <!--one red - brown-->
+    <color name="red_primary">#F44336</color>
+    <color name="red_primary_dark">#D32F2F</color>
+    <color name="red_primary_light">#FFCDD2</color>
+    <color name="red_accent">#795548</color>
+    <color name="red_primary_text">#212121</color>
+    <color name="red_secondary_text">#757575</color>
+    <color name="red_icons">#FFFFFF</color>
+    <color name="red_divider">#BDBDBD</color>
+
+    <!--two - deep purple -pink-->
+    <color name="deep_purple_primary">#673AB7</color>
+    <color name="deep_purple_primary_dark">#512DA8</color>
+    <color name="deep_purple_primary_light">#D1C4E9</color>
+    <color name="deep_purple_accent">#FF4081</color>
+    <color name="deep_purple_primary_text">#212121</color>
+    <color name="deep_purple_secondary_text">#757575</color>
+    <color name="deep_purple_icons">#FFFFFF</color>
+    <color name="deep_purple_divider">#BDBDBD</color>
+
+    <!--three - blue - deep orange -->
+    <color name="blue_primary">#2196F3</color>
+    <color name="blue_primary_dark">#1976D2</color>
+    <color name="blue_primary_light">#BBDEFB</color>
+    <color name="blue_accent">#FF5722</color>
+    <color name="blue_primary_text">#212121</color>
+    <color name="blue_secondary_text">#757575</color>
+    <color name="blue_icons">#FFFFFF</color>
+    <color name="blue_divider">#BDBDBD</color>
+
+    <!--four - green - cyan-->
+    <color name="green_primary">#4CAF50</color>
+    <color name="green_primary_dark">#388E3C</color>
+    <color name="green_primary_light">#C8E6C9</color>
+    <color name="green_accent">#00BCD4</color>
+    <color name="green_primary_text">#212121</color>
+    <color name="green_secondary_text">#757575</color>
+    <color name="green_icons">#FFFFFF</color>
+    <color name="green_divider">#BDBDBD</color>
+
+    <!--five - amber - red-->
+    <color name="amber_primary">#FFC107</color>
+    <color name="amber_primary_dark">#FFA000</color>
+    <color name="amber_primary_light">#FFECB3</color>
+    <color name="amber_accent">#FF5252</color>
+    <color name="amber_primary_text">#212121</color>
+    <color name="amber_secondary_text">#757575</color>
+    <color name="amber_icons">#212121</color>
+    <color name="amber_divider">#BDBDBD</color>
+
+    <!--six - brown - deep purple-->
+    <color name="brown_primary">#795548</color>
+    <color name="brown_primary_dark">#5D4037</color>
+    <color name="brown_primary_light">#D7CCC8</color>
+    <color name="brown_accent">#7C4DFF</color>
+    <color name="brown_primary_text">#212121</color>
+    <color name="brown_secondary_text">#757575</color>
+    <color name="brown_icons">#FFFFFF</color>
+    <color name="brown_divider">#BDBDBD</color>
+
+    <!--Shades of grey-->
     <color name="white">#ffffff</color>
     <color name="f">#ffffff</color>
     <color name="e">#eeeeee</color>
@@ -23,13 +94,12 @@
     <color name="zero">#000000</color>
     <color name="black">#000000</color>
     <color name="holo_red_dark">#d32f2f</color>
-    
+
     <color name="dark_red">#B71C1C</color>
     <color name="dark_purple">#4A148C</color>
     <color name="dark_green">#1B5E20</color>
     <color name="dark_blue">#01579B</color>
     <color name="dark_indigo">#1A237E</color>
     <color name="dark_orange">#BF360C</color>
-
 
 </resources>

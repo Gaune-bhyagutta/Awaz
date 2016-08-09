@@ -12,10 +12,11 @@ public class Timer extends CountDownTimer {
     public long MM = 00L;
     public long HH = 00L;
     public boolean state = false;
+    private StringBuilder displayTime;
 
     /**Instantiate a Timer object with total duration & countdown interval */
     /**
-     * CONSTRUCTOR
+     * CONSTRUCTOr
      */
     public Timer(long millisInFuture, long countDownInterval) {
         super(millisInFuture, countDownInterval);
@@ -33,7 +34,7 @@ public class Timer extends CountDownTimer {
             MM = 0;
         }
 
-        StringBuilder displayTime = new StringBuilder();
+        displayTime = new StringBuilder();
         displayTime.append(String.format("%02d", HH));
         displayTime.append(":");
         displayTime.append(String.format("%02d", MM));
@@ -43,16 +44,18 @@ public class Timer extends CountDownTimer {
 //        displayTime.append(":");
 //        displayTime.append(String.format("%02d",MS));
 
-        MainActivity.timerTV.setText(displayTime);
-        if (MainActivity.playState() != 1) {
-            if (state == true) {
-                MainActivity.recLogo.setVisibility(View.VISIBLE);
-                state = false;
-            } else {
-                MainActivity.recLogo.setVisibility(View.INVISIBLE);
-                state = true;
-            }
-        }
+        /**Updates Timer Textview*/
+//        MainActivity.timerTV.setText(displayTime);
+
+//        if (MainActivity.playState() != 1) {
+//            if (state == true) {
+//                MainActivity.recLogo.setVisibility(View.VISIBLE);
+//                state = false;
+//            } else {
+//                MainActivity.recLogo.setVisibility(View.INVISIBLE);
+//                state = true;
+//            }
+//        }
     }
 
     @Override
@@ -61,5 +64,9 @@ public class Timer extends CountDownTimer {
         SS = 00L;
         MM = 00L;
         HH = 00L;
+    }
+
+    public String updateTimerTextView() {
+        return displayTime.toString();
     }
 }

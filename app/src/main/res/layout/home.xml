@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/colorPrimary"
     android:orientation="vertical"
     android:scrollbars="vertical">
     <!--first Line-->
@@ -11,9 +11,9 @@
         android:id="@+id/first"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginEnd="@dimen/home_buttons_margin"
-        android:layout_marginStart="@dimen/home_buttons_margin"
-        android:layout_marginTop="@dimen/home_buttons_margin"
+        android:layout_marginEnd="@dimen/home_buttons_horizontal_margin"
+        android:layout_marginStart="@dimen/home_buttons_horizontal_margin"
+        android:layout_marginTop="@dimen/home_buttons_vertical_margin"
         android:layout_weight="1"
         android:baselineAligned="false"
         android:orientation="horizontal">
@@ -24,14 +24,20 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/home_buttons_margin"
             android:layout_weight="1"
-            android:background="@color/dark_red">
+            android:background="@color/red_primary">
 
             <Button
                 android:id="@+id/audioRecord"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/one"
-                android:onClick="callAudioRecorder" />
+                android:gravity="bottom|center_horizontal"
+                android:onClick="callAudioRecorder"
+                android:text="Record"
+                android:textAlignment="gravity"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:typeface="monospace" />
         </LinearLayout>
 
         <!--Monitor-->
@@ -39,7 +45,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/dark_blue">
+            android:background="@color/deep_purple_primary">
 
             <Button
                 android:id="@+id/audioMonitor"
@@ -47,7 +53,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/two"
-                android:onClick="callAudioMonitor" />
+                android:gravity="bottom|center_horizontal"
+                android:onClick="callAudioMonitor"
+                android:text="Monitor"
+                android:textAlignment="gravity"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:typeface="monospace" />
 
         </LinearLayout>
     </LinearLayout>
@@ -57,11 +69,11 @@
         android:id="@+id/second"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginEnd="@dimen/home_buttons_margin"
-        android:layout_marginStart="@dimen/home_buttons_margin"
-        android:layout_marginTop="@dimen/home_buttons_margin"
+        android:layout_marginEnd="@dimen/home_buttons_horizontal_margin"
+        android:layout_marginStart="@dimen/home_buttons_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_weight="1"
-        android:background="@color/white"
+        android:background="@color/colorPrimary"
         android:baselineAligned="false"
         android:orientation="horizontal">
 
@@ -69,17 +81,22 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/home_buttons_margin"
+            android:layout_marginEnd="@dimen/home_buttons_horizontal_margin"
             android:layout_weight="1"
-            android:background="@color/dark_indigo">
+            android:background="@color/blue_primary">
 
             <Button
                 android:id="@+id/scaleTester"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:background="@drawable/three"
-                android:onClick="callScaleTester" />
+                android:gravity="bottom|center_horizontal"
+                android:onClick="callScaleTester"
+                android:text="Scale Tester"
+                android:textAlignment="gravity"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:typeface="monospace"/>
         </LinearLayout>
 
         <!--Note Generator-->
@@ -87,83 +104,99 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/dark_green">
+            android:background="@color/green_primary">
 
-        <Button
-            android:id="@+id/noteGenerator"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/four"
-            android:onClick="callNoteGenerator" />
+            <Button
+                android:id="@+id/noteGenerator"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/four"
+                android:gravity="bottom|center_horizontal"
+                android:onClick="callNoteGenerator"
+                android:text="Note Generator"
+                android:textAlignment="gravity"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:typeface="monospace" />
         </LinearLayout>
     </LinearLayout>
 
     <!--Third Row-->
     <LinearLayout
-    android:id="@+id/third"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_marginTop="@dimen/home_buttons_margin"
-    android:layout_marginStart="@dimen/home_buttons_margin"
-    android:layout_marginEnd="@dimen/home_buttons_margin"
-    android:layout_weight="1"
-    android:background="@color/white"
-    android:baselineAligned="false"
-    android:orientation="horizontal">
-
-    <!--Guitar Tuner-->
-        <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:id="@+id/third"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/home_buttons_horizontal_margin"
+        android:layout_marginStart="@dimen/home_buttons_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_weight="1"
-        android:background="@color/dark_orange"
-        android:layout_marginEnd="@dimen/home_buttons_margin">
+        android:background="@color/colorPrimary"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
 
-            <Button
-            android:id="@+id/guitarTuner"
+        <!--Guitar Tuner-->
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/home_buttons_horizontal_margin"
             android:layout_weight="1"
-            android:background="@drawable/five"
-            android:onClick="callGuitarTuner"/>
+            android:background="@color/amber_primary">
+
+            <Button
+                android:id="@+id/guitarTuner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/five"
+                android:gravity="bottom|center_horizontal"
+                android:onClick="callGuitarTuner"
+                android:text="Guitar Tuner"
+                android:textAlignment="gravity"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:typeface="monospace" />
         </LinearLayout>
 
 
         <!--Tone Generator-->
         <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@color/dark_purple" >
-
-            <Button
-            android:id="@+id/toneGenerator"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/six"
-            android:onClick="callFrequencyGenerator" />
+            android:background="@color/brown_primary">
+
+            <Button
+                android:id="@+id/toneGenerator"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/six"
+                android:gravity="bottom|center_horizontal"
+                android:onClick="callFrequencyGenerator"
+                android:text="Tone Generator"
+                android:textAlignment="gravity"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:typeface="monospace" />
         </LinearLayout>
     </LinearLayout>
 
     <!--Last Row-->
     <LinearLayout
-    android:id="@+id/fourth"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/home_buttons_margin"
-    android:layout_marginStart="@dimen/home_buttons_margin"
-    android:layout_marginEnd="@dimen/home_buttons_margin"
-    android:background="@color/white"
-    android:orientation="horizontal" >
-
-            <!--Last boss-->
-        <Button
-        android:id="@+id/mainActivityLauncher"
+        android:id="@+id/fourth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="callMainActivity"
-        android:text="@string/current_main_activity"/>
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+
+        <!--Last boss-->
+        <Button
+            android:id="@+id/mainActivityLauncher"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:onClick="callMainActivity"
+            android:text="@string/current_main_activity"
+            android:textColor="#ffffff" />
     </LinearLayout>
 </LinearLayout>
