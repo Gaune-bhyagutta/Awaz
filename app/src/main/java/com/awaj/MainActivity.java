@@ -159,13 +159,15 @@ public class MainActivity extends AppCompatActivity {
 //        visualizationSwitch.setText("WAVE");
 
         /**HOME - LIST - SETTING Button*/
-        listIV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent toListTabs = new Intent(MainActivity.this, ListTabs.class);
-                startActivity(toListTabs);
-            }
-        });
+        if(listIV!=null) {
+            listIV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent toListTabs = new Intent(MainActivity.this, ListTabs.class);
+                    startActivity(toListTabs);
+                }
+            });
+        }
 
         /**Start of Record Button*/
 
@@ -309,6 +311,13 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
     }
+
+    public boolean deleteSound(String filename){
+        File file = new File(filename);
+        boolean deleted = file.delete();
+        return deleted;
+    }
+
 
     // Start of AudioRecordClass (inner Class)
     public class AudioRecordClass extends AsyncTask<Void, Float, Void> {
