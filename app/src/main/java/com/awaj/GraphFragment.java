@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,9 +24,11 @@ public class GraphFragment extends Fragment {
     /**
      * 0-AMP/TIME 1-AMP/FREQ
      */
+
     private int GRAPH_INFO_MODE = 0;
 
     //myGraphView myGraphView = new myGraphView(getActivity());
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,17 +67,20 @@ public class GraphFragment extends Fragment {
 //            }
 
             /**ACTUAL PLOTS*/
+
             drawMeshLines(canvas);
             if (GRAPH_INFO_MODE == 1) {
                 frequencyAmplitudeGraph(canvas, graphVisualizationPO);
             } else {
                 timeAmplitudeGraph(canvas, graphVisualizationPO);
+
             }
         }
 
         /**
          * End of onDraw
          */
+
 
         public void drawMeshLines(Canvas canvas) {
             //Mesh Lines
@@ -152,15 +156,18 @@ public class GraphFragment extends Fragment {
         public void timeAmplitudeGraph(Canvas canvas, Paint graphVisualizationPO) {
             double heightNormalizer = (canvas.getHeight() / 2) * 0.00003051757812;
             int index = 0;
+
             float newX, newY;
             float oldX = 0, oldY = canvas.getHeight() / 2;
             float X1 = 0;
             float Y1 = canvas.getHeight() / 2;
             float X2, Y2;
 
+
             for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
                 try {
                     graph_height = (float) (audioData[index] * heightNormalizer);
+
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
@@ -178,29 +185,36 @@ public class GraphFragment extends Fragment {
                     oldX = newX;
                     oldY = newY;
                 }
+
                 index++;
+
                 postInvalidateDelayed(GRAPH_REFRESH_DELAY);
             }
         }
+
 
         public void frequencyAmplitudeGraph(Canvas canvas, Paint graphVisualizationPO) {
 
             double heightNormalizer = 1;
             int index = 0;
+
             float newX, newY;
             float oldX = 0, oldY = canvas.getHeight() / 2;
             float X1 = 0;
             float Y1 = canvas.getHeight() / 2;
             float X2, Y2;
 
+
             for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
                 try {
                     graph_height = (float) (audioData[index] * heightNormalizer);
+
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
                 X2 = X1;
                 Y2 = Y1 - graph_height;
+
 
                 canvas.drawLine(X1, Y1, X2, Y2, graphVisualizationPO);
 
@@ -209,6 +223,7 @@ public class GraphFragment extends Fragment {
             }
 
         }
+
     }
 
     /**
@@ -225,6 +240,8 @@ public class GraphFragment extends Fragment {
     public int getGraphFragmentMode(){
         return GRAPH_INFO_MODE;
     }
+
+
 
 
 }

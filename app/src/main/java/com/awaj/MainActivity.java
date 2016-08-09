@@ -1,6 +1,7 @@
 package com.awaj;
 
 import android.content.Intent;
+import android.database.SQLException;
 import android.graphics.Color;
 import android.media.AudioFormat;
 import android.media.MediaRecorder;
@@ -11,12 +12,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.stetho.Stetho;
+
+import java.io.IOException;
+
 public class MainActivity extends AppCompatActivity {
 
+    DatabaseHelper databaseHelper;
     //Instance Variable And Constants Initialization/Declaration
 
     private static ImageView homeIV,listIV,settingsIV;
@@ -29,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static Button rec;
     private static Button play;
-
     private static GraphFragment graphFragment = new GraphFragment();
     private static ListFragment listFragment = new ListFragment();
 
@@ -38,10 +45,12 @@ public class MainActivity extends AppCompatActivity {
 
     public static final Timer timerStartObj = new Timer(3000000, 1000);
 
+
     private static int rec_btn_count = 0;
     private static int play_btn_count =0;   //To Know Button was Pressed
     private static boolean isRecording = false;    //To Know RECORDING Or STOPPED
     private static boolean isPlaying = false;//To Know PLAYING or STOPPED
+
     private static int playState = 0;   //TO Know RECORDING or PLAYING
 
     private final String TAG = MainActivity.class.getSimpleName();
@@ -59,10 +68,39 @@ public class MainActivity extends AppCompatActivity {
     private static final int MIN_BUFFER_SIZE_BYTES = setMinBufferSizeInBytes(NO_OF_SAMPLES*2);
     //END---Audio Record and Play Parameters-----
 
+    /**
+     * Objects
+     */
+    Switch domainSwitch, visualizationSwitch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        //database part
+        Stetho.initializeWithDefaults(this);
+        databaseHelper = new DatabaseHelper(this);
+
         super.onCreate(savedInstanceState);
+
+        try{
+            databaseHelper.createDatabase();
+        }catch (IOException e){
+            throw new Error(e);
+        }
+        try {
+            databaseHelper.openDatabase();
+        }catch (SQLException e){
+            throw e;
+        }
+        databaseHelper.getAllData();
+        //frequency match test
+        int match = databaseHelper.matchFreq(184.5);
+        String note = databaseHelper.getNote(match);
+
+        Log.d("VIVZ", "note="+note+" match="+match);
+
+        //end of database part
+
         setContentView(R.layout.activity_main);
 
         /**START-Referencing UI Elements*/
@@ -76,14 +114,22 @@ public class MainActivity extends AppCompatActivity {
         myFragmentTransaction.commit();
         /**End-GRAPH FRAGMENT*/
 
+        /**Switches*/
+        domainSwitch = (Switch) findViewById(R.id.domainSwitch);
+//        domainSwitch.setText("AMP");
+//        visualizationSwitch = (Switch) findViewById(R.id.visualizationSwitch);
+//        visualizationSwitch.setText("WAVE");
+
         /**HOME - LIST - SETTING Button*/
-        listIV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent toListTabs = new Intent(MainActivity.this, ListTabs.class);
-                startActivity(toListTabs);
-            }
-        });
+        if(listIV!=null) {
+            listIV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent toListTabs = new Intent(MainActivity.this, ListTabs.class);
+                    startActivity(toListTabs);
+                }
+            });
+        }
 
         //Setting To be made before Recording,Playing and Graph Plotting
         graphFragment.setMinBufferSizeInBytes(MIN_BUFFER_SIZE_BYTES);
@@ -127,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
         rec.setText("RECORD");
         rec.setTextColor(Color.parseColor("#ffffff"));
         play.setEnabled(true);
+
 
         rec_btn_count =0;
     }
@@ -214,13 +261,16 @@ public class MainActivity extends AppCompatActivity {
     //Start-record()
     public void record(){
         if(rec !=null) {
+
             rec.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v){
+                public void onClick(View v) {
 
                     audioRecordClass = new AudioRecordClass();
 
+
                     if (rec_btn_count == 0){
+
                         /**Code to handle click of "RECORD" button*/
                         playState = 0;
                         isRecording = true;
@@ -246,10 +296,10 @@ public class MainActivity extends AppCompatActivity {
 
                         timerStartObj.cancel();
 
-                        timerStartObj.SS=0L;
-                        timerStartObj.MM=0L;
-                        timerStartObj.HH=0L;
-                        timerStartObj.MS=0L;
+                        timerStartObj.SS = 0L;
+                        timerStartObj.MM = 0L;
+                        timerStartObj.HH = 0L;
+                        timerStartObj.MS = 0L;
 
 
                     }
@@ -269,11 +319,11 @@ public class MainActivity extends AppCompatActivity {
                     audioPlayClass = new AudioPlayClass();
 
 
-                    if(play_btn_count == 0){
+                    if (play_btn_count == 0) {
 
 
                         //PLAY Buttton
-                        playState =1;
+                        playState = 1;
 
                         play_btn_count = 1;
                         Log.d(TAG, "Clicked - play audio");
@@ -294,27 +344,23 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Playing audio", Toast.LENGTH_SHORT).show();
                         timerTV.setText("00:00:00");
                         timerStartObj.start();
-                    }
-
-                    else if (play_btn_count == 1){
-
+                    } else if (play_btn_count == 1) {
                         /**Code to pause/stop the playback*/
                         isPlaying = false;
 
                         timerStartObj.cancel();
 
-                        timerStartObj.SS=0L;
-                        timerStartObj.MM=0L;
-                        timerStartObj.HH=0L;
-                        timerStartObj.MS=0L;
-
-
+                        timerStartObj.SS = 0L;
+                        timerStartObj.MM = 0L;
+                        timerStartObj.HH = 0L;
+                        timerStartObj.MS = 0L;
                     }
                 }
             });
         }
     }
     //End-play()
+
 
     public void referenceToUIElements(){
         //Start-To Show Decibels,Frequncy and Notes
@@ -329,6 +375,7 @@ public class MainActivity extends AppCompatActivity {
         play.setTextColor(Color.parseColor("#808080"));
         //End-To Record and Play
 
+
         /**Start-Timer UI Setups*/
         timerTV = (TextView) findViewById(R.id.timerTV);
         timerTV.setText("00:00:00");
@@ -337,6 +384,7 @@ public class MainActivity extends AppCompatActivity {
         /**Start-Recording Logo*/
         recLogo = (ImageView) findViewById(R.id.reclogo);
         recLogo.setVisibility(View.INVISIBLE);
+
 
         homeIV = (ImageView) findViewById(R.id.home);
         listIV = (ImageView) findViewById(R.id.list);
