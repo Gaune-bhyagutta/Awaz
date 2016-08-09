@@ -360,7 +360,8 @@ public class MainActivity extends AppCompatActivity {
 //                ONE- as extension Sound.pcm
 //            15. AND MOST IMPORTANT THING TO REMEMBER :- OUR AMPLITUDE IS REPRESENTED BY 16 bit. SO WE USE SHORT
 //         */
-            File filePcm = new File(Environment.getExternalStorageDirectory(), "Sound.pcm");
+            File folder = getExternalFilesDir("Awaj");
+            File filePcm = new File(folder, "Sound.pcm");
 
 
             OutputStream outputStream = null;
@@ -371,7 +372,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 filePcm.createNewFile();
                 // Mechanism to store fetch data from mic and store it.
-                outputStream = new FileOutputStream(filePcm);
+                    outputStream = new FileOutputStream(filePcm);
                 bufferedOutputStream = new BufferedOutputStream(outputStream);
                 dataOutputStream = new DataOutputStream(bufferedOutputStream);
 
