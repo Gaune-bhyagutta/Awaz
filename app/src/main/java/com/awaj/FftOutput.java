@@ -8,30 +8,34 @@ public class FftOutput {
 
    public static void fft(float[] real, float[] imag)
     {
-        int n1,n2;
-        int length, stages;
-        float alpha, cosPart,sinPart,t1,t2;
+        int n,fftPoint;
+        int length, noOfStages;
+        float alpha, cosPart,sinPart,multiplierReal,multiplierImag;
 
         length= real.length;//length of fft
-        stages = (int)(Math.log(length) / Math.log(2));// number of fft stages
+        noOfStages = (int)(Math.log(length) / Math.log(2));// number of fft noOfStages
         alpha=(float)(-2*Math.PI);// for calculating twiddle factor
 
         ReverseBits(real);// function for reversing bit position in the given data
-        // FFT
-        n2 = 1;
-        for (int i=0; i < stages; i++) {
-            n1 = n2;
-            n2 = n2 + n2;
-            for (int j=0; j < n1; j++) {
-                cosPart = (float)Math.cos(alpha/n2*j);
-                sinPart = (float)Math.sin(alpha/n2*j);
-                for (int k=j; k < length; k=k+n2) {
-                    t1 = cosPart*real[k+n1] - sinPart*imag[k+n1];
-                    t2 = sinPart*real[k+n1] + cosPart*imag[k+n1];
-                    real[k+n1] = real[k] - t1;
-                    imag[k+n1] = imag[k] - t2;
-                    real[k] = real[k] + t1;
-                    imag[k] = imag[k] + t2;
+
+        //FFT calculation part
+        fftPoint = 1;
+        for (int i=0; i < noOfStages; i++) {// First loop that runs till the fft noOfStages
+            n = fftPoint;
+            fftPoint += fftPoint;
+            for (int j=0; j < n; j++) {// loop to calculate the corresponding twiddle factor values for each noOfStages
+                cosPart = (float)Math.cos(alpha/fftPoint*j);
+                sinPart = (float)Math.sin(alpha/fftPoint*j);
+
+                for (int k=j; k < length; k=k+fftPoint) {//multiplication of values
+                    multiplierReal = cosPart*real[k+n] - sinPart*imag[k+n];
+                    multiplierImag= sinPart*real[k+n] + cosPart*imag[k+n];
+                    // even part multiplication
+                    real[k] = real[k] + multiplierReal;
+                    imag[k] = imag[k] + multiplierImag;
+                    // odd part multiplication
+                    real[k+n] = real[k] - multiplierReal;
+                    imag[k+n] = imag[k] - multiplierImag;
                 }
             }
         }
@@ -39,11 +43,11 @@ public class FftOutput {
 
     private static void ReverseBits(float[] real)
     {
-        int n1,n2, reversedBit=0, length =real.length;
+        int n1, reversedBit=0, length =real.length;
         float temp;
-        n2 = length/2;
+
         for (int i=1; i < length - 1; i++) {
-            n1 = n2;
+            n1 = length/2;
             while ( reversedBit >= n1 ) {
                 reversedBit = reversedBit - n1;
                 n1 = n1/2;
