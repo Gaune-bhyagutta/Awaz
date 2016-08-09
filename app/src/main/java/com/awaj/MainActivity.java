@@ -110,9 +110,10 @@ public class MainActivity extends AppCompatActivity {
         }
         databaseHelper.getAllData();
         //frequency match test
-        double freqTest =20.7;
-        int match = databaseHelper.matchFreq(freqTest);
-        Log.d("VIVZ", "match="+match);
+        int match = databaseHelper.matchFreq(184.5);
+        String note = databaseHelper.getNote(match);
+
+        Log.d("VIVZ", "note="+note+" match="+match);
 
         //end of database part
 
