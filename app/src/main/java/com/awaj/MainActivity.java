@@ -361,7 +361,7 @@ public class MainActivity extends AppCompatActivity {
 //            15. AND MOST IMPORTANT THING TO REMEMBER :- OUR AMPLITUDE IS REPRESENTED BY 16 bit. SO WE USE SHORT
 //         */
             File folder = getExternalFilesDir("Awaj");
-            File filePcm = new File(folder, "Sound.pcm");
+            File filePcm = new File(folder, "Sound"+System.currentTimeMillis()+".pcm");
 
 
             OutputStream outputStream = null;
