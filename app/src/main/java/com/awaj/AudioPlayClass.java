@@ -19,10 +19,17 @@ import java.io.InputStream;
  * Created by amitgupta on 8/4/2016.
  */
 //Start of AudioPlayClass
-public class AudioPlayClass extends AsyncTask<Void,Float,Boolean> {
+public class AudioPlayClass extends AsyncTask<Void,String,Boolean> {
 
     final String TAG = AudioPlayClass.class.getSimpleName();
     Boolean sucessfull;
+    DatabaseHelper databaseHelper;
+
+    @Override
+    protected void onPreExecute() {
+        databaseHelper = new DatabaseHelper(MyApplication.getAppContext());
+        databaseHelper.getAllData();
+    }
 
     @Override
     protected Boolean doInBackground(Void... voids) {
@@ -35,11 +42,12 @@ public class AudioPlayClass extends AsyncTask<Void,Float,Boolean> {
     }
 
     @Override
-    protected void onProgressUpdate(Float... values) {
+    protected void onProgressUpdate(String... values) {
 //            super.onProgressUpdate(values);
 
-        MainActivity.updateDecibel(values[0]);
-        MainActivity.updateFrequncy(values[1]);
+        MainActivity.updateDecibel(Float.valueOf(values[0]));
+        MainActivity.updateFrequncy(Float.valueOf(values[1]));
+        MainActivity.updateNotes(values[2]);
     }
 
     //Start of playRecord()
@@ -98,8 +106,11 @@ public class AudioPlayClass extends AsyncTask<Void,Float,Boolean> {
                 float[] fftOutput = FftOutput.callMainFft(audioFloatsForFFT);
 
                 float frequency = FrequencyValue.getFundamentalFrequency(fftOutput);
+                int match = databaseHelper.matchFreq(frequency);
+
+                String note = databaseHelper.getNote(match);
                 MainActivity.plotGraph(audioFloatsForAmp,audioFloatsForFFT);
-                publishProgress(decibelValue,frequency);
+                publishProgress(String.valueOf(decibelValue),String.valueOf(frequency),note);
             }
             audioTrack.pause();
             audioTrack.flush();
