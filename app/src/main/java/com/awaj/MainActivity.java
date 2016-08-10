@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         }
         databaseHelper.getAllData();
         //frequency match test
-        int match = databaseHelper.matchFreq(184.5);
+        int match = databaseHelper.matchFreq(698.972);
         String note = databaseHelper.getNote(match);
 
         Log.d("VIVZ", "note="+note+" match="+match);

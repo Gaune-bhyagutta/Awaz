@@ -27,6 +27,11 @@ public class AudioRecordClass extends AsyncTask<Void,String,Void> {
     DatabaseHelper databaseHelper;
 
 
+    @Override
+    protected void onPreExecute() {
+        databaseHelper = new DatabaseHelper(MyApplication.getAppContext());
+        databaseHelper.getAllData();
+    }
 
     @Override
     protected Void doInBackground(Void... voids) {
@@ -148,9 +153,12 @@ public class AudioRecordClass extends AsyncTask<Void,String,Void> {
 
 
 
-                databaseHelper = new DatabaseHelper(MyApplication.getAppContext());
+
+
                 int match = databaseHelper.matchFreq(frequency);
+
                 String note = databaseHelper.getNote(match);
+                //Log.d("VIVZ", "note="+note+" match="+match);
                 publishProgress(String.valueOf(decibelValue),String.valueOf(frequency),note);
 
             }
