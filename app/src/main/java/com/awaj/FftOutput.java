@@ -16,7 +16,7 @@ public class FftOutput {
         noOfStages = (int)(Math.log(length) / Math.log(2));// number of fft noOfStages
         alpha=(float)(-2*Math.PI);// for calculating twiddle factor
 
-        ReverseBits(real);// function for reversing bit position in the given data
+        fftReverse(real,length,noOfStages);// function for reversing bit position in the given data
 
         //FFT calculation part
         fftPoint = 1;
@@ -41,24 +41,27 @@ public class FftOutput {
         }
     }
 
-    private static void ReverseBits(float[] real)
-    {
-        int n1, reversedBit=0, length =real.length;
-        float temp;
-
-        for (int i=1; i < length - 1; i++) {
-            n1 = length/2;
-            while ( reversedBit >= n1 ) {
-                reversedBit = reversedBit - n1;
-                n1 = n1/2;
-            }
-            reversedBit = reversedBit + n1;
-            if (i < reversedBit) {
-                temp = real[i];
-                real[i] = real[reversedBit];
-                real[reversedBit] = temp;
-            }
+    private static void fftReverse(float[] real,int length, int noOfStages){
+        float temp=0;
+        int i;
+        for(i =0;i<length/2;i++){
+            int j= reverseBits(i,noOfStages);// reversing bit value of ith index
+            temp = real[i];
+            real[i] = real[j];
+            real[j] = temp;
         }
+    }
+    private static int reverseBits(int number, int noOfStages)// function that returns the bit reversed value of given number
+    {
+        int reversedBit = 0,i;
+        for (i = 0; i < noOfStages; i++)
+        {
+            int nextBit = number & 1;
+            number >>= 1;
+            reversedBit <<= 1;
+            reversedBit |= nextBit;
+        }
+        return reversedBit;
     }
 
     private static float[] makePowerOf2(float[] input) {
@@ -110,9 +113,9 @@ public class FftOutput {
         }return abs;
     }
 
-    private static void normalize(float[] input){
+    private static void normalize(float[] input){//normalizing the amplitude value
         for(int i=0;i<input.length;i++){
-            input[i]=(float)(input[i]/32768.0);
+            input[i]=(float)(input[i]/32768.0);//since the maximum amplitude value is 32768
         }
 
     }
