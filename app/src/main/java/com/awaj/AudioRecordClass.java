@@ -1,5 +1,6 @@
 package com.awaj;
 
+import android.content.Context;
 import android.media.AudioRecord;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -17,11 +18,15 @@ import java.io.OutputStream;
  */
 
 // Start of AudioRecordClass
-public class AudioRecordClass extends AsyncTask<Void,Float,Void> {
+public class AudioRecordClass extends AsyncTask<Void,String,Void> {
 
     final String TAG = AudioRecordClass.class.getSimpleName();
 
     int minBufferSizeInBytes;
+
+    DatabaseHelper databaseHelper;
+
+
 
     @Override
     protected Void doInBackground(Void... voids) {
@@ -30,10 +35,11 @@ public class AudioRecordClass extends AsyncTask<Void,Float,Void> {
     }
 
     @Override
-    protected void onProgressUpdate(Float... values ) {
+    protected void onProgressUpdate(String... values ) {
         //super.onProgressUpdate(values);
-        MainActivity.updateDecibel(values[0]);
-        MainActivity.updateFrequncy(values[1]);
+        MainActivity.updateDecibel(Float.valueOf(values[0]));
+        MainActivity.updateFrequncy(Float.valueOf(values[1]));
+        MainActivity.updateNotes(values[2]);
         //MainActivity.updateNotes(values[1]);
     }
 
@@ -139,7 +145,13 @@ public class AudioRecordClass extends AsyncTask<Void,Float,Void> {
 
                 float frequency = FrequencyValue.getFundamentalFrequency(fftOutput);
                 MainActivity.plotGraph(audioFloatsForAmp,audioFloatsForFFT);
-                publishProgress(decibelValue,frequency);
+
+
+
+                databaseHelper = new DatabaseHelper(MyApplication.getAppContext());
+                int match = databaseHelper.matchFreq(frequency);
+                String note = databaseHelper.getNote(match);
+                publishProgress(String.valueOf(decibelValue),String.valueOf(frequency),note);
 
             }
             audioRecord.stop();

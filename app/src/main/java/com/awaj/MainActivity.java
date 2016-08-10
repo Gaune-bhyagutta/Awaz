@@ -1,5 +1,6 @@
 package com.awaj;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.SQLException;
 import android.graphics.Color;
@@ -25,7 +26,9 @@ import java.io.IOException;
 public class MainActivity extends AppCompatActivity {
 
     DatabaseHelper databaseHelper;
+
     //Instance Variable And Constants Initialization/Declaration
+
 
     private static ImageView homeIV,listIV,settingsIV;
     private static ImageView recLogo;
@@ -165,8 +168,8 @@ public class MainActivity extends AppCompatActivity {
         frequencyTV.setText(String.valueOf(frequency));
     }
     public static void updateNotes(String notes){
-        //The CALCULATED FREQUNCY VALUE IN AudioPlayClass/AudioRecordClass is SENT to show in TEXTVIEW
-        frequencyTV.setText(String.valueOf(notes));
+        //The CALCULATED FREQUNCY VALUE IN AudioPlayClass/AudioRecordClass i SENT to show in TEXTVIEW
+        notesTV.setText(String.valueOf(notes));
     }
 
     public static  void updateRecordState(){
