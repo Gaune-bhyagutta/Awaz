@@ -2,10 +2,12 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.awaj">
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
+        android:name="com.awaj.MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/awazicon"
         android:label="@string/app_name"
@@ -20,21 +22,21 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="com.awaj.MainActivity"
+            android:label="@string/app_name">
+        </activity>
+
         <activity android:name=".Home"></activity>
         <activity android:name=".activities.RecordingActivity"></activity>
         <activity android:name=".activities.MonitoringActivity"></activity>
         <activity android:name=".activities.ScaleTestingActivity"></activity>
         <activity android:name=".activities.NoteGeneratingActivity"></activity>
         <activity android:name=".activities.GuitarTuningActivity"></activity>
-        <activity android:name=".activities.FrequencyGeneratingActivity"> </activity>
-
-        <activity
-            android:name="com.awaj.MainActivity"
-            android:label="@string/app_name">
-        </activity>
-
-
+        <activity android:name=".activities.FrequencyGeneratingActivity"></activity>
 
         <activity android:name="com.awaj.ListTabs"></activity>
     </application>
+
+
     </manifest>
