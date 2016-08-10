@@ -81,7 +81,6 @@ public class GraphFragment extends Fragment {
          * End of onDraw
          */
 
-
         public void drawMeshLines(Canvas canvas) {
             //Mesh Lines
             int cgh = canvas.getHeight();
@@ -215,15 +214,12 @@ public class GraphFragment extends Fragment {
                 X2 = X1;
                 Y2 = Y1 - graph_height;
 
-
                 canvas.drawLine(X1, Y1, X2, Y2, graphVisualizationPO);
 
                 index++;
                 postInvalidateDelayed(GRAPH_REFRESH_DELAY);
             }
-
         }
-
     }
 
     /**
@@ -240,8 +236,6 @@ public class GraphFragment extends Fragment {
     public int getGraphFragmentMode(){
         return GRAPH_INFO_MODE;
     }
-
-
 
 
 }
