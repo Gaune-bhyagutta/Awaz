@@ -107,13 +107,6 @@ public class myGraphView extends View {
 
 
             }
-//                canvas.drawText("10",0,cgh2-100,textObj);
-//                canvas.drawText("20",0,cgh2-200,textObj);
-//                canvas.drawText("30",0,cgh2-300,textObj);
-//                canvas.drawText("40",0,cgh2-400,textObj);
-//                canvas.drawText("50",0,cgh2-500,textObj);
-//                canvas.drawText("60",0,cgh2-600,textObj);
-
             /**Horizontal Labels*/
             float freqValue = 0;
             float xIncrement = 0;

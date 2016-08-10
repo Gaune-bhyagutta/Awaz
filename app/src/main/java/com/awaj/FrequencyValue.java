@@ -75,4 +75,15 @@ public class FrequencyValue {
         fundamentalFrequency= ((i_max)*(MainActivity.getSampleRateInHz()/amplitude.length)*(float)correction_factor);
         return fundamentalFrequency;
     }/** END OF getFundamentalFrequency**/
+
+    public static float findMaxValue(float[] amplitude){
+        int i;
+        float max=0;
+        for(i=0;i<amplitude.length/2;i++){
+            if(max < amplitude[i]){
+                max=amplitude[i];
+            }
+        }
+        return max;
+    }
 }

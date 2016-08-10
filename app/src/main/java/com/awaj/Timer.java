@@ -1,6 +1,7 @@
 package com.awaj;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -18,9 +19,9 @@ public class Timer extends CountDownTimer {
 
     /** Instantiate a Timer object with total duration & countdown interval */
     /** CONSTRUCTOR */
-    public Timer(long millisInFuture, long countDownInterval,Context passedContext) {
+    public Timer(long millisInFuture, long countDownInterval, Context passedContext) {
         super(millisInFuture, countDownInterval);
-        this.myContext= passedContext;
+        myContext= passedContext;
     }
 
     @Override

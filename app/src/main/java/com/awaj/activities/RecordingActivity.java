@@ -2,11 +2,15 @@ package com.awaj.activities;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.awaj.GraphFragment;
+import com.awaj.MainActivity;
 import com.awaj.R;
 import com.awaj.Timer;
 
@@ -22,8 +26,13 @@ public class RecordingActivity extends AppCompatActivity {
     /**
      * TIMER
      */
-    final Timer timerStartObj = new Timer(3000000, 1000,RecordingActivity.this);
+    final Timer timerStartObj = new Timer(3000000, 1000, RecordingActivity.this);
     static TextView timerTV;
+
+    /**
+     * Graph Fragment
+     */
+    private static GraphFragment graphFragment = new GraphFragment();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +51,13 @@ public class RecordingActivity extends AppCompatActivity {
         /**Timer UI Setups*/
         timerTV = (TextView) findViewById(R.id.timerTV);
         timerTV.setText("00:00:00");
+
+        /**Start-GRAPH FRAGMENT*/
+//        FragmentManager myFragmentManager = getSupportFragmentManager();
+//        FragmentTransaction myFragmentTransaction = myFragmentManager.beginTransaction();
+//        myFragmentTransaction.add(R.id.graphFragmentLL, graphFragment, " ");
+//        myFragmentTransaction.commit();
+
     }
 
     public void recButtonClicked(View view) {
@@ -54,7 +70,7 @@ public class RecordingActivity extends AppCompatActivity {
         /**Is Recording*/
         if (isRecording == true) {
             isRecording = false;
-
+//            MainActivity.record();
             /**Timer*/
             timerTV.setText("00:00:00");
             timerStartObj.start();
@@ -67,7 +83,6 @@ public class RecordingActivity extends AppCompatActivity {
         /**Is not Recording*/
         else {
             isRecording = true;
-
             /**Timer*/
             timerStartObj.cancel();
             timerStartObj.SS = 0L;
