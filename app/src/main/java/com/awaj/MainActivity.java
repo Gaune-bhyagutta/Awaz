@@ -1,54 +1,53 @@
 package com.awaj;
 
+import android.util.Log;
+import android.os.Bundle;
+import android.view.View;
+import android.os.AsyncTask;
+import android.widget.Toast;
+import android.widget.Button;
+import android.widget.Switch;
 import android.content.Intent;
 import android.graphics.Color;
-import android.media.AudioFormat;
-import android.media.AudioManager;
-import android.media.AudioRecord;
-import android.media.AudioTrack;
-import android.media.MediaRecorder;
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-
-import android.widget.CompoundButton;
-import android.widget.ImageView;
-
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.media.AudioTrack;
+import android.widget.ImageView;
+import android.media.AudioFormat;
+import android.media.AudioRecord;
+import android.media.AudioManager;
+import android.media.MediaRecorder;
+import android.widget.CompoundButton;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.FragmentTransaction;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.FileInputStream;
+import java.io.DataInputStream;
+import java.io.FileOutputStream;
+import java.io.DataOutputStream;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileNotFoundException;
 
 public class MainActivity extends AppCompatActivity {
 
 
     ImageView homeIV, listIV, settingsIV;
-    static TextView timerTV;
-    final Timer timerStartObj = new Timer(3000000, 1000);
+//    static TextView timerTV;
+    final Timer timerStartObj = new Timer(3000000, 1000,MainActivity.this);
     static ImageView recLogo;
 
     public static float frequency;
 
 
     //Insatnce Variable And Constants Initialization/Declaration
-    TextView decibelTV;   //To Show Average of the decibel value after each buffer
+    TextView decibelTV;
+    //To Show Average of the decibel value after each buffer
     TextView frequencyTV;
     TextView notesTV;
 
@@ -82,6 +81,11 @@ public class MainActivity extends AppCompatActivity {
      */
     Switch domainSwitch, visualizationSwitch;
 
+    /**
+     * @params:  savedInstanceState
+     * @return:
+     * @exception
+     * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -113,8 +117,8 @@ public class MainActivity extends AppCompatActivity {
         play = (Button) findViewById(R.id.play);
         play.setTextColor(Color.parseColor("#808080"));
         /**Timer UI Setups*/
-        timerTV = (TextView) findViewById(R.id.timerTV);
-        timerTV.setText("00:00:00");
+//        timerTV = (TextView) findViewById(R.id.timerTV);
+//        timerTV.setText("00:00:00");
         /**Recording Logo*/
         recLogo = (ImageView) findViewById(R.id.reclogo);
         recLogo.setVisibility(View.INVISIBLE);
@@ -125,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
         /**Switches*/
         domainSwitch = (Switch) findViewById(R.id.domainSwitch);
 
+        /**----------------------------------------------------------------------------*/
         /**HOME - LIST - SETTING Button*/
         listIV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,13 +162,18 @@ public class MainActivity extends AppCompatActivity {
                         play.setTextColor(Color.parseColor("#808080"));
                         Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_SHORT).show();
 
-                        timerTV.setText("00:00:00");
+//                        timerTV.setText("00:00:00");
                         timerStartObj.start();
 
-//                        while (isRecording) {
-////                            String currentTime = timerStartObj.updateTimerTextView();
-//                            timerTV.setText("KAWA");
-//                        }
+//                        new Thread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                while (isRecording) {
+//                                   MainActivity.xyz();
+//                                }
+//
+//                            }
+//                        }).start();
 
                     } else if (rec_btn_count == 1) {
                         /**Code to handle click of "Rec-STOP" button*/
@@ -206,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
                         rec.setTextColor(Color.parseColor("#808080"));
                         Toast.makeText(getApplicationContext(), "Playing audio", Toast.LENGTH_SHORT).show();
 
-                        timerTV.setText("00:00:00");
+//                        timerTV.setText("00:00:00");
                         timerStartObj.start();
                         recLogo.setVisibility(View.INVISIBLE);
                     } else if (play_btn_count == 1) {
@@ -276,27 +286,28 @@ public class MainActivity extends AppCompatActivity {
         public void startRecord() {
 
             Log.d(TAG, "Thread - Start record");
-//        /**RECORDING PROCESS:
-//            1.Create a file to store that data values that comes from the mic.
-//            2. Fix the bufferSize and AudioRecord Object.(Will be later in detail later).
-//            3.In java the data comes in the form of bytes-bytes-bytes-and so on.
-//            4.In the file that we have created we can store the same byte received.
-//            5.But as we have to use 16 bit PCM ENCODING SYSTEM(Quantisation), We cannot store the data in Byte form.
-//            6.Thus we convert the data in short datatype and then store the array of short into the file.
-//            7. short(16 bit) = 2*byte(8-bit)
-//            8.And here we have used file to store the audio value from Mic and used the same file to play the Audio.
-//            9.We store the data in file as Short-Short-Short(array of short) and fetch the data in same way to fetch.
-//            10.But simply saying we do not needed to store and fetch from file for recording and playing for ONCE.
-//            11.for that purpose , we can use the array of short datatype
-//            12. Another thing is when we try to open the file via a text editor (notepad /notepad++ used by us) we cannot read
-//                the actual data(short datatype) that we have store in that file.Because we have stored 16bit-16bit-16bit----
-//                and most of the text editor use UTF-8 egit branchncoding which is 32-bit.
-//            13.Thus to read the data we have to store it using int datatypte . int-int-int
-//            14.And in this case we have to name the extension as (.txt).But when we store and fetch the data ourselves to mic and speaker
-//                respectively, the extension does not matter at all . To show that I have created Three File
-//                ONE- as extension Sound.pcm
-//            15. AND MOST IMPORTANT THING TO REMEMBER :- OUR AMPLITUDE IS REPRESENTED BY 16 bit. SO WE USE SHORT
-//         */
+        /**
+         * RECORDING PROCESS:
+            1.Create a file to store that data values that comes from the mic.
+            2. Fix the bufferSize and AudioRecord Object.(Will be later in detail later).
+            3.In java the data comes in the form of bytes-bytes-bytes-and so on.
+            4.In the file that we have created we can store the same byte received.
+            5.But as we have to use 16 bit PCM ENCODING SYSTEM(Quantisation), We cannot store the data in Byte form.
+            6.Thus we convert the data in short datatype and then store the array of short into the file.
+            7. short(16 bit) = 2*byte(8-bit)
+            8.And here we have used file to store the audio value from Mic and used the same file to play the Audio.
+            9.We store the data in file as Short-Short-Short(array of short) and fetch the data in same way to fetch.
+            10.But simply saying we do not needed to store and fetch from file for recording and playing for ONCE.
+            11.for that purpose , we can use the array of short datatype
+            12. Another thing is when we try to open the file via a text editor (notepad /notepad++ used by us) we cannot read
+                the actual data(short datatype) that we have store in that file.Because we have stored 16bit-16bit-16bit----
+                and most of the text editor use UTF-8 egit branchncoding which is 32-bit.
+            13.Thus to read the data we have to store it using int datatypte . int-int-int
+            14.And in this case we have to name the extension as (.txt).But when we store and fetch the data ourselves to mic and speaker
+                respectively, the extension does not matter at all . To show that I have created Three File
+                ONE- as extension Sound.pcm
+            15. AND MOST IMPORTANT THING TO REMEMBER :- OUR AMPLITUDE IS REPRESENTED BY 16 bit. SO WE USE SHORT
+         */
             File filePcm = new File(Environment.getExternalStorageDirectory(), "Sound.pcm");
 
 
@@ -627,7 +638,6 @@ public class MainActivity extends AppCompatActivity {
 
         return minBufferSize;
     }
-
 }/**
  * End of MainActivity
  */

@@ -1,11 +1,12 @@
 package com.awaj;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.CountDownTimer;
 import android.view.View;
+import android.widget.TextView;
 
-/***
- * Created by keshavdulal on 21/07/16
- */
+/** Created by keshavdulal on 21/07/16 */
 public class Timer extends CountDownTimer {
     public long MS = 00L;
     public long SS = 00L;
@@ -13,13 +14,13 @@ public class Timer extends CountDownTimer {
     public long HH = 00L;
     public boolean state = false;
     private StringBuilder displayTime;
+    private Context myContext;
 
-    /**Instantiate a Timer object with total duration & countdown interval */
-    /**
-     * CONSTRUCTOr
-     */
-    public Timer(long millisInFuture, long countDownInterval) {
+    /** Instantiate a Timer object with total duration & countdown interval */
+    /** CONSTRUCTOR */
+    public Timer(long millisInFuture, long countDownInterval,Context passedContext) {
         super(millisInFuture, countDownInterval);
+        this.myContext= passedContext;
     }
 
     @Override
@@ -45,6 +46,8 @@ public class Timer extends CountDownTimer {
 //        displayTime.append(String.format("%02d",MS));
 
         /**Updates Timer Textview*/
+        TextView timerTV = (TextView) ((Activity)myContext).findViewById(R.id.timerTV);
+        timerTV.setText(displayTime);
 //        MainActivity.timerTV.setText(displayTime);
 
 //        if (MainActivity.playState() != 1) {

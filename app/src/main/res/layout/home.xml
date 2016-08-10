@@ -92,7 +92,7 @@
                 android:background="@drawable/three"
                 android:gravity="bottom|center_horizontal"
                 android:onClick="callScaleTester"
-                android:text="Scale Tester"
+                android:text="Vocal Tester"
                 android:textAlignment="gravity"
                 android:textColor="#ffffff"
                 android:textStyle="bold"

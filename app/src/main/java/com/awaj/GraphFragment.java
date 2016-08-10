@@ -14,9 +14,7 @@ import android.widget.LinearLayout;
 public class GraphFragment extends Fragment {
 
     public static float graph_height;
-    /**
-     * For AMP Visualization
-     */
+    /**For AMP Visualization*/
     static float[] recordAudioData = null;
     static float[] playAudioData = null;
 //    /**
@@ -85,6 +83,7 @@ public class GraphFragment extends Fragment {
 
             /**ACTUAL PLOTS*/
             DrawMeshLines dml = new DrawMeshLines();
+            /**TODO: update method name Follow Convention of: aBcdEfgh*/
             dml.DrawMesh(canvas, GRAPH_DOMAIN_MODE);
 
             if (MainActivity.playState() == 1) {
@@ -94,7 +93,7 @@ public class GraphFragment extends Fragment {
                 plotRecordingVisualization(canvas, graphVisualizationPO);
 //                plotVisualization(canvas, graphVisualizationPO, recordAudioData);
             }
-            /*** End of onDraw*/
+            /*** End of onDraw */
         }
 
         //        public void plotVisualization(Canvas canvas, Paint graphVisualizationPO, float dataArray[]) {

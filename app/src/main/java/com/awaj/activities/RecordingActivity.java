@@ -22,7 +22,7 @@ public class RecordingActivity extends AppCompatActivity {
     /**
      * TIMER
      */
-    final Timer timerStartObj = new Timer(3000000, 1000);
+    final Timer timerStartObj = new Timer(3000000, 1000,RecordingActivity.this);
     static TextView timerTV;
 
     @Override
@@ -48,6 +48,8 @@ public class RecordingActivity extends AppCompatActivity {
         /**1.Start & Stop Recording here*/
         /**2.Configure Timer*/
         /**3.Configure Graph*/
+
+        timerStartObj.start();
 
         /**Is Recording*/
         if (isRecording == true) {
