@@ -95,10 +95,10 @@ public class FftOutput {
         }
     }
 
-    private static void windowing(float[] input){
+    private static void windowing(float[] input){//low pass filter for frequency
         float w[]=new float[input.length];
         for(int i=0; i<input.length; i++){
-            if(i>=0&&i<800) {
+            if(i>=0&&i<800) {// cutoff point 800
                 w[i]=1;
             }
             else{

@@ -146,8 +146,6 @@ public class AudioRecordClass extends AsyncTask<Void,String,Void> {
                 float frequency = FrequencyValue.getFundamentalFrequency(fftOutput);
                 MainActivity.plotGraph(audioFloatsForAmp,audioFloatsForFFT);
 
-
-
                 databaseHelper = new DatabaseHelper(MyApplication.getAppContext());
                 int match = databaseHelper.matchFreq(frequency);
                 String note = databaseHelper.getNote(match);

@@ -61,11 +61,11 @@ public class MainActivity extends AppCompatActivity {
     //START---Audio Record and Play Parameters-----
     // THE DEFINETIONS ARE DEFINED IN THE RESPECTIVE FUNCTION
     private static final int AUDIO_SOURCE = setAudioSource(MediaRecorder.AudioSource.MIC);
-    private static final int SAMPLE_RATE_IN_HZ = setSampleRateInHz(44100);
+    private static final int SAMPLE_RATE_IN_HZ = setSampleRateInHz(22050);
     private static final int CHANNELS_CONFIGURATION = setChannelsConfiguration(AudioFormat.CHANNEL_IN_MONO);
     private static final int AUDIO_ENCODING = setAudioEncoding(AudioFormat.ENCODING_PCM_16BIT);
 
-    private static final int NO_OF_SAMPLES = setNoOfSamples(22050);
+    private static final int NO_OF_SAMPLES = setNoOfSamples(8192);
     private static final float RESOLUTION = setResolution(SAMPLE_RATE_IN_HZ / NO_OF_SAMPLES);
 
     private static final int MIN_BUFFER_SIZE_BYTES = setMinBufferSizeInBytes(NO_OF_SAMPLES*2);
