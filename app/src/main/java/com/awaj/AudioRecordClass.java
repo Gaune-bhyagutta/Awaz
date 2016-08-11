@@ -17,16 +17,12 @@ import java.io.OutputStream;
  * Created by amitgupta on 8/4/2016.
  */
 
-// Start of AudioRecordClass
+/** Start of AudioRecordClass*/
 public class AudioRecordClass extends AsyncTask<Void,String,Void> {
 
     final String TAG = AudioRecordClass.class.getSimpleName();
-
     int minBufferSizeInBytes;
-
     DatabaseHelper databaseHelper;
-
-
 
     @Override
     protected Void doInBackground(Void... voids) {

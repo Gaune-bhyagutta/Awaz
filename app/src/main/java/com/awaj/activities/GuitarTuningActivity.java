@@ -19,7 +19,9 @@ public class GuitarTuningActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.topssix_guitar_tuner);
+        /**Avoiding the XML Layout*/
+        //setContentView(R.layout.topssix_guitar_tuner);
+        /**Drawing Custom View*/
         setContentView(new guitarTunerMeterView(this,new Canvas()));
     }
 
