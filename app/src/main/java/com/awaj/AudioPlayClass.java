@@ -19,10 +19,19 @@ import java.io.InputStream;
  * Created by amitgupta on 8/4/2016.
  */
 //Start of AudioPlayClass
-public class AudioPlayClass extends AsyncTask<Void,Float,Boolean> {
+public class AudioPlayClass extends AsyncTask<Void,String,Boolean> {
 
+    DatabaseHelper databaseHelper;
+    StateClass stateClass = StateClass.getState();
+    private  AudioRecordInterface listener;
     final String TAG = AudioPlayClass.class.getSimpleName();
     Boolean sucessfull;
+
+    public AudioPlayClass(AudioRecordInterface listener) {
+        // set null or default listener or accept as argument to constructor
+        this.listener = listener;
+    }
+
 
     @Override
     protected Boolean doInBackground(Void... voids) {
@@ -35,11 +44,8 @@ public class AudioPlayClass extends AsyncTask<Void,Float,Boolean> {
     }
 
     @Override
-    protected void onProgressUpdate(Float... values) {
-//            super.onProgressUpdate(values);
-
-        MainActivity.updateDecibel(values[0]);
-        MainActivity.updateFrequncy(values[1]);
+    protected void onProgressUpdate(String... values ) {
+        listener.processExecuting(Float.valueOf(values[0]),Float.valueOf(values[1]),values[2]);
     }
 
     //Start of playRecord()
@@ -79,7 +85,7 @@ public class AudioPlayClass extends AsyncTask<Void,Float,Boolean> {
             float audioFloatsForAmp[] = new float[audioData.length];
 
             DecibelCalculation decibelCalculation = new DecibelCalculation();
-            while (MainActivity.getValueOfisPlaying() && dataInputStream.available() > 0) {
+            while (stateClass.getPlayingState() && dataInputStream.available() > 0) {
                 int i = 0;
                 while (dataInputStream.available() > 0 && i < audioData.length) {
                     audioData[i] = dataInputStream.readShort();
@@ -99,7 +105,13 @@ public class AudioPlayClass extends AsyncTask<Void,Float,Boolean> {
 
                 float frequency = FrequencyValue.getFundamentalFrequency(fftOutput);
                 MainActivity.plotGraph(audioFloatsForAmp,audioFloatsForFFT);
-                publishProgress(decibelValue,frequency);
+
+                databaseHelper = new DatabaseHelper(MyApplication.getAppContext());
+                int match = databaseHelper.matchFreq(frequency);
+                String note = databaseHelper.getNote(match);
+//                if(listener!=null)
+//                    listener.onDataLoaded(decibelValue,frequency,note);
+                publishProgress(String.valueOf(decibelValue),String.valueOf(frequency),note);
             }
             audioTrack.pause();
             audioTrack.flush();

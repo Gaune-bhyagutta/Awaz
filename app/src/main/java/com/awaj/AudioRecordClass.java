@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Arrays;
 
 /**
  * Created by amitgupta on 8/4/2016.
@@ -18,6 +19,8 @@ import java.io.OutputStream;
 
 // Start of AudioRecordClass
 public class AudioRecordClass extends AsyncTask<Void,String,Void> {
+
+    StateClass stateClass = StateClass.getState();
 
     private AudioRecordInterface listener;
 
@@ -27,35 +30,10 @@ public class AudioRecordClass extends AsyncTask<Void,String,Void> {
 
     DatabaseHelper databaseHelper;
 
-//    //MyCustomObject myCustomObject=new MyCustomObject();
-//
-//   // private MyCustomObjectListener listener;
-//
     public AudioRecordClass(AudioRecordInterface listner) {
         // set null or default listener or accept as argument to constructor
         this.listener = listner;
-//        AudioRecordClass audioRecordClass = new AudioRecordClass();
-//        audioRecordClass.startRecord();
-
     }
-
-
-//
-//    // Assign the listener implementing events interface that will receive the events
-//    public void setCustomObjectListener(MyCustomObjectListener listener) {
-//        this.listener = listener;
-//    }
-//
-//
-//
-//    public interface MyCustomObjectListener {
-//        // These methods are the different events and
-//        // need to pass relevant arguments related to the event triggered
-//        public void onObjectReady(String title);
-//        // or when data has been loaded
-//        public void onDataLoaded(float decibel,float frequency,String notes);
-//    }
-//
 
 
     @Override
@@ -66,12 +44,6 @@ public class AudioRecordClass extends AsyncTask<Void,String,Void> {
 
     @Override
     protected void onProgressUpdate(String... values ) {
-        //super.onProgressUpdate(values);
-//        myCustomObject.updateDecibel(Float.valueOf(values[0]));
-//        myCustomObject.updateFrequncy(Float.valueOf(values[1]));
-//        myCustomObject.updateNotes(values[2]);
-        //
-        //myCustomObject.listener.onDataLoaded(Float.valueOf(values[0]),Float.valueOf(values[1]),values[2]);
         listener.processExecuting(Float.valueOf(values[0]),Float.valueOf(values[1]),values[2]);
     }
 
@@ -136,7 +108,7 @@ public class AudioRecordClass extends AsyncTask<Void,String,Void> {
             audioRecord.startRecording();//Start Recording Based on
 
             // it means while the user have  not pressed the RECORD-STOP Button
-            while(MainActivity.getValueOfisRecording()){
+            while(stateClass.getRecoderingState()){
 
 
 //                /** numberOfShort=minBufferSize/2
@@ -176,14 +148,14 @@ public class AudioRecordClass extends AsyncTask<Void,String,Void> {
                 /**Fundamental Frequency*/
 
                 float frequency = FrequencyValue.getFundamentalFrequency(fftOutput);
-                MainActivity.plotGraph(audioFloatsForAmp,audioFloatsForFFT);
+               // MainActivity.plotGraph(audioFloatsForAmp,audioFloatsForFFT);
 
                 databaseHelper = new DatabaseHelper(MyApplication.getAppContext());
                 int match = databaseHelper.matchFreq(frequency);
                 String note = databaseHelper.getNote(match);
 //                if(listener!=null)
 //                    listener.onDataLoaded(decibelValue,frequency,note);
-                publishProgress(String.valueOf(decibelValue),String.valueOf(frequency),note);
+                publishProgress(String.valueOf(decibelValue),String.valueOf(frequency),note, Arrays.toString(audioFloatsForAmp),Arrays.toString(audioFloatsForFFT));
 
 
             }

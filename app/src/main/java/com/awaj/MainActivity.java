@@ -25,6 +25,8 @@ import com.facebook.stetho.Stetho;
 
 public class MainActivity extends AppCompatActivity{
 
+    StateClass stateClass = StateClass.getState();
+
     DatabaseHelper databaseHelper;
 
     final Timer timerStartObj = new Timer(3000000, 1000, MainActivity.this);
@@ -49,8 +51,8 @@ public class MainActivity extends AppCompatActivity{
 
     private static int rec_btn_count = 0;
     private static int play_btn_count = 0;   //To Know Button was Pressed
-    private static boolean isRecording = false;    //To Know RECORDING Or STOPPED
-    private static boolean isPlaying = false;//To Know PLAYING or STOPPED
+//    private static boolean isRecording = false;    //To Know RECORDING Or STOPPED
+//    private static boolean isPlaying = false;//To Know PLAYING or STOPPED
 
     private static int playState = 0;   //TO Know RECORDING or PLAYING
 
@@ -222,7 +224,7 @@ public class MainActivity extends AppCompatActivity{
         rec.setEnabled(true);
         play_btn_count = 0;
 
-        isPlaying = false;
+         //= false;
 
 //        timerStartObj.cancel();
 //        timerStartObj.SS = 0L;
@@ -283,13 +285,13 @@ public class MainActivity extends AppCompatActivity{
         return RESOLUTION;
     }
 
-    public static boolean getValueOfisRecording() {
-        return isRecording;
-    }
-
-    public static boolean getValueOfisPlaying() {
-        return isPlaying;
-    }
+//    public static boolean getValueOfisRecording() {
+//        return isRecording;
+//    }
+//
+//    public static boolean getValueOfisPlaying() {
+//        return isPlaying;
+//    }
 
     //END OF AUDIO RECORD-PLAY SECTION
 
@@ -327,11 +329,12 @@ public class MainActivity extends AppCompatActivity{
                     });
 
 
+
                     if (rec_btn_count == 0) {
 
                         /**Code to handle click of "RECORD" button*/
                         playState = 0;
-                        isRecording = true;
+                        stateClass.setRecoderingState(true);
                        audioRecordClass.execute();
 
                         rec_btn_count = 1;
@@ -346,7 +349,7 @@ public class MainActivity extends AppCompatActivity{
                         timerStartObj.start();
                     } else if (rec_btn_count == 1) {
                         /**Code to handle click of "Rec-STOP" button*/
-                        isRecording = false;
+                        stateClass.setRecoderingState(false);
                         play.setTextColor(Color.parseColor("#00ff00"));
                         recLogo.setVisibility(View.INVISIBLE);
 
@@ -368,7 +371,14 @@ public class MainActivity extends AppCompatActivity{
             play.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    audioPlayClass = new AudioPlayClass();
+                    audioPlayClass = new AudioPlayClass(new AudioRecordInterface() {
+                        @Override
+                        public void processExecuting(float decibel, float frequency, String notes) {
+                            updateDecibel(decibel);
+                            updateFrequncy(frequency);
+                            updateNotes(notes);
+                        }
+                    });
                     if (play_btn_count == 0) {
                         playState = 1;
                         play_btn_count = 1;
@@ -378,7 +388,7 @@ public class MainActivity extends AppCompatActivity{
                         play.setTextColor(Color.parseColor("#ff0000"));
                         rec.setEnabled(false);
 
-                        isPlaying = true;
+                        stateClass.setPlayingState(true);
 
                         audioPlayClass.execute();
 
@@ -393,7 +403,7 @@ public class MainActivity extends AppCompatActivity{
                         recLogo.setVisibility(View.INVISIBLE);
                     } else if (play_btn_count == 1) {
                         /**Code to pause/stop the playback*/
-                        isPlaying = false;
+                        stateClass.setPlayingState(false);
 
                         timerStartObj.cancel();
                         timerStartObj.SS = 0L;
