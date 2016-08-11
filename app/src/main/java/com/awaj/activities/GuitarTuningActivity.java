@@ -63,14 +63,18 @@ public class GuitarTuningActivity extends AppCompatActivity {
      */
     public static class guitarTunerMeterView extends View {
         Paint circle, bigCircle, line, paintText;
-        float xc = 0;
-        float yc = 0;
-        int radius;
-        float x2 = xc - radius, y2 = yc;
+        float xc ,yc,x2,y2, theta;
+        float radius;
+
+        boolean drawnOnce=false;
 
         int textSize = 80;
         int textXPos;
         int textYPos;
+
+        float noteFrequency =184;
+        float frequency =189;
+        float difference = noteFrequency-frequency;
 
         String lowerNotes = "A A#";
         String mainNote = "B";
@@ -102,6 +106,14 @@ public class GuitarTuningActivity extends AppCompatActivity {
             xc = canvas.getWidth() / 2;
             yc = canvas.getHeight() - canvas.getHeight() / 10;
 
+            if(!drawnOnce){
+                drawnOnce = true;
+                theta =(float)(Math.PI/2);
+            }
+
+            x2=xc+(float)(radius*Math.cos(theta));
+            y2=yc-(float)(radius*Math.sin(theta));
+
             circle.setColor(getResources().getColor(R.color.amber_primary_dark));
             circle.setStyle(Paint.Style.FILL);
 
@@ -131,12 +143,17 @@ public class GuitarTuningActivity extends AppCompatActivity {
             paintText.setTextSize(70);
             canvas.drawText(currentFrequencyStr, xc - xc / 10, yc + yc / 15, paintText);
 
-//        float x2=(float)(radius*Math.cos(theta)),y2=(float)(radius*Math.sin(theta));
-
-            if (x2 < canvas.getWidth()) {
-                x2 += 1;
+            if(difference<0){
+                if(theta>Math.PI/4) {
+                    theta -= (float) (Math.PI / 180);
+                }
             }
-            y2 = yc - (float) (Math.sqrt(Math.pow(radius, 2) - Math.pow((x2 - xc), 2)));
+            else if(difference>0){
+                if(theta<Math.PI*3/2) {
+                    theta += (float) (Math.PI / 180);
+                }
+            }
+
             invalidate();
 
         }//End onDraw
