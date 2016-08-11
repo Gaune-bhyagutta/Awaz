@@ -1,6 +1,5 @@
 package com.awaj;
 
-import android.content.Context;
 import android.media.AudioRecord;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -20,12 +19,43 @@ import java.io.OutputStream;
 // Start of AudioRecordClass
 public class AudioRecordClass extends AsyncTask<Void,String,Void> {
 
+    private AudioRecordInterface listener;
+
     final String TAG = AudioRecordClass.class.getSimpleName();
 
     int minBufferSizeInBytes;
 
     DatabaseHelper databaseHelper;
 
+//    //MyCustomObject myCustomObject=new MyCustomObject();
+//
+//   // private MyCustomObjectListener listener;
+//
+    public AudioRecordClass(AudioRecordInterface listner) {
+        // set null or default listener or accept as argument to constructor
+        this.listener = listner;
+//        AudioRecordClass audioRecordClass = new AudioRecordClass();
+//        audioRecordClass.startRecord();
+
+    }
+
+
+//
+//    // Assign the listener implementing events interface that will receive the events
+//    public void setCustomObjectListener(MyCustomObjectListener listener) {
+//        this.listener = listener;
+//    }
+//
+//
+//
+//    public interface MyCustomObjectListener {
+//        // These methods are the different events and
+//        // need to pass relevant arguments related to the event triggered
+//        public void onObjectReady(String title);
+//        // or when data has been loaded
+//        public void onDataLoaded(float decibel,float frequency,String notes);
+//    }
+//
 
 
     @Override
@@ -37,10 +67,12 @@ public class AudioRecordClass extends AsyncTask<Void,String,Void> {
     @Override
     protected void onProgressUpdate(String... values ) {
         //super.onProgressUpdate(values);
-        MainActivity.updateDecibel(Float.valueOf(values[0]));
-        MainActivity.updateFrequncy(Float.valueOf(values[1]));
-        MainActivity.updateNotes(values[2]);
-        //MainActivity.updateNotes(values[1]);
+//        myCustomObject.updateDecibel(Float.valueOf(values[0]));
+//        myCustomObject.updateFrequncy(Float.valueOf(values[1]));
+//        myCustomObject.updateNotes(values[2]);
+        //
+        //myCustomObject.listener.onDataLoaded(Float.valueOf(values[0]),Float.valueOf(values[1]),values[2]);
+        listener.processExecuting(Float.valueOf(values[0]),Float.valueOf(values[1]),values[2]);
     }
 
     public void startRecord(){
@@ -149,7 +181,10 @@ public class AudioRecordClass extends AsyncTask<Void,String,Void> {
                 databaseHelper = new DatabaseHelper(MyApplication.getAppContext());
                 int match = databaseHelper.matchFreq(frequency);
                 String note = databaseHelper.getNote(match);
+//                if(listener!=null)
+//                    listener.onDataLoaded(decibelValue,frequency,note);
                 publishProgress(String.valueOf(decibelValue),String.valueOf(frequency),note);
+
 
             }
             audioRecord.stop();
