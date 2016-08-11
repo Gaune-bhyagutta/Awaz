@@ -182,6 +182,9 @@ public class AudioRecordClass extends AsyncTask<Void,String,Void> {
             if (outputStream != null) {
                 try {
                     outputStream.close();
+
+
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
