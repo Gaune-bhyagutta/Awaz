@@ -181,6 +181,12 @@ public class GraphFragment extends Fragment {
 
                 postInvalidateDelayed(GRAPH_REFRESH_DELAY);
             }
+            /**Expt*/
+            int maxValue = (int) (FrequencyValue.findMaxValue(audioData) * heightNormalizer);
+            int horizontalBarHeight = (int) ((canvas.getHeight() / 2) - maxValue);
+            graphVisualizationPO.setColor(Color.parseColor("#ff0000"));
+            graphVisualizationPO.setStrokeWidth(2);
+            canvas.drawLine(0, horizontalBarHeight, canvas.getWidth(), horizontalBarHeight, graphVisualizationPO);
         }
 
 
@@ -211,6 +217,11 @@ public class GraphFragment extends Fragment {
                 index++;
                 postInvalidateDelayed(GRAPH_REFRESH_DELAY);
             }
+            int maxValue = (int) (FrequencyValue.findMaxValue(audioData) * heightNormalizer);
+            int horizontalBarHeight = (int) ((canvas.getHeight() / 2) - maxValue);
+            graphVisualizationPO.setColor(Color.parseColor("#ff0000"));
+            graphVisualizationPO.setStrokeWidth(2);
+            canvas.drawLine(0, horizontalBarHeight, canvas.getWidth(), horizontalBarHeight, graphVisualizationPO);
         }
     }
 
@@ -225,7 +236,7 @@ public class GraphFragment extends Fragment {
         audioData = new float[size];
     }
 
-    public int getGraphFragmentMode(){
+    public int getGraphFragmentMode() {
         return GRAPH_DOMAIN_MODE;
     }
 }

@@ -17,7 +17,7 @@ import java.util.Arrays;
  * Created by amitgupta on 8/4/2016.
  */
 
-// Start of AudioRecordClass
+/** Start of AudioRecordClass*/
 public class AudioRecordClass extends AsyncTask<Void,String,Void> {
 
     StateClass stateClass = StateClass.getState();
@@ -25,16 +25,14 @@ public class AudioRecordClass extends AsyncTask<Void,String,Void> {
     private AudioRecordInterface listener;
 
     final String TAG = AudioRecordClass.class.getSimpleName();
-
     int minBufferSizeInBytes;
-
     DatabaseHelper databaseHelper;
 
     public AudioRecordClass(AudioRecordInterface listner) {
         // set null or default listener or accept as argument to constructor
         this.listener = listner;
+        Log.d("VIVZ","inside constructor of AudioRecordClass");
     }
-
 
     @Override
     protected Void doInBackground(Void... voids) {
@@ -148,14 +146,14 @@ public class AudioRecordClass extends AsyncTask<Void,String,Void> {
                 /**Fundamental Frequency*/
 
                 float frequency = FrequencyValue.getFundamentalFrequency(fftOutput);
-               // MainActivity.plotGraph(audioFloatsForAmp,audioFloatsForFFT);
+                MainActivity.plotGraph(audioFloatsForAmp,audioFloatsForFFT);
 
                 databaseHelper = new DatabaseHelper(MyApplication.getAppContext());
                 int match = databaseHelper.matchFreq(frequency);
                 String note = databaseHelper.getNote(match);
 //                if(listener!=null)
 //                    listener.onDataLoaded(decibelValue,frequency,note);
-                publishProgress(String.valueOf(decibelValue),String.valueOf(frequency),note, Arrays.toString(audioFloatsForAmp),Arrays.toString(audioFloatsForFFT));
+                publishProgress(String.valueOf(decibelValue),String.valueOf(frequency),note);
 
 
             }

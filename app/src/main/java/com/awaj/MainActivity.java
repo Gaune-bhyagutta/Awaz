@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity{
 
     DatabaseHelper databaseHelper;
 
-    final Timer timerStartObj = new Timer(3000000, 1000, MainActivity.this);
+    final Timer timerStartObj = new Timer(3000000, 1000,MainActivity.this);
     //Instance Variable And Constants Initialization/Declaration
 
     private static ImageView homeIV, listIV, settingsIV;
@@ -209,12 +209,10 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public static void updateRecordState() {
-        rec.setText("RECORD");
-        rec.setTextColor(Color.parseColor("#ffffff"));
-        play.setEnabled(true);
-
-
-        rec_btn_count = 0;
+//        rec.setText("RECORD");
+//        rec.setTextColor(Color.parseColor("#ffffff"));
+//        play.setEnabled(true);
+//        rec_btn_count = 0;
     }
 
     public static void updatePlayState() {
@@ -312,7 +310,7 @@ public class MainActivity extends AppCompatActivity{
 
     //Start-Functions in MainActivity
     //Start-record()
-    public void record() {
+    public  void record() {
         if (rec != null) {
 
             rec.setOnClickListener(new View.OnClickListener() {
@@ -343,7 +341,7 @@ public class MainActivity extends AppCompatActivity{
                         rec.setTextColor(Color.parseColor("#ff0000"));
                         play.setEnabled(false);
                         play.setTextColor(Color.parseColor("#808080"));
-                        Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MyApplication.getAppContext(), "Recording started", Toast.LENGTH_SHORT).show();
 
 //                        timerTV.setText("00:00:00");
                         timerStartObj.start();
