@@ -65,8 +65,6 @@ public class RecordingActivity extends AppCompatActivity {
         /**2.Configure Timer*/
         /**3.Configure Graph*/
 
-        timerStartObj.start();
-
         /**Is Recording*/
         if (isRecording == true) {
             isRecording = false;
