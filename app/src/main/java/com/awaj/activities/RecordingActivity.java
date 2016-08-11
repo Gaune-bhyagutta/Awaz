@@ -64,7 +64,6 @@ public class RecordingActivity extends AppCompatActivity {
         /**1.Start & Stop Recording here*/
         /**2.Configure Timer*/
         /**3.Configure Graph*/
-
         /**Is Recording*/
         if (isRecording == true) {
             isRecording = false;

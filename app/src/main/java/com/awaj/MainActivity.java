@@ -3,55 +3,29 @@ package com.awaj;
 import android.util.Log;
 import android.os.Bundle;
 import android.view.View;
-import android.os.AsyncTask;
 import android.widget.Toast;
 import android.widget.Button;
 import android.widget.Switch;
-import android.content.Context;
 import android.content.Intent;
 import android.database.SQLException;
 import android.graphics.Color;
-import android.os.Environment;
 import android.widget.TextView;
-import android.media.AudioTrack;
 import android.widget.ImageView;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
-import android.media.AudioManager;
 import android.media.MediaRecorder;
 import android.widget.CompoundButton;
-import android.media.MediaRecorder;
-import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.FragmentTransaction;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.FileInputStream;
-import java.io.DataInputStream;
-import java.io.FileOutputStream;
-import java.io.DataOutputStream;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileNotFoundException;
-
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-
-import android.widget.ImageView;
-import android.widget.Switch;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.stetho.Stetho;
 
-import java.io.IOException;
+public class MainActivity extends AppCompatActivity{
 
-public class MainActivity extends AppCompatActivity {
+    StateClass stateClass = StateClass.getState();
 
     DatabaseHelper databaseHelper;
 
@@ -77,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static int rec_btn_count = 0;
     private static int play_btn_count = 0;   //To Know Button was Pressed
-    private static boolean isRecording = false;    //To Know RECORDING Or STOPPED
-    private static boolean isPlaying = false;//To Know PLAYING or STOPPED
+//    private static boolean isRecording = false;    //To Know RECORDING Or STOPPED
+//    private static boolean isPlaying = false;//To Know PLAYING or STOPPED
 
     private static int playState = 0;   //TO Know RECORDING or PLAYING
 
@@ -235,12 +209,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static void updateRecordState() {
-        rec.setText("RECORD");
-        rec.setTextColor(Color.parseColor("#ffffff"));
-        play.setEnabled(true);
-
-
-        rec_btn_count = 0;
+//        rec.setText("RECORD");
+//        rec.setTextColor(Color.parseColor("#ffffff"));
+//        play.setEnabled(true);
+//        rec_btn_count = 0;
     }
 
     public static void updatePlayState() {
@@ -250,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
         rec.setEnabled(true);
         play_btn_count = 0;
 
-        isPlaying = false;
+         //= false;
 
 //        timerStartObj.cancel();
 //        timerStartObj.SS = 0L;
@@ -311,13 +283,13 @@ public class MainActivity extends AppCompatActivity {
         return RESOLUTION;
     }
 
-    public static boolean getValueOfisRecording() {
-        return isRecording;
-    }
-
-    public static boolean getValueOfisPlaying() {
-        return isPlaying;
-    }
+//    public static boolean getValueOfisRecording() {
+//        return isRecording;
+//    }
+//
+//    public static boolean getValueOfisPlaying() {
+//        return isPlaying;
+//    }
 
     //END OF AUDIO RECORD-PLAY SECTION
 
@@ -345,15 +317,24 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    audioRecordClass = new AudioRecordClass();
+                    audioRecordClass = new AudioRecordClass(new AudioRecordInterface() {
+                        @Override
+                        public void processExecuting(float decibel, float frequency, String notes) {
+                            updateFrequncy(frequency);
+                            updateDecibel(decibel);
+                            updateNotes(notes);
+                        }
+                    });
+
 
 
                     if (rec_btn_count == 0) {
 
                         /**Code to handle click of "RECORD" button*/
                         playState = 0;
-                        isRecording = true;
-                        audioRecordClass.execute();
+                        stateClass.setRecoderingState(true);
+                       audioRecordClass.execute();
+
                         rec_btn_count = 1;
 
                         rec.setText("STOP");
@@ -366,7 +347,7 @@ public class MainActivity extends AppCompatActivity {
                         timerStartObj.start();
                     } else if (rec_btn_count == 1) {
                         /**Code to handle click of "Rec-STOP" button*/
-                        isRecording = false;
+                        stateClass.setRecoderingState(false);
                         play.setTextColor(Color.parseColor("#00ff00"));
                         recLogo.setVisibility(View.INVISIBLE);
 
@@ -388,7 +369,14 @@ public class MainActivity extends AppCompatActivity {
             play.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    audioPlayClass = new AudioPlayClass();
+                    audioPlayClass = new AudioPlayClass(new AudioRecordInterface() {
+                        @Override
+                        public void processExecuting(float decibel, float frequency, String notes) {
+                            updateDecibel(decibel);
+                            updateFrequncy(frequency);
+                            updateNotes(notes);
+                        }
+                    });
                     if (play_btn_count == 0) {
                         playState = 1;
                         play_btn_count = 1;
@@ -398,7 +386,7 @@ public class MainActivity extends AppCompatActivity {
                         play.setTextColor(Color.parseColor("#ff0000"));
                         rec.setEnabled(false);
 
-                        isPlaying = true;
+                        stateClass.setPlayingState(true);
 
                         audioPlayClass.execute();
 
@@ -413,7 +401,7 @@ public class MainActivity extends AppCompatActivity {
                         recLogo.setVisibility(View.INVISIBLE);
                     } else if (play_btn_count == 1) {
                         /**Code to pause/stop the playback*/
-                        isPlaying = false;
+                        stateClass.setPlayingState(false);
 
                         timerStartObj.cancel();
                         timerStartObj.SS = 0L;
