@@ -1,11 +1,13 @@
 package com.awaj;
 
+import android.content.Context;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -24,6 +26,7 @@ public class AudioPlayClass extends AsyncTask<Void,String,Boolean> {
     final String TAG = AudioPlayClass.class.getSimpleName();
     Boolean sucessfull;
     DatabaseHelper databaseHelper;
+    Context context = MyApplication.getAppContext();
 
     @Override
     protected void onPreExecute() {
@@ -54,7 +57,18 @@ public class AudioPlayClass extends AsyncTask<Void,String,Boolean> {
     public void playRecord(){
 
         Log.d(TAG, "playRecord()");
-        File filePcm = new File(Environment.getExternalStorageDirectory(), "Sound.pcm");
+        File folder = context.getExternalFilesDir("Awaj");
+        File latest = getLatestModified();
+        File filePcm;
+        if (latest==null){
+            Toast.makeText(MyApplication.getAppContext(), "Please Record something", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else {
+            filePcm = new File(folder,latest.getName());
+        }
+
+        //File filePcm = new File(Environment.getExternalStorageDirectory(), "Sound.pcm");
 
         //int minBufferSize = getPlayBufferSize();
         int minBufferSize = MainActivity.getMinBufferSizeInBytes();
@@ -169,6 +183,21 @@ public class AudioPlayClass extends AsyncTask<Void,String,Boolean> {
         Log.d(TAG, "onPostExecute");
 
 
+    }
+
+    private File getLatestModified(){
+        File dir = context.getExternalFilesDir("Awaj");
+        File[] files = dir.listFiles();
+        if (files == null || files.length==0){
+            return  null;
+        }
+        File lastModifiedFile = files[0];
+        for (int i=1; i<files.length;i++){
+            if (lastModifiedFile.lastModified() < files[i].lastModified()){
+                lastModifiedFile = files[i];
+            }
+        }
+        return lastModifiedFile;
     }
 
 

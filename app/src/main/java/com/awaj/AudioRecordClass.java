@@ -25,11 +25,12 @@ public class AudioRecordClass extends AsyncTask<Void,String,Void> {
     int minBufferSizeInBytes;
 
     DatabaseHelper databaseHelper;
+    Context context = MyApplication.getAppContext();
 
 
     @Override
     protected void onPreExecute() {
-        databaseHelper = new DatabaseHelper(MyApplication.getAppContext());
+        databaseHelper = new DatabaseHelper(context);
         databaseHelper.getAllData();
     }
 
@@ -72,7 +73,8 @@ public class AudioRecordClass extends AsyncTask<Void,String,Void> {
 //                ONE- as extension Sound.pcm
 //            15. AND MOST IMPORTANT THING TO REMEMBER :- OUR AMPLITUDE IS REPRESENTED BY 16 bit. SO WE USE SHORT
 //         */
-        File filePcm = new File(Environment.getExternalStorageDirectory(),"Sound.pcm");
+        File folder = context.getExternalFilesDir("Awaj");
+        File filePcm = new File(folder,"Sound"+System.currentTimeMillis()+".pcm");
 
         OutputStream outputStream = null;
         BufferedOutputStream bufferedOutputStream = null;
