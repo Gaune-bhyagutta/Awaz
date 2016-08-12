@@ -1,5 +1,6 @@
 package com.awaj;
 
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.os.Bundle;
 import android.view.View;
@@ -25,6 +26,7 @@ import java.io.IOException;
 import com.facebook.stetho.Stetho;
 
 public class MainActivity extends AppCompatActivity {
+    Toolbar toolbarObj;
 
     StateClass stateClass = StateClass.getState();
 
@@ -117,6 +119,12 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        /**Back Button within Toolbar*/
+        toolbarObj = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbarObj);
+        /**TODO:fix the back button*/
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         decibelTV = (TextView) findViewById(R.id.decibel);
         frequencyTV = (TextView) findViewById(R.id.frequencyTV);
         notesTV = (TextView) findViewById(R.id.notesTV);
@@ -151,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         recLogo.setVisibility(View.INVISIBLE);
 
         homeIV = (ImageView) findViewById(R.id.home);
-        listIV = (ImageView) findViewById(R.id.list);
+//        listIV = (ImageView) findViewById(R.id.list);
         /**End-GRAPH FRAGMENT*/
 
         /**Switches*/
@@ -462,7 +470,7 @@ public class MainActivity extends AppCompatActivity {
         recLogo = (ImageView) findViewById(R.id.reclogo);
         recLogo.setVisibility(View.INVISIBLE);
         homeIV = (ImageView) findViewById(R.id.home);
-        listIV = (ImageView) findViewById(R.id.list);
+//        listIV = (ImageView) findViewById(R.id.list);
     }
 
     /**

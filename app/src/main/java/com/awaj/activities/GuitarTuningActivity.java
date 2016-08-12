@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
@@ -19,63 +20,67 @@ import com.awaj.StateClass;
  * Created by keshavdulal on 08/08/16.
  */
 public class GuitarTuningActivity extends AppCompatActivity {
-    /**Variables*/
+    /**
+     * Variables
+     */
+    Toolbar toolbarObj;
     static String decibelStr;
     static String noteStr;
     static String currentFrequencyStr = new String();
     AudioRecordClass audioRecordClass;
 
-    /**State class*/
+    /**
+     * State class
+     */
     StateClass stateClass = StateClass.getState();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /**Avoiding the XML Layout*/
-        //setContentView(R.layout.topssix_guitar_tuner);
-        /**Drawing Custom View*/
+        /**Avoid XML & Draw Custom View*/
         setContentView(new guitarTunerMeterView(this, new Canvas()));
+
+        /**Back Button within Toolbar*/
+//        toolbarObj = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbarObj);
+//        /**TODO:fix the back button*/
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         /**Monitoring State Started*/
         stateClass.setRecoderingState(true);
-
-        Log.d("VIVZ","onCreate");
 
         /**Audio Streaming From Here*/
         audioRecordClass = new AudioRecordClass(new AudioRecordInterface() {
             @Override
             public void processExecuting(float decibel, float frequency, String notes) {
-        Log.d("VIVZ","Inside Process Executing");
                 /**Updating the values along with typecasting*/
                 currentFrequencyStr = String.valueOf(frequency);
                 decibelStr = String.valueOf(decibel);
                 noteStr = notes;
                 //Log.d("VIVZ","Freq: "+currentFrequencyStr+" Notes: "+notes);
-                System.out.println("Freq"+frequency);
+                System.out.println("Freq" + frequency);
             }
         });
         audioRecordClass.execute();
-
     }
-
 
     /**
      * Subclass for drawing the meter
      */
     public static class guitarTunerMeterView extends View {
         Paint circle, bigCircle, line, paintText;
-        float xc ,yc,x2,y2, theta;
+        float xc, yc, x2, y2, theta;
         float radius;
 
-        boolean drawnOnce=false;
+        boolean drawnOnce = false;
 
         int textSize;
         int textXPos;
         int textYPos;
 
-        float noteFrequency =184;
-        float frequency =189;
-        float difference = noteFrequency-frequency;
+        float noteFrequency = 184;
+        float frequency = 189;
+        float difference = noteFrequency - frequency;
 
         String lowerNotes = "A A#";
         String mainNote = "B";
@@ -91,7 +96,6 @@ public class GuitarTuningActivity extends AppCompatActivity {
             paintText = new Paint();
         }
 
-
         @Override
         protected void onDraw(Canvas canvas) {//
             //super.onDraw(canvas);
@@ -102,12 +106,12 @@ public class GuitarTuningActivity extends AppCompatActivity {
 
             xc = canvas.getWidth() / 2;
             yc = canvas.getHeight() - canvas.getHeight() / 10;
-            if(!drawnOnce){
+            if (!drawnOnce) {
                 drawnOnce = true;
-                theta =(float)(Math.PI/2);
+                theta = (float) (Math.PI / 2);
             }
-            x2=xc+(float)(radius*Math.cos(theta));
-            y2=yc-(float)(radius*Math.sin(theta));
+            x2 = xc + (float) (radius * Math.cos(theta));
+            y2 = yc - (float) (radius * Math.sin(theta));
 
             /**Invocation of Various Sub Draw Methods*/
             /**Draws Text of Main Note & Two Nearest lower & higher Notes*/
@@ -117,13 +121,12 @@ public class GuitarTuningActivity extends AppCompatActivity {
             /**Draw Nearest Notes & Current frequency*/
             drawNotesAndFreq(canvas);
 
-            if(difference<0){
-                if(theta>Math.PI/4) {
+            if (difference < 0) {
+                if (theta > Math.PI / 4) {
                     theta -= (float) (Math.PI / 180);
                 }
-            }
-            else if(difference>0){
-                if(theta<Math.PI*3/2) {
+            } else if (difference > 0) {
+                if (theta < Math.PI * 3 / 2) {
                     theta += (float) (Math.PI / 180);
                 }
             }
@@ -133,18 +136,20 @@ public class GuitarTuningActivity extends AppCompatActivity {
         }//End onDraw
 
         public void drawPrimaryNotes(Canvas canvas) {
-            textSize =80;
+            textSize = 80;
             textXPos = canvas.getWidth() / 4;
             textYPos = canvas.getHeight() / 10;
             radius = canvas.getWidth() / 2;
 
+            /**First Two Notes*/
             paintText.setColor(getResources().getColor(R.color.amber_secondary_text));
             paintText.setTextSize(textSize);
-            /**Draws Text of Main Note & Two Nearest lower & higher Notes*/
             canvas.drawText(lowerNotes, textXPos, textYPos, paintText);
+            /**Main Note*/
             paintText.setTextSize(textSize + 30);
             paintText.setColor(getResources().getColor(R.color.amber_accent));
             canvas.drawText(mainNote, textXPos + textSize * 2 + 15, textYPos, paintText);
+            /**Last Two Notes*/
             paintText.setTextSize(textSize);
             paintText.setColor(getResources().getColor(R.color.amber_secondary_text));
             canvas.drawText(higherNotes, textXPos + textSize * 3 + 10, textYPos, paintText);

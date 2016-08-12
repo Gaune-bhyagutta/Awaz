@@ -8,60 +8,61 @@
     android:background="@color/a"
     android:orientation="vertical">
 
-    <!--APP Title -->
-    <!--LinearLayout
+    <!--Activity Title -->
+    <LinearLayout
         android:id="@+id/appnameLL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#fff">
+        android:background="@color/colorPrimary">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
-            android:background="@color/a"
-            app:titleTextColor="#fff" />
-    </LinearLayout-->
+            android:background="@color/colorPrimary"
+            app:title="@string/app_name"
+            app:titleTextColor="@color/white"/>
+    </LinearLayout>
 
     <!--TABS CONTROL -->
-    <LinearLayout
-        android:id="@+id/tabsLL"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="2dp"
-        android:layout_weight="0.75"
-        android:background="#fff"
-        android:orientation="horizontal">
+    <!--<LinearLayout-->
+        <!--android:id="@+id/tabsLL"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_marginBottom="2dp"-->
+        <!--android:layout_weight="0.75"-->
+        <!--android:background="#fff"-->
+        <!--android:orientation="horizontal">-->
 
-        <ImageView
-            android:id="@+id/home"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="1dp"
-            android:layout_marginEnd="2dp"
-            android:layout_marginTop="1dp"
-            android:layout_weight="1"
-            android:background="@color/colorPrimaryDark"
-            android:scaleType="fitCenter"
-            android:src="@drawable/homebutton" />
+        <!--<ImageView-->
+            <!--android:id="@+id/home"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginBottom="1dp"-->
+            <!--android:layout_marginEnd="2dp"-->
+            <!--android:layout_marginTop="1dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:background="@color/colorPrimaryDark"-->
+            <!--android:scaleType="fitCenter"-->
+            <!--android:src="@drawable/homebutton" />-->
 
-        <ImageView
-            android:id="@+id/list"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="1dp"
-            android:layout_marginTop="1dp"
-            android:layout_weight="1"
-            android:background="@color/colorPrimaryDark"
-            android:src="@drawable/listviewbutton" />
+        <!--<ImageView-->
+            <!--android:id="@+id/list"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginBottom="1dp"-->
+            <!--android:layout_marginTop="1dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:background="@color/colorPrimaryDark"-->
+            <!--android:src="@drawable/listviewbutton" />-->
 
-    </LinearLayout>
+    <!--</LinearLayout>-->
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary">
+        android:background="@color/colorPrimaryDark">
 
         <Switch
             android:id="@+id/domainSwitch"
@@ -69,7 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorPrimaryDark"
             android:textOn="FREQ"
             android:textOff="AMP" />
 
@@ -92,8 +93,11 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="10"
-        android:background="@color/a"
-        android:orientation="vertical"></LinearLayout>
+        android:background="@color/colorPrimaryLight"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+    </LinearLayout>
 
     <!--TIMER -->
     <LinearLayout

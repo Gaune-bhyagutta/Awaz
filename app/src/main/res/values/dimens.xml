@@ -3,9 +3,9 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="home_buttons_margin">15dp</dimen>
-    <dimen name="home_buttons_vertical_margin">30dp</dimen>
-    <dimen name="home_buttons_horizontal_margin">20dp</dimen>
+    <dimen name="home_buttons_margin">2dp</dimen>
+    <dimen name="home_buttons_vertical_margin">2dp</dimen>
+    <dimen name="home_buttons_horizontal_margin">2dp</dimen>
 
-    <dimen name="root_layout_padding">3dp</dimen>
+    <dimen name="root_layout_padding">1dp</dimen>
 </resources>

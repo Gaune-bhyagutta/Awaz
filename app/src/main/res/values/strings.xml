@@ -1,15 +1,18 @@
 <resources>
-    <string name="app_name">Awaz</string>
+    <string name="app_name">AWAZ</string>
     <string name="record_button_name">Record</string>
     <string name="play_button_name">Play</string>
     <string name="splash">SPLASH !!!</string>
     <string name="appName">AWAJ</string>
     <string name="tap_to_continue">Tap to continue...</string>
-    <string name="audio_record">Audio Record</string>
-    <string name="audio_monitor">Audio Monitor</string>
-    <string name="scale_tester">Scale Tester</string>
-    <string name="note_generator">Note Generator</string>
-    <string name="guitar_tuner">Guitar Tuner</string>
-    <string name="uc">UC</string>
+
+    <string name="audio_record">RECORDER</string>
+    <string name="audio_monitor">MONITOR</string>
+    <string name="vocal_tester">VOCAL TESTER</string>
+    <string name="note_generator">NOTE GENERATOR</string>
+    <string name="guitar_tuner">GUITAR TUNER</string>
+    <string name="tone_generator">TONE GENERATOR</string>
+
     <string name="current_main_activity">MAIN ACTIVITY</string>
+    <string name="home">HOME</string>
 </resources>
