@@ -303,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public class AudioPlayClass extends AsyncTask<Void,Void,Boolean>{
+    public class AudioPlayClassMain extends AsyncTask<Void,Void,Boolean>{
         Boolean sucessfull;
         @Override
         protected Boolean doInBackground(Void... voids) {

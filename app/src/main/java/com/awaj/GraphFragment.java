@@ -25,7 +25,7 @@ public class GraphFragment extends Fragment {
      * 0-AMP/TIME 1-AMP/FREQ
      */
 
-    private int GRAPH_INFO_MODE = 0;
+    public static int GRAPH_DOMAIN_MODE = 0;
 
     //myGraphView myGraphView = new myGraphView(getActivity());
 
@@ -69,7 +69,7 @@ public class GraphFragment extends Fragment {
             /**ACTUAL PLOTS*/
 
             drawMeshLines(canvas);
-            if (GRAPH_INFO_MODE == 1) {
+            if (GRAPH_DOMAIN_MODE == 1) {
                 frequencyAmplitudeGraph(canvas, graphVisualizationPO);
             } else {
                 timeAmplitudeGraph(canvas, graphVisualizationPO);
@@ -80,7 +80,6 @@ public class GraphFragment extends Fragment {
         /**
          * End of onDraw
          */
-
 
         public void drawMeshLines(Canvas canvas) {
             //Mesh Lines
@@ -119,9 +118,9 @@ public class GraphFragment extends Fragment {
                 canvas.drawLine(i, 0, i, cgh, meshObj);
             }
 
-            if (GRAPH_INFO_MODE == 0) {
+            if (GRAPH_DOMAIN_MODE == 0) {
                 /**AMP*/
-            } else if (GRAPH_INFO_MODE == 1) {
+            } else if (GRAPH_DOMAIN_MODE == 1) {
                 /**Freq Labels*/
                 /**BASELINE*/
                 canvas.drawLine(0, cgh2, cgw, cgh2, textObj);
@@ -131,15 +130,7 @@ public class GraphFragment extends Fragment {
                 float yDecrement = 0;
                 for (i = 0; i < cgh2; i++) {
                     canvas.drawText(Float.toString(dbIncrement), 0, cgh2, textObj);
-
-
                 }
-//                canvas.drawText("10",0,cgh2-100,textObj);
-//                canvas.drawText("20",0,cgh2-200,textObj);
-//                canvas.drawText("30",0,cgh2-300,textObj);
-//                canvas.drawText("40",0,cgh2-400,textObj);
-//                canvas.drawText("50",0,cgh2-500,textObj);
-//                canvas.drawText("60",0,cgh2-600,textObj);
 
                 /**Horizontal Labels*/
                 float freqValue = 0;
@@ -190,6 +181,12 @@ public class GraphFragment extends Fragment {
 
                 postInvalidateDelayed(GRAPH_REFRESH_DELAY);
             }
+            /**Expt*/
+            int maxValue = (int) (FrequencyValue.findMaxValue(audioData) * heightNormalizer);
+            int horizontalBarHeight = (int) ((canvas.getHeight() / 2) - maxValue);
+            graphVisualizationPO.setColor(Color.parseColor("#ff0000"));
+            graphVisualizationPO.setStrokeWidth(2);
+            canvas.drawLine(0, horizontalBarHeight, canvas.getWidth(), horizontalBarHeight, graphVisualizationPO);
         }
 
 
@@ -215,15 +212,17 @@ public class GraphFragment extends Fragment {
                 X2 = X1;
                 Y2 = Y1 - graph_height;
 
-
                 canvas.drawLine(X1, Y1, X2, Y2, graphVisualizationPO);
 
                 index++;
                 postInvalidateDelayed(GRAPH_REFRESH_DELAY);
             }
-
+            int maxValue = (int) (FrequencyValue.findMaxValue(audioData) * heightNormalizer);
+            int horizontalBarHeight = (int) ((canvas.getHeight() / 2) - maxValue);
+            graphVisualizationPO.setColor(Color.parseColor("#ff0000"));
+            graphVisualizationPO.setStrokeWidth(2);
+            canvas.drawLine(0, horizontalBarHeight, canvas.getWidth(), horizontalBarHeight, graphVisualizationPO);
         }
-
     }
 
     /**
@@ -237,11 +236,7 @@ public class GraphFragment extends Fragment {
         audioData = new float[size];
     }
 
-    public int getGraphFragmentMode(){
-        return GRAPH_INFO_MODE;
+    public int getGraphFragmentMode() {
+        return GRAPH_DOMAIN_MODE;
     }
-
-
-
-
 }

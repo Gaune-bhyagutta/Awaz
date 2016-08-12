@@ -5,7 +5,7 @@
     android:id="@+id/biggestLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000"
+    android:background="@color/a"
     android:orientation="vertical">
 
     <!--APP Title -->
@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
-            android:background="#000"
+            android:background="@color/a"
             app:titleTextColor="#fff" />
     </LinearLayout-->
 
@@ -42,7 +42,7 @@
             android:layout_marginEnd="2dp"
             android:layout_marginTop="1dp"
             android:layout_weight="1"
-            android:background="#000"
+            android:background="@color/colorPrimaryDark"
             android:scaleType="fitCenter"
             android:src="@drawable/homebutton" />
 
@@ -53,45 +53,38 @@
             android:layout_marginBottom="1dp"
             android:layout_marginTop="1dp"
             android:layout_weight="1"
-            android:background="#000"
+            android:background="@color/colorPrimaryDark"
             android:src="@drawable/listviewbutton" />
 
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:background="@color/colorPrimary">
 
         <Switch
             android:id="@+id/domainSwitch"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
-            android:layout_weight="1"
-            android:background="#fff"
+            android:background="@color/colorPrimary"
             android:textOn="FREQ"
-            android:textOff="AMP"/>
-
-        <!--<Switch-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/visualizationSwitch"-->
-        <!--android:layout_gravity="center_horizontal"-->
-        <!--android:background="#fff"-->
-        <!--android:layout_marginStart="10dp"-->
-        <!--android:layout_marginEnd="10dp"/>-->
+            android:textOff="AMP" />
 
         <ImageView
             android:id="@+id/reclogo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:background="@android:drawable/ic_notification_overlay" />
+            android:background="@android:drawable/ic_notification_overlay"
 
-    </LinearLayout>
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
 
     <!--Graph Fragment -->
     <LinearLayout
@@ -99,7 +92,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="10"
-        android:background="#000"
+        android:background="@color/a"
         android:orientation="vertical"></LinearLayout>
 
     <!--TIMER -->
@@ -118,17 +111,10 @@
             android:layout_marginBottom="2dp"
             android:layout_marginTop="2dp"
             android:layout_weight="1"
-            android:background="#000"
+            android:background="@color/colorPrimaryDark"
             android:gravity="center"
             android:textColor="#fff"
             android:textSize="15sp" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp"
-            android:background="#000"></LinearLayout>
 
     </LinearLayout>
 
@@ -148,7 +134,7 @@
             android:layout_height="match_parent"
             android:layout_marginEnd="2dp"
             android:layout_weight="1"
-            android:background="#000"
+            android:background="@color/colorPrimary"
             android:gravity="center"
             android:text="Notes"
             android:textColor="#fff"
@@ -161,7 +147,7 @@
             android:layout_height="match_parent"
             android:layout_marginEnd="2dp"
             android:layout_weight="1"
-            android:background="#000"
+            android:background="@color/colorPrimary"
             android:gravity="center"
             android:text="db"
             android:textColor="#fff"
@@ -173,7 +159,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#000"
+            android:background="@color/colorPrimary"
             android:gravity="center"
             android:text="Frequency"
             android:textColor="#fff"
@@ -195,10 +181,10 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginBottom="2dp"
-            android:layout_marginRight="2dp"
+            android:layout_marginEnd="2dp"
             android:layout_marginTop="2dp"
             android:layout_weight="1"
-            android:background="#000"
+            android:background="@color/colorPrimary"
 
             android:text="@string/record_button_name"
             android:textColor="#fff"
@@ -212,7 +198,7 @@
             android:layout_marginBottom="2dp"
             android:layout_marginTop="2dp"
             android:layout_weight="1"
-            android:background="#000"
+            android:background="@color/colorPrimary"
 
             android:text="@string/play_button_name"
             android:textColor="#fff"

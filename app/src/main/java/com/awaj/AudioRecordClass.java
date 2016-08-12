@@ -2,6 +2,7 @@ package com.awaj;
 
 import android.content.Context;
 import android.media.AudioRecord;
+import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
@@ -12,20 +13,24 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Arrays;
 
 /**
  * Created by amitgupta on 8/4/2016.
  */
 
-// Start of AudioRecordClass
+/** Start of AudioRecordClass*/
 public class AudioRecordClass extends AsyncTask<Void,String,Void> {
 
+    StateClass stateClass = StateClass.getState();
+
+    private AudioRecordInterface listener;
+
     final String TAG = AudioRecordClass.class.getSimpleName();
-
     int minBufferSizeInBytes;
-
     DatabaseHelper databaseHelper;
     Context context = MyApplication.getAppContext();
+
 
 
     @Override
@@ -34,19 +39,23 @@ public class AudioRecordClass extends AsyncTask<Void,String,Void> {
         databaseHelper.getAllData();
     }
 
+    public AudioRecordClass(AudioRecordInterface listener) {
+        // set null or default listener or accept as argument to constructor
+        this.listener = listener;
+        Log.d(TAG,"constructor of AudioRecordClass");
+
+    }
+
     @Override
     protected Void doInBackground(Void... voids) {
+        Log.d("VIVZ","inside doInBAck of AudioRecordClass");
         startRecord();
         return null;
     }
 
     @Override
     protected void onProgressUpdate(String... values ) {
-        //super.onProgressUpdate(values);
-        MainActivity.updateDecibel(Float.valueOf(values[0]));
-        MainActivity.updateFrequncy(Float.valueOf(values[1]));
-        MainActivity.updateNotes(values[2]);
-        //MainActivity.updateNotes(values[1]);
+        listener.processExecuting(Float.valueOf(values[0]),Float.valueOf(values[1]),values[2]);
     }
 
     public void startRecord(){
@@ -111,7 +120,8 @@ public class AudioRecordClass extends AsyncTask<Void,String,Void> {
             audioRecord.startRecording();//Start Recording Based on
 
             // it means while the user have  not pressed the RECORD-STOP Button
-            while(MainActivity.getValueOfisRecording()){
+            Log.d(TAG, "State:"+String.valueOf(stateClass.getRecoderingState()));
+            while(stateClass.getRecoderingState()){
 
 
 //                /** numberOfShort=minBufferSize/2
@@ -154,16 +164,22 @@ public class AudioRecordClass extends AsyncTask<Void,String,Void> {
                 MainActivity.plotGraph(audioFloatsForAmp,audioFloatsForFFT);
 
 
-
-
+                databaseHelper = new DatabaseHelper(MyApplication.getAppContext());
 
                 int match = databaseHelper.matchFreq(frequency);
 
                 String note = databaseHelper.getNote(match);
+
                 //Log.d("VIVZ", "note="+note+" match="+match);
+
+//                if(listener!=null)
+//                    listener.onDataLoaded(decibelValue,frequency,note);
+
                 publishProgress(String.valueOf(decibelValue),String.valueOf(frequency),note);
 
+
             }
+            Log.d(TAG,"Here");
             audioRecord.stop();
 
         } catch (IOException e) {
@@ -187,6 +203,9 @@ public class AudioRecordClass extends AsyncTask<Void,String,Void> {
             if (outputStream != null) {
                 try {
                     outputStream.close();
+
+
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/musicNotesTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Musical Notes Here!" />
+
+    <LinearLayout
+        android:id="@+id/meterLL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/musicNotesTV"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/notesTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/meterLL"
+        android:text="Notes Here" />
+
+    <TextView
+        android:id="@+id/frequencyTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/notesTV"
+        android:text="Frequency Here" />
+
+</RelativeLayout>

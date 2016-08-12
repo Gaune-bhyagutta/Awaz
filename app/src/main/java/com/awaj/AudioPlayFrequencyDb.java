@@ -1,11 +1,8 @@
 package com.awaj;
 
-import android.content.Context;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
-import android.os.AsyncTask;
-import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -18,47 +15,27 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Created by amitgupta on 8/4/2016.
+ * Created by anup on 8/12/16.
  */
-//Start of AudioPlayClass
-public class AudioPlayClass extends AsyncTask<Void,String,Boolean> {
+public class AudioPlayFrequencyDb extends AudioPlayFrequency {
 
-    final String TAG = AudioPlayClass.class.getSimpleName();
-    Boolean sucessfull;
-    DatabaseHelper databaseHelper;
-    Context context = MyApplication.getAppContext();
+    AudioPlayFrequencyDbListener listener;
 
-    @Override
-    protected void onPreExecute() {
-        databaseHelper = new DatabaseHelper(MyApplication.getAppContext());
-        databaseHelper.getAllData();
+    public AudioPlayFrequencyDb(AudioPlayFrequencyDbListener listener) {
+
+        this.listener = listener;
     }
 
-    @Override
-    protected Boolean doInBackground(Void... voids) {
-        sucessfull = false;
-        Log.d(TAG, "doInBackground");
-        playRecord();
-        Log.d(TAG, "end of doInBackground");
-
-        return sucessfull;
-    }
+   /* public AudioPlayFrequencyDb(AudioPlayFrequencyDbListener listener) {
+        // set null or default listener or accept as argument to constructor
+        this.listener = listener;
+    }*/
 
     @Override
-    protected void onProgressUpdate(String... values) {
-//            super.onProgressUpdate(values);
-
-        MainActivity.updateDecibel(Float.valueOf(values[0]));
-        MainActivity.updateFrequncy(Float.valueOf(values[1]));
-        MainActivity.updateNotes(values[2]);
-    }
-
-    //Start of playRecord()
-    public void playRecord(){
-
-        Log.d(TAG, "playRecord()");
+    public void playRecord() {
+        Log.d(TAG, "playRecord() BLAHBLAH");
         File folder = context.getExternalFilesDir("Awaj");
-        File latest = getLatestModified();
+        File latest = super.getLatestModified();
         File filePcm;
         if (latest==null){
             Toast.makeText(MyApplication.getAppContext(), "Please Record something", Toast.LENGTH_SHORT).show();
@@ -101,7 +78,7 @@ public class AudioPlayClass extends AsyncTask<Void,String,Boolean> {
             float audioFloatsForAmp[] = new float[audioData.length];
 
             DecibelCalculation decibelCalculation = new DecibelCalculation();
-            while (MainActivity.getValueOfisPlaying() && dataInputStream.available() > 0) {
+            while (stateClass.getPlayingState() && dataInputStream.available() > 0) {
                 int i = 0;
                 while (dataInputStream.available() > 0 && i < audioData.length) {
                     audioData[i] = dataInputStream.readShort();
@@ -112,10 +89,11 @@ public class AudioPlayClass extends AsyncTask<Void,String,Boolean> {
                     /**This one is for FFT*/
                     audioFloatsForFFT[i] = (float) audioInt[i];
                     /**This one is for Amplitude Visualization*/
-                    audioFloatsForAmp[i]=(float)audioInt[i];
+                    //                audioFloatsForAmp[i]=(float)audioInt[i];
                     i++;
                 }
                 audioTrack.write(audioData, 0, audioData.length);
+
                 float decibelValue = decibelCalculation.decibelCalculation(audioData);
                 float[] fftOutput = FftOutput.callMainFft(audioFloatsForFFT);
 
@@ -123,8 +101,13 @@ public class AudioPlayClass extends AsyncTask<Void,String,Boolean> {
                 int match = databaseHelper.matchFreq(frequency);
 
                 String note = databaseHelper.getNote(match);
-                MainActivity.plotGraph(audioFloatsForAmp,audioFloatsForFFT);
-                publishProgress(String.valueOf(decibelValue),String.valueOf(frequency),note);
+                //MainActivity.plotGraph(audioFloatsForAmp,audioFloatsForFFT);
+
+//                if(listener!=null)
+//                    listener.onDataLoaded(decibelValue,frequency,note);
+
+                publishProgress(String.valueOf(frequency),note,String.valueOf(decibelValue));
+                //publishProgress(audioData[]);
             }
             audioTrack.pause();
             audioTrack.flush();
@@ -171,34 +154,10 @@ public class AudioPlayClass extends AsyncTask<Void,String,Boolean> {
         }
     }
 
-    /**
-     * End of playRecord()
-     */
-
     @Override
-    protected void onPostExecute(Boolean aVoid) {
-
-        MainActivity.updatePlayState();
-
-        Log.d(TAG, "onPostExecute");
-
-
+    protected void onProgressUpdate(String... values) {
+        listener.processExecuting(Float.valueOf(values[0]),values[1],Float.valueOf(values[2]));
     }
-
-    private File getLatestModified(){
-        File dir = context.getExternalFilesDir("Awaj");
-        File[] files = dir.listFiles();
-        if (files == null || files.length==0){
-            return  null;
-        }
-        File lastModifiedFile = files[0];
-        for (int i=1; i<files.length;i++){
-            if (lastModifiedFile.lastModified() < files[i].lastModified()){
-                lastModifiedFile = files[i];
-            }
-        }
-        return lastModifiedFile;
-    }
+}
 
 
-}//End Of AudioPlayClass
