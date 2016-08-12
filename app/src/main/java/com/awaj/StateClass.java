@@ -30,7 +30,7 @@ public class StateClass {
         return isRecording;
     }
     public boolean getPlayingState(){
-        return isRecording;
+        return isPlaying;
     }
 
     public void setRecoderingState(boolean isRecording){

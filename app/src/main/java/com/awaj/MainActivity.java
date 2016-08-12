@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity{
     private static GraphFragment graphFragment = new GraphFragment();
     private static ListFragment listFragment = new ListFragment();
 
-    private static AudioRecordClass audioRecordClass;
+    private static AudioRecordDecibel audioRecordDecibel;
     private static AudioPlayClass audioPlayClass;
 
     private static int rec_btn_count = 0;
@@ -193,9 +193,9 @@ public class MainActivity extends AppCompatActivity{
         return MIN_BUFFER_SIZE_BYTES;
     }
 
-    public static void updateDecibel(float decibel) {
+    public static void updateDecibel(String decibel) {
         //The CALCULATED DECIBEL VALUE IN AudioPlayClass/AudioRecordClass is SENT to show in TEXTVIEW
-        decibelTV.setText(String.valueOf(decibel));
+        decibelTV.setText(decibel);
     }
 
     public static void updateFrequncy(float frequency) {
@@ -304,6 +304,7 @@ public class MainActivity extends AppCompatActivity{
             /**Frequency Mode*/
             graphFragment.updateGraph(fftOutput);
         }
+
     }
 
     //END OF Graph Fragment Section
@@ -317,12 +318,18 @@ public class MainActivity extends AppCompatActivity{
                 @Override
                 public void onClick(View v) {
 
-                    audioRecordClass = new AudioRecordClass(new AudioRecordInterface() {
+                    audioRecordDecibel = new AudioRecordDecibel(AUDIO_SOURCE,SAMPLE_RATE_IN_HZ,CHANNELS_CONFIGURATION,AUDIO_ENCODING,
+                            NO_OF_SAMPLES,new AudioRecordDecibelListener() {
+
                         @Override
-                        public void processExecuting(float decibel, float frequency, String notes) {
-                            updateFrequncy(frequency);
+                        public void processExecuting(String decibel) {
                             updateDecibel(decibel);
-                            updateNotes(notes);
+                        }
+
+
+                        @Override
+                        public void processExecuted() {
+
                         }
                     });
 
@@ -333,7 +340,7 @@ public class MainActivity extends AppCompatActivity{
                         /**Code to handle click of "RECORD" button*/
                         playState = 0;
                         stateClass.setRecoderingState(true);
-                       audioRecordClass.execute();
+                       audioRecordDecibel.execute();
 
                         rec_btn_count = 1;
 
@@ -369,14 +376,14 @@ public class MainActivity extends AppCompatActivity{
             play.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    audioPlayClass = new AudioPlayClass(new AudioRecordInterface() {
-                        @Override
-                        public void processExecuting(float decibel, float frequency, String notes) {
-                            updateDecibel(decibel);
-                            updateFrequncy(frequency);
-                            updateNotes(notes);
-                        }
-                    });
+//                    audioPlayClass = new AudioPlayClass(new AudioRecordInterface() {
+//                        @Override
+//                        public void processExecuting(float decibel, float frequency, String notes) {
+//                            updateDecibel(decibel);
+//                            updateFrequncy(frequency);
+//                            updateNotes(notes);
+//                        }
+//                    });
                     if (play_btn_count == 0) {
                         playState = 1;
                         play_btn_count = 1;
@@ -388,7 +395,7 @@ public class MainActivity extends AppCompatActivity{
 
                         stateClass.setPlayingState(true);
 
-                        audioPlayClass.execute();
+                  //      audioPlayClass.execute();
 
                         play.setText("Stop");
                         play.setTextColor(Color.parseColor("#ff0000"));

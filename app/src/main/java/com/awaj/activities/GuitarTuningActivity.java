@@ -42,19 +42,19 @@ public class GuitarTuningActivity extends AppCompatActivity {
         Log.d("VIVZ","onCreate");
 
         /**Audio Streaming From Here*/
-        audioRecordClass = new AudioRecordClass(new AudioRecordInterface() {
-            @Override
-            public void processExecuting(float decibel, float frequency, String notes) {
-        Log.d("VIVZ","Inside Process Executing");
-                /**Updating the values along with typecasting*/
-                currentFrequencyStr = String.valueOf(frequency);
-                decibelStr = String.valueOf(decibel);
-                noteStr = notes;
-                //Log.d("VIVZ","Freq: "+currentFrequencyStr+" Notes: "+notes);
-                System.out.println("Freq"+frequency);
-            }
-        });
-        audioRecordClass.execute();
+//        audioRecordClass = new AudioRecordClass(new AudioRecordInterface() {
+//            @Override
+//            public void processExecuting(float decibel, float frequency, String notes) {
+//        Log.d("VIVZ","Inside Process Executing");
+//                /**Updating the values along with typecasting*/
+//                currentFrequencyStr = String.valueOf(frequency);
+//                decibelStr = String.valueOf(decibel);
+//                noteStr = notes;
+//                //Log.d("VIVZ","Freq: "+currentFrequencyStr+" Notes: "+notes);
+//                System.out.println("Freq"+frequency);
+//            }
+//        });
+//        audioRecordClass.execute();
 
     }
 

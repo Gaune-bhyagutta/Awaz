@@ -35,6 +35,7 @@ public class AudioRecordClass extends AsyncTask<Void,String,Void> {
         Log.d(TAG,"constructor of AudioRecordClass");
     }
 
+
     @Override
     protected Void doInBackground(Void... voids) {
         Log.d("VIVZ","inside doInBAck of AudioRecordClass");
@@ -46,6 +47,7 @@ public class AudioRecordClass extends AsyncTask<Void,String,Void> {
     protected void onProgressUpdate(String... values ) {
         listener.processExecuting(Float.valueOf(values[0]),Float.valueOf(values[1]),values[2]);
     }
+
 
     public void startRecord(){
 

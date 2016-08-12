@@ -5,7 +5,8 @@ package com.awaj;
  */
 public interface AudioRecordInterface {
    // void AudioRecordInterface();
-    void processExecuting(float decibel,float frequency,String notes);
+    void processExecuting(float decibel, float frequency, String notes);
+    void processExecuted();
 
 }
 
