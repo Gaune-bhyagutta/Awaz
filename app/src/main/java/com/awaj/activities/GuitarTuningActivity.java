@@ -69,7 +69,7 @@ public class GuitarTuningActivity extends AppCompatActivity {
 
         boolean drawnOnce=false;
 
-        int textSize = 80;
+        int textSize;
         int textXPos;
         int textYPos;
 
@@ -100,32 +100,14 @@ public class GuitarTuningActivity extends AppCompatActivity {
             /**Setting up Variables*/
             canvas.drawColor(getResources().getColor(R.color.amber_primary_dark));
 
-            textXPos = canvas.getWidth() / 4;
-            textYPos = canvas.getHeight() / 10;
-            radius = canvas.getWidth() / 2;
-
             xc = canvas.getWidth() / 2;
             yc = canvas.getHeight() - canvas.getHeight() / 10;
-
             if(!drawnOnce){
                 drawnOnce = true;
                 theta =(float)(Math.PI/2);
             }
-
             x2=xc+(float)(radius*Math.cos(theta));
             y2=yc-(float)(radius*Math.sin(theta));
-
-            circle.setColor(getResources().getColor(R.color.amber_primary_dark));
-            circle.setStyle(Paint.Style.FILL);
-
-            bigCircle.setColor(Color.LTGRAY);
-            bigCircle.setStyle(Paint.Style.FILL);
-
-            line.setColor(getResources().getColor(R.color.amber_accent));
-            line.setStrokeWidth(5);
-
-            paintText.setColor(getResources().getColor(R.color.amber_secondary_text));
-            paintText.setTextSize(textSize);
 
             /**Invocation of Various Sub Draw Methods*/
             /**Draws Text of Main Note & Two Nearest lower & higher Notes*/
@@ -151,6 +133,13 @@ public class GuitarTuningActivity extends AppCompatActivity {
         }//End onDraw
 
         public void drawPrimaryNotes(Canvas canvas) {
+            textSize =80;
+            textXPos = canvas.getWidth() / 4;
+            textYPos = canvas.getHeight() / 10;
+            radius = canvas.getWidth() / 2;
+
+            paintText.setColor(getResources().getColor(R.color.amber_secondary_text));
+            paintText.setTextSize(textSize);
             /**Draws Text of Main Note & Two Nearest lower & higher Notes*/
             canvas.drawText(lowerNotes, textXPos, textYPos, paintText);
             paintText.setTextSize(textSize + 30);
@@ -162,6 +151,14 @@ public class GuitarTuningActivity extends AppCompatActivity {
         }
 
         public void drawFrequencyMeter(Canvas canvas) {
+            circle.setColor(getResources().getColor(R.color.amber_primary_dark));
+            circle.setStyle(Paint.Style.FILL);
+
+            bigCircle.setColor(Color.LTGRAY);
+            bigCircle.setStyle(Paint.Style.FILL);
+
+            line.setColor(getResources().getColor(R.color.amber_accent));
+            line.setStrokeWidth(5);
             /**Larger Outer Base Circle*/
             canvas.drawCircle(xc, yc, radius, bigCircle);
             /**Dynamic Needle*/
