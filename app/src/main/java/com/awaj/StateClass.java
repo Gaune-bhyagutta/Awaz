@@ -19,6 +19,7 @@ public class StateClass {
     public static StateClass getState(){
         if(SingleObjectCount ==0){
             object = new StateClass();
+            SingleObjectCount++;
             return  object;
         }
         else

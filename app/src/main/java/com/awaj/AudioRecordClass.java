@@ -1,6 +1,7 @@
 package com.awaj;
 
 import android.media.AudioRecord;
+import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
@@ -31,11 +32,12 @@ public class AudioRecordClass extends AsyncTask<Void,String,Void> {
     public AudioRecordClass(AudioRecordInterface listner) {
         // set null or default listener or accept as argument to constructor
         this.listener = listner;
-        Log.d("VIVZ","inside constructor of AudioRecordClass");
+        Log.d(TAG,"constructor of AudioRecordClass");
     }
 
     @Override
     protected Void doInBackground(Void... voids) {
+        Log.d("VIVZ","inside doInBAck of AudioRecordClass");
         startRecord();
         return null;
     }
@@ -106,6 +108,7 @@ public class AudioRecordClass extends AsyncTask<Void,String,Void> {
             audioRecord.startRecording();//Start Recording Based on
 
             // it means while the user have  not pressed the RECORD-STOP Button
+            Log.d(TAG, "State:"+String.valueOf(stateClass.getRecoderingState()));
             while(stateClass.getRecoderingState()){
 
 
@@ -157,6 +160,7 @@ public class AudioRecordClass extends AsyncTask<Void,String,Void> {
 
 
             }
+            Log.d(TAG,"Here");
             audioRecord.stop();
 
         } catch (IOException e) {

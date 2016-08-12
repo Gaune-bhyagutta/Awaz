@@ -14,5 +14,7 @@ public class NoteGeneratingActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.topsix_note_generator);
+
+
     }
 }

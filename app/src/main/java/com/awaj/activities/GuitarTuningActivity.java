@@ -50,7 +50,8 @@ public class GuitarTuningActivity extends AppCompatActivity {
                 currentFrequencyStr = String.valueOf(frequency);
                 decibelStr = String.valueOf(decibel);
                 noteStr = notes;
-                Log.d("VIVZ","Freq: "+currentFrequencyStr+" Notes: "+notes);
+                //Log.d("VIVZ","Freq: "+currentFrequencyStr+" Notes: "+notes);
+                System.out.println("Freq"+frequency);
             }
         });
         audioRecordClass.execute();
@@ -203,4 +204,10 @@ public class GuitarTuningActivity extends AppCompatActivity {
             higherNotes = Notes[fourth] + Notes[fifth];
         }
     }//End View
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stateClass.setRecoderingState(false);
+    }
 }
