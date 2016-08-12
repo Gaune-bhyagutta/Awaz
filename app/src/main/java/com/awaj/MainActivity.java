@@ -19,11 +19,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.FragmentTransaction;
 
+
 import java.io.IOException;
 
 import com.facebook.stetho.Stetho;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     StateClass stateClass = StateClass.getState();
 

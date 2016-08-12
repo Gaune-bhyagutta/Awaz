@@ -121,16 +121,7 @@ public class GuitarTuningActivity extends AppCompatActivity {
             /**Draw Dynamic Frequency Meter*/
             drawFrequencyMeter(canvas);
             /**Draw Nearest Notes & Current frequency*/
-//            drawNotesAndFreq(canvas);
-
-            /**Draw Current Nearest Note*/
-            paintText.setColor(getResources().getColor(R.color.amber_accent));
-            canvas.drawText(currentNearestNote, xc - xc / 10, yc - yc / 15, paintText);
-
-            /**Draw Current Frequency Here*/
-            paintText.setColor(getResources().getColor(R.color.amber_primary_text));
-            paintText.setTextSize(70);
-            canvas.drawText(currentFrequencyStr, xc - xc / 10, yc + yc / 15, paintText);
+            drawNotesAndFreq(canvas);
 
 //        float x2=(float)(radius*Math.cos(theta)),y2=(float)(radius*Math.sin(theta));
 
@@ -165,14 +156,14 @@ public class GuitarTuningActivity extends AppCompatActivity {
         }
 
         public void drawNotesAndFreq(Canvas canvas) {
-//            /**Draw Current Nearest Note*/
-//            paintText.setColor(getResources().getColor(R.color.amber_accent));
-//            canvas.drawText(currentNearestNote, xc - xc / 10, yc - yc / 15, paintText);
-//
-//            /**Draw Current Frequency Here*/
-//            paintText.setColor(getResources().getColor(R.color.amber_primary_text));
-//            paintText.setTextSize(70);
-//            canvas.drawText(currentFrequencyStr, xc - xc / 10, yc + yc / 15, paintText);
+            /**Draw Current Nearest Note*/
+            paintText.setColor(getResources().getColor(R.color.amber_accent));
+            canvas.drawText(currentNearestNote, xc - xc / 10, yc - yc / 15, paintText);
+
+            /**Draw Current Frequency Here*/
+            paintText.setColor(getResources().getColor(R.color.amber_primary_text));
+            paintText.setTextSize(70);
+            canvas.drawText(currentFrequencyStr, xc - xc / 10, yc + yc / 15, paintText);
         }
 
         public void setNotes(int index) {
