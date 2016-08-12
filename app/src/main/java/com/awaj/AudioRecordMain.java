@@ -13,7 +13,7 @@ import java.io.OutputStream;
 /**
  * Created by amitgupta on 8/12/2016.
  */
-public abstract class AudioRecordMain extends AsyncTask<Void,String ,Void>{
+public class AudioRecordMain extends AsyncTask<Void,String ,Void>{
 
     final String TAG = AudioRecordMain.class.getSimpleName();
 

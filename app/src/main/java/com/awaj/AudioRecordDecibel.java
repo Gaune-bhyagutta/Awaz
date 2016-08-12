@@ -7,10 +7,34 @@ public class AudioRecordDecibel extends AudioRecordMain{
 
     AudioRecordDecibelListener listener;
 
+    protected int AUDIO_SOURCE ;
+    protected int SAMPLE_RATE_IN_HZ ;
+    protected int CHANNELS_CONFIGURATION ;
+    protected int AUDIO_ENCODING ;
+
+    protected int NO_OF_SAMPLES;
+
+    protected int MIN_BUFFERSIZE_IN_BYTES;
+
     AudioRecordDecibel(int AUDIO_SOURCE, int SAMPLE_RATE_IN_HZ, int CHANNELS_CONFIGURATION, int AUDIO_ENCODING, int NO_OF_SAMPLES,
                        AudioRecordDecibelListener listener) {
-        super(AUDIO_SOURCE, SAMPLE_RATE_IN_HZ, CHANNELS_CONFIGURATION, AUDIO_ENCODING, NO_OF_SAMPLES, (AudioRecordMainListener) listener);
+        //super(AUDIO_SOURCE, SAMPLE_RATE_IN_HZ, CHANNELS_CONFIGURATION, AUDIO_ENCODING, NO_OF_SAMPLES, (AudioRecordMainListener) listener);
+
         this.listener = listener;
+
+        this.AUDIO_SOURCE = AUDIO_SOURCE;
+        this.SAMPLE_RATE_IN_HZ = SAMPLE_RATE_IN_HZ;
+        this.CHANNELS_CONFIGURATION = CHANNELS_CONFIGURATION;
+        this.AUDIO_ENCODING = AUDIO_ENCODING;
+        this.NO_OF_SAMPLES = NO_OF_SAMPLES ;
+
+        MIN_BUFFERSIZE_IN_BYTES = NO_OF_SAMPLES * 2;
+    }
+
+    @Override
+    protected void onProgressUpdate(String... values) {
+       // super.onProgressUpdate(values);
+        listener.processExecuting(values[0]);
     }
 
     public void startRecord() {
