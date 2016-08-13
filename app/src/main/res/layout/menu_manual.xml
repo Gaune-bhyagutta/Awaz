@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/colorPrimaryDark">
     <!--Activity Title -->
     <LinearLayout
         android:id="@+id/appnameLL"
@@ -18,34 +18,16 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
             android:background="@color/colorPrimary"
-            app:title="@string/vocal_tester"
-            app:titleTextColor="@color/white" />
+            app:title="@string/menu_manual"
+            app:titleTextColor="@color/white"/>
     </LinearLayout>
 
     <TextView
-        android:id="@+id/primaryNotes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="PRIMARY NOTES"
-        android:textSize="40dp"
-        android:typeface="monospace">
-
-    </TextView>
-
-    <LinearLayout
-        android:id="@+id/vocalTester"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/currentFrequency"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="182Hz"
         android:textSize="50dp"
-        android:typeface="monospace"></TextView>
+        android:text="MANUAL"
+        android:textColor="@color/white"
+        android:typeface="monospace"/>
 
 </LinearLayout>

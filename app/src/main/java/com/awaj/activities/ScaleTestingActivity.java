@@ -33,11 +33,14 @@ public class ScaleTestingActivity extends AppCompatActivity {
     StateClass stateClass = StateClass.getState();
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         /**Avoid XML & Draw Custom View*/
-        setContentView(new vocalTestingView(this));
+        setContentView(R.layout.topsix_scaler);
+//        setContentView(new vocalTestingView(this));
+
+//        new vocalTestingView(this).inflate();
 
         /**Back Button within Toolbar*/
 //        toolbarObj = (Toolbar) findViewById(R.id.toolbar);

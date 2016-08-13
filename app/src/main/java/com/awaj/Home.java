@@ -3,10 +3,16 @@ package com.awaj;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
 import com.awaj.activities.*;
+import com.awaj.menuPages.About;
+import com.awaj.menuPages.Manual;
+import com.awaj.menuPages.Settings;
 
 /**
  * Created by keshavdulal on 08/08/16.
@@ -30,6 +36,42 @@ public class Home extends AppCompatActivity {
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
     }
+
+    /**MENU OPTIONS in APPBAR*/
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater ourMenuInflater = getMenuInflater();
+        ourMenuInflater.inflate(R.menu.sample_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    public boolean onOptionsItemSelected (MenuItem item){
+//        this.appendMenuItemText(item);
+        if(item.getItemId() == R.id.menu_Manual){
+//            this.showManual();
+            startActivity(new Intent(Home.this,Manual.class));
+        }
+        else if(item.getItemId() == R.id.menu_about){
+//            this.showAbout();
+            startActivity(new Intent(Home.this,About.class));
+        }
+        else if(item.getItemId() == R.id.menu_settings){
+//            this.showSettings();
+            startActivity(new Intent(Home.this, Settings.class));
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**Invoke Menu Options*/
+//    public void showManual(){
+//
+//    }
+//    public void showAbout(){
+//
+//    }
+//    public void showSettings(){
+//
+//    }
 
     /**
      * Create Intents in all Methods & Invoke Respective Activities

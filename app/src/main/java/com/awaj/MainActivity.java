@@ -3,6 +3,8 @@ package com.awaj;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Toast;
 import android.widget.Button;
@@ -32,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     DatabaseHelper databaseHelper;
 
-    final Timer timerStartObj = new Timer(3000000, 1000,MainActivity.this);
+    final Timer timerStartObj = new Timer(3000000, 1000, MainActivity.this);
     //Instance Variable And Constants Initialization/Declaration
 
     private static ImageView homeIV, listIV, settingsIV;
@@ -74,11 +76,11 @@ public class MainActivity extends AppCompatActivity {
     public static int noOfSamples = getRecordBufferSize();
     public static float resolution = SAMPLE_RATE_IN_HZ / noOfSamples;
 
-    private static int MIN_BUFFER_SIZE_BYTES = noOfSamples*2;
+    private static int MIN_BUFFER_SIZE_BYTES = noOfSamples * 2;
     /***
      * private static final int MIN_BUFFER_SIZE_BYTES = setMinBufferSizeInBytes(NO_OF_SAMPLES*2);
      * //END---Audio Record and Play Parameters-----
-     * <p/>
+     * <p>
      * /**
      * Objects
      */
@@ -231,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
         rec.setEnabled(true);
         play_btn_count = 0;
 
-         //= false;
+        //= false;
 
 //        timerStartObj.cancel();
 //        timerStartObj.SS = 0L;
@@ -319,7 +321,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Start-Functions in MainActivity
     //Start-record()
-    public  void record() {
+    public void record() {
         if (rec != null) {
 
             rec.setOnClickListener(new View.OnClickListener() {
@@ -336,13 +338,12 @@ public class MainActivity extends AppCompatActivity {
                     });
 
 
-
                     if (rec_btn_count == 0) {
 
                         /**Code to handle click of "RECORD" button*/
                         playState = 0;
                         stateClass.setRecoderingState(true);
-                       audioRecordClass.execute();
+                        audioRecordClass.execute();
 
                         rec_btn_count = 1;
 
@@ -448,6 +449,13 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater ourMenuInflater = getMenuInflater();
+        ourMenuInflater.inflate(R.menu.sample_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     public void referenceToUIElements() {
