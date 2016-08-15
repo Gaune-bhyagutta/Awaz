@@ -373,7 +373,7 @@ public class MainActivity extends AppCompatActivity{
                         @Override
                         public void processExecuting(Float frequency, String note,Float db) {
                             updateDecibel(db);
-                            updateFrequncy(frequency);it
+                            updateFrequncy(frequency);
                             updateNotes(note);
                         }
                     });
