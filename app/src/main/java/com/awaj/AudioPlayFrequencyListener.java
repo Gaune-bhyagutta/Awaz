@@ -6,4 +6,5 @@ package com.awaj;
 public interface AudioPlayFrequencyListener{
 
     void processExecuting(Float frequency, String note);
+    void processExecuted();
 }

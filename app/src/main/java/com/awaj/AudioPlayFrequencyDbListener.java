@@ -5,5 +5,6 @@ package com.awaj;
  */
 public interface AudioPlayFrequencyDbListener {
     void processExecuting(Float frequency, String note,Float db);
+    void processExecuted();
 
 }

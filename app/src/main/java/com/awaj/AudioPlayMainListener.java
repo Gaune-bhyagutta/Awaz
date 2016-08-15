@@ -5,4 +5,5 @@ package com.awaj;
  */
 public interface AudioPlayMainListener {
     void processExecuting();
+    void processExecuted();
 }

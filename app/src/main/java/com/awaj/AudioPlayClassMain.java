@@ -3,6 +3,7 @@ package com.awaj;
 import android.content.Context;
 import android.media.AudioFormat;
 import android.media.AudioManager;
+import android.media.AudioRecord;
 import android.media.AudioTrack;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -21,6 +22,12 @@ import java.io.InputStream;
  */
 //Start of AudioPlayClassMain
 public class AudioPlayClassMain extends AsyncTask<Void,String,Boolean> {
+
+    public static int noOfSamples = getRecordBufferSize();
+    private static int MIN_BUFFER_SIZE_BYTES = noOfSamples*2;
+    private static final int SAMPLE_RATE_IN_HZ = 22050;
+    private static final int CHANNELS_CONFIGURATION = AudioFormat.CHANNEL_IN_MONO;
+    private static final int AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;
 
     StateClass stateClass = StateClass.getState();
     protected AudioPlayMainListener listener;
@@ -85,7 +92,7 @@ public class AudioPlayClassMain extends AsyncTask<Void,String,Boolean> {
         //File filePcm = new File(Environment.getExternalStorageDirectory(), "Sound.pcm");
 
         //int minBufferSize = getPlayBufferSize();
-        int minBufferSize = MainActivity.getMinBufferSizeInBytes();
+        int minBufferSize = getMinBufferSizeInBytes();
 
         short[] audioData = new short[minBufferSize/2];
         int audioInt[] = new int[minBufferSize/2];
@@ -103,7 +110,7 @@ public class AudioPlayClassMain extends AsyncTask<Void,String,Boolean> {
 
             audioTrack = new AudioTrack(
                     AudioManager.STREAM_MUSIC,
-                    MainActivity.getSampleRateInHz(),
+                    getSampleRateInHz(),
                     AudioFormat.CHANNEL_OUT_MONO,
                     AudioFormat.ENCODING_PCM_16BIT,
                     minBufferSize,
@@ -197,7 +204,7 @@ public class AudioPlayClassMain extends AsyncTask<Void,String,Boolean> {
     @Override
     protected void onPostExecute(Boolean aVoid) {
 
-        MainActivity.updatePlayState();
+        listener.processExecuted();
 
         Log.d(TAG, "onPostExecute");
 
@@ -220,6 +227,18 @@ public class AudioPlayClassMain extends AsyncTask<Void,String,Boolean> {
         }
         Log.d(TAG, "name of file="+lastModifiedFile.getName());
         return lastModifiedFile;
+    }
+    public static int getRecordBufferSize() {
+        int minBufferSize = AudioRecord.getMinBufferSize(SAMPLE_RATE_IN_HZ,
+                CHANNELS_CONFIGURATION,
+                AUDIO_ENCODING);
+        return minBufferSize;
+    }
+    public static int getMinBufferSizeInBytes() {
+        return MIN_BUFFER_SIZE_BYTES;
+    }
+    public static int getSampleRateInHz() {
+        return SAMPLE_RATE_IN_HZ;
     }
 
 

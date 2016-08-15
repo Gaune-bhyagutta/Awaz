@@ -171,5 +171,14 @@ public class AudioPlayFrequency extends AudioPlayClassMain {
         //MainActivity.updateNotes(values[2]);
         listener.processExecuting(Float.valueOf(values[0]),values[1]);
     }
+    @Override
+    protected void onPostExecute(Boolean aVoid) {
+
+        listener.processExecuted();
+
+        Log.d(TAG, "onPostExecute");
+
+
+    }
 
 }

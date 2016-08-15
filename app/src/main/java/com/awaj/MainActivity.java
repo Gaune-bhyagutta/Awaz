@@ -324,6 +324,7 @@ public class MainActivity extends AppCompatActivity{
                             updateDecibel(decibel);
                             updateNotes(notes);
                         }
+
                     });
 
 
@@ -375,6 +376,11 @@ public class MainActivity extends AppCompatActivity{
                             updateDecibel(db);
                             updateFrequncy(frequency);
                             updateNotes(note);
+                        }
+
+                        @Override
+                        public void processExecuted() {
+                            updatePlayState();
                         }
                     });
                     if (play_btn_count == 0) {

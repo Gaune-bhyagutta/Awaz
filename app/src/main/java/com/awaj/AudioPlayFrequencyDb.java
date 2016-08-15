@@ -158,6 +158,15 @@ public class AudioPlayFrequencyDb extends AudioPlayFrequency {
     protected void onProgressUpdate(String... values) {
         listener.processExecuting(Float.valueOf(values[0]),values[1],Float.valueOf(values[2]));
     }
+    @Override
+    protected void onPostExecute(Boolean aVoid) {
+
+        listener.processExecuted();
+
+        Log.d(TAG, "onPostExecute");
+
+
+    }
 }
 
 
