@@ -143,6 +143,8 @@ import java.io.OutputStream;
         }
 
        public int matchFreq(double frequency){
+           //Log.d("VIVZ"," freq="+frequency);
+
            int i=0,match=200;
            if(frequency<=max_freq[54] && frequency>=min_freq[54]){
                match = 54;
@@ -156,9 +158,12 @@ import java.io.OutputStream;
                }
            }
            else if (frequency>freq[54]){
+
                for (i=54;i<107;i++){
+
                    if(frequency<=max_freq[i] && frequency>=min_freq[i]){
                        match = i;
+
                        break;
                    }
                }

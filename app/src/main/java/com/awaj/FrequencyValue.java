@@ -23,7 +23,7 @@ public class FrequencyValue {
                 i_max=i;
             }
         }
-        fundamentalFrequency= (i_max*(MainActivity.getSampleRateInHz()/amplitude.length))*correctFactor;
+        fundamentalFrequency= (i_max*(44100/amplitude.length))*correctFactor;
         return fundamentalFrequency;
     }
 
@@ -72,7 +72,7 @@ public class FrequencyValue {
                 i_max =i;
             }
         }
-        fundamentalFrequency= ((i_max)*(MainActivity.getSampleRateInHz()/amplitude.length)*(float)correction_factor);
+        fundamentalFrequency= ((i_max)*(44100/amplitude.length)*(float)correction_factor);
         return fundamentalFrequency;
     }/** END OF getFundamentalFrequency**/
 

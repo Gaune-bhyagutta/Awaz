@@ -13,9 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.awaj.AudioRecordClass;
-import com.awaj.AudioRecordFileDecibelFrequencyNoteGraph;
-import com.awaj.AudioRecordFileDecibelFrequencyNoteGraphListener;
+
 import com.awaj.AudioRecordFrequencyNote;
 import com.awaj.AudioRecordFrequencyNoteListener;
 import com.awaj.AudioRecordInterface;

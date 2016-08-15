@@ -5,7 +5,7 @@ package com.awaj;
  */
 public interface AudioRecordFileDecibelFrequencyNoteGraphListener {
 
-    void processExecuting(String decibel,String frequency , String note);
+    void processExecuting(String decibel,String frequency , String note,float[] ampValues,float[] freqValues);
     void processExecuted();
 
 }

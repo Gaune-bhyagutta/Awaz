@@ -84,10 +84,10 @@ public class AudioRecordFrequencyNote extends AudioRecordMain{
 
 
             //Create a Object of the AudioRecord class with the NECESSARY CONFIGURATION
-            audioRecord = new AudioRecord(MainActivity.getAudioSource(),
-                    MainActivity.getSampleRateInHz(),
-                    MainActivity.getChannelsConfiguration(),
-                    MainActivity.getAudioEncoding(),
+            audioRecord = new AudioRecord(AUDIO_SOURCE,
+                    SAMPLE_RATE_IN_HZ,
+                    CHANNELS_CONFIGURATION,
+                    AUDIO_ENCODING,
                     MIN_BUFFERSIZE_IN_BYTES);
 
 //            /** object of the AudioRecord class calls the startRecording() function so that every is ready and the
