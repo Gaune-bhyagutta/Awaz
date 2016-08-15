@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity{
     private static GraphFragment graphFragment = new GraphFragment();
     private static ListFragment listFragment = new ListFragment();
 
-    private static AudioRecordDecibel audioRecordDecibel;
+    private static AudioRecordFileDecibelFrequencyNoteGraph audioRecordFileDecibelFrequencyNoteGraph;
     private static AudioPlayClass audioPlayClass;
 
     private static int rec_btn_count = 0;
@@ -198,9 +198,9 @@ public class MainActivity extends AppCompatActivity{
         decibelTV.setText(decibel);
     }
 
-    public static void updateFrequncy(float frequency) {
+    public static void updateFrequncy(String frequency) {
         //The CALCULATED FREQUNCY VALUE IN AudioPlayClass/AudioRecordClass is SENT to show in TEXTVIEW
-        frequencyTV.setText(String.valueOf(frequency));
+        frequencyTV.setText(frequency);
     }
 
     public static void updateNotes(String notes) {
@@ -318,18 +318,18 @@ public class MainActivity extends AppCompatActivity{
                 @Override
                 public void onClick(View v) {
 
-                    audioRecordDecibel = new AudioRecordDecibel(AUDIO_SOURCE,SAMPLE_RATE_IN_HZ,CHANNELS_CONFIGURATION,AUDIO_ENCODING,
-                            NO_OF_SAMPLES,new AudioRecordDecibelListener() {
-
+                    audioRecordFileDecibelFrequencyNoteGraph = new AudioRecordFileDecibelFrequencyNoteGraph(AUDIO_SOURCE,SAMPLE_RATE_IN_HZ,CHANNELS_CONFIGURATION,AUDIO_ENCODING,
+                            NO_OF_SAMPLES, new AudioRecordFileDecibelFrequencyNoteGraphListener() {
                         @Override
-                        public void processExecuting(String decibel) {
+                        public void processExecuting(String decibel, String frequency, String note) {
+                            updateNotes(note);
+                            updateFrequncy(frequency);
                             updateDecibel(decibel);
                         }
 
-
                         @Override
                         public void processExecuted() {
-
+                            Toast.makeText(getApplicationContext(),"Finished Recording",Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -340,7 +340,7 @@ public class MainActivity extends AppCompatActivity{
                         /**Code to handle click of "RECORD" button*/
                         playState = 0;
                         stateClass.setRecoderingState(true);
-                       audioRecordDecibel.execute();
+                       audioRecordFileDecibelFrequencyNoteGraph.execute();
 
                         rec_btn_count = 1;
 

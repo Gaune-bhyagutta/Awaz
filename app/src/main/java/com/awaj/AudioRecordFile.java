@@ -24,12 +24,24 @@ public class AudioRecordFile extends AudioRecordMain {
     BufferedOutputStream bufferedOutputStream = null;
     DataOutputStream dataOutputStream = null;
 
+    AudioRecordFile(){
+
+    }
+
     AudioRecordFile(int AUDIO_SOURCE, int SAMPLE_RATE_IN_HZ, int CHANNELS_CONFIGURATION,
                     int AUDIO_ENCODING, int NO_OF_SAMPLES,
                     AudioRecordFileListener listener) {
-        super(AUDIO_SOURCE, SAMPLE_RATE_IN_HZ, CHANNELS_CONFIGURATION, AUDIO_ENCODING, NO_OF_SAMPLES,
-                (AudioRecordMainListener) listener);
+    /*    super(AUDIO_SOURCE, SAMPLE_RATE_IN_HZ, CHANNELS_CONFIGURATION, AUDIO_ENCODING, NO_OF_SAMPLES,
+                (AudioRecordMainListener) listener);*/
         this.listener = listener;
+
+        this.AUDIO_SOURCE = AUDIO_SOURCE;
+        this.SAMPLE_RATE_IN_HZ = SAMPLE_RATE_IN_HZ;
+        this.CHANNELS_CONFIGURATION = CHANNELS_CONFIGURATION;
+        this.AUDIO_ENCODING = AUDIO_ENCODING;
+        this.NO_OF_SAMPLES = NO_OF_SAMPLES ;
+
+        MIN_BUFFERSIZE_IN_BYTES = NO_OF_SAMPLES * 2;
     }
 
     @Override
