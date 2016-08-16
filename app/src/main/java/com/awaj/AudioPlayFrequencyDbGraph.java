@@ -3,7 +3,6 @@ package com.awaj;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -16,34 +15,21 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Created by anup on 8/12/16.
+ * Created by anup on 8/16/16.
  */
-public class AudioPlayFrequency extends AudioPlayClassMain {
-    DatabaseHelper databaseHelper;
-    AudioPlayFrequencyListener listener;
+public class AudioPlayFrequencyDbGraph extends AudioPlayFrequencyDb{
+    AudioPlayFrequencyDbGraphListener listener;
+    float audioFloatsForFFT[];
+    float audioFloatsForAmp[];
 
-    public AudioPlayFrequency(){
-
+    public AudioPlayFrequencyDbGraph(AudioPlayFrequencyDbGraphListener listener){
+        super(listener);
+        this.listener=listener;
     }
-    public AudioPlayFrequency(AudioPlayFrequencyListener listener) {
-
-        this.listener = listener;
-    }
-    //private AudioPlayFrequencyListener listener;
-
-
 
     @Override
-    protected void onPreExecute() {
-        databaseHelper = new DatabaseHelper(MyApplication.getAppContext());
-        databaseHelper.getAllData();
-    }
-
-
-    @Override
-    public void playRecord(){
-
-        Log.d(TAG, "playRecord()");
+    public void playRecord() {
+        Log.d(TAG, "playRecord() BLAHBLAH");
         File folder = context.getExternalFilesDir("Awaj");
         File latest = super.getLatestModified();
         File filePcm;
@@ -84,10 +70,10 @@ public class AudioPlayFrequency extends AudioPlayClassMain {
 
             audioTrack.play();
 
-            float audioFloatsForFFT[] = new float[audioData.length];
-            //float audioFloatsForAmp[] = new float[audioData.length];
+            audioFloatsForFFT = new float[audioData.length];
+            audioFloatsForAmp = new float[audioData.length];
 
-//            DecibelCalculation decibelCalculation = new DecibelCalculation();
+            DecibelCalculation decibelCalculation = new DecibelCalculation();
             while (stateClass.getPlayingState() && dataInputStream.available() > 0) {
                 int i = 0;
                 while (dataInputStream.available() > 0 && i < audioData.length) {
@@ -97,25 +83,26 @@ public class AudioPlayFrequency extends AudioPlayClassMain {
                     audioFloat[i]=(float) audioInt[i];
 
                     /**This one is for FFT*/
-                                      audioFloatsForFFT[i] = (float) audioInt[i];
+                    audioFloatsForFFT[i] = (float) audioInt[i];
                     /**This one is for Amplitude Visualization*/
-                    //                audioFloatsForAmp[i]=(float)audioInt[i];
+                    audioFloatsForAmp[i]=(float)audioInt[i];
                     i++;
                 }
                 audioTrack.write(audioData, 0, audioData.length);
-                //          float decibelValue = decibelCalculation.decibelCalculation(audioData);
-                        float[] fftOutput = FftOutput.callMainFft(audioFloatsForFFT);
 
-                      float frequency = FrequencyValue.getFundamentalFrequency(fftOutput);
-                    int match = databaseHelper.matchFreq(frequency);
+                float decibelValue = decibelCalculation.decibelCalculation(audioData);
+                float[] fftOutput = FftOutput.callMainFft(audioFloatsForFFT);
 
-                  String note = databaseHelper.getNote(match);
+                float frequency = FrequencyValue.getFundamentalFrequency(fftOutput);
+                int match = databaseHelper.matchFreq(frequency);
+
+                String note = databaseHelper.getNote(match);
                 //MainActivity.plotGraph(audioFloatsForAmp,audioFloatsForFFT);
 
 //                if(listener!=null)
 //                    listener.onDataLoaded(decibelValue,frequency,note);
 
-                publishProgress(String.valueOf(frequency),note);
+                publishProgress(String.valueOf(frequency),note,String.valueOf(decibelValue));
                 //publishProgress(audioData[]);
             }
             audioTrack.pause();
@@ -162,14 +149,10 @@ public class AudioPlayFrequency extends AudioPlayClassMain {
             }
         }
     }
+
     @Override
     protected void onProgressUpdate(String... values) {
-//            super.onProgressUpdate(values);
-
-        //MainActivity.updateDecibel(Float.valueOf(values[0]));
-        //MainActivity.updateFrequncy(Float.valueOf(values[1]));
-        //MainActivity.updateNotes(values[2]);
-        listener.processExecuting(Float.valueOf(values[0]),values[1]);
+        listener.processExecuting(Float.valueOf(values[0]),values[1],Float.valueOf(values[2]),audioFloatsForFFT,audioFloatsForAmp);
     }
     @Override
     protected void onPostExecute(Boolean aVoid) {
@@ -180,5 +163,4 @@ public class AudioPlayFrequency extends AudioPlayClassMain {
 
 
     }
-
 }

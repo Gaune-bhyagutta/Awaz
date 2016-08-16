@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity{
     private static final int CHANNELS_CONFIGURATION = AudioFormat.CHANNEL_IN_MONO;
     private static final int AUDIO_ENCODING =AudioFormat.ENCODING_PCM_16BIT;
 
-    private static final int NO_OF_SAMPLES = 22050;
+    private static final int NO_OF_SAMPLES = 4096;
     public static final float RESOLUTION = SAMPLE_RATE_IN_HZ / NO_OF_SAMPLES;
 
     private static int MIN_BUFFER_SIZE_BYTES = NO_OF_SAMPLES*2;
@@ -315,12 +315,32 @@ public class MainActivity extends AppCompatActivity{
                 @Override
                 public void onClick(View v) {
 
-                    audioPlayClassMain = new AudioPlayFrequencyDb(new AudioPlayFrequencyDbListener() {
+                    audioPlayClassMain = new AudioPlayFrequencyDbGraph(new AudioPlayFrequencyDbGraphListener() {
+
                         @Override
-                        public void processExecuting(Float frequency, String note,Float db) {
+                        public void processExecuting(Float frequency, String note,Float db,float[] fftValues,float[] ampValues) {
+
                             updateDecibel(String.valueOf(db));
                             updateFrequncy(String.valueOf(frequency));
                             updateNotes(note);
+                            ampValuesForGraph=ampValues;
+                            freqValuesForGraph=fftValues;
+                            plotGraph(ampValues,ampValues);
+                        }
+
+                        @Override
+                        public void processExecuting(Float frequency, String note, Float db) {
+
+                        }
+
+                        @Override
+                        public void processExecuting(Float frequency, String note) {
+
+                        }
+
+                        @Override
+                        public void processExecuting() {
+
                         }
 
                         @Override

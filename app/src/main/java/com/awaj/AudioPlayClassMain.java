@@ -42,7 +42,8 @@ public class AudioPlayClassMain extends AsyncTask<Void,String,Boolean> {
         databaseHelper.getAllData();
     }*/
 
-    AudioPlayClassMain(){
+
+    public AudioPlayClassMain(){
 
     }
     public AudioPlayClassMain(AudioPlayMainListener listener) {

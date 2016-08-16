@@ -21,8 +21,10 @@ public class AudioPlayFrequencyDb extends AudioPlayFrequency {
 
     AudioPlayFrequencyDbListener listener;
 
-    public AudioPlayFrequencyDb(AudioPlayFrequencyDbListener listener) {
 
+
+    public AudioPlayFrequencyDb(AudioPlayFrequencyDbListener listener) {
+        super(listener);
         this.listener = listener;
     }
 
