@@ -63,11 +63,11 @@ public class MainActivity extends AppCompatActivity{
     //START---Audio Record and Play Parameters-----
     // THE DEFINETIONS ARE DEFINED IN THE RESPECTIVE FUNCTION
     private static final int AUDIO_SOURCE = MediaRecorder.AudioSource.MIC;
-    private static final int SAMPLE_RATE_IN_HZ = 44100;
+    private static final int SAMPLE_RATE_IN_HZ = 22050;
     private static final int CHANNELS_CONFIGURATION = AudioFormat.CHANNEL_IN_MONO;
     private static final int AUDIO_ENCODING =AudioFormat.ENCODING_PCM_16BIT;
 
-    private static final int NO_OF_SAMPLES = 4096;
+    private static final int NO_OF_SAMPLES = 32678;
     public static final float RESOLUTION = SAMPLE_RATE_IN_HZ / NO_OF_SAMPLES;
 
     private static int MIN_BUFFER_SIZE_BYTES = NO_OF_SAMPLES*2;
@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity{
         rec_btn_count = 0;
     }
 
-    public static void updatePlayState() {
+    public  void updatePlayState() {
         rec.setTextColor(Color.parseColor("#ffffff"));
         play.setText("play");
         play.setTextColor(Color.parseColor("#00b900"));
@@ -217,11 +217,11 @@ public class MainActivity extends AppCompatActivity{
 
          //= false;
 
-//        timerStartObj.cancel();
-//        timerStartObj.SS = 0L;
-//        timerStartObj.MM = 0L;
-//        timerStartObj.HH = 0L;
-//        timerStartObj.MS = 0L;
+        timerStartObj.cancel();
+        timerStartObj.SS = 0L;
+        timerStartObj.MM = 0L;
+        timerStartObj.HH = 0L;
+        timerStartObj.MS = 0L;
     }
 
 
