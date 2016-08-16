@@ -202,10 +202,10 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public static void updateRecordState() {
-//        rec.setText("RECORD");
-//        rec.setTextColor(Color.parseColor("#ffffff"));
-//        play.setEnabled(true);
-//        rec_btn_count = 0;
+        rec.setText("RECORD");
+        rec.setTextColor(Color.parseColor("#ffffff"));
+        play.setEnabled(true);
+        rec_btn_count = 0;
     }
 
     public static void updatePlayState() {
@@ -265,7 +265,8 @@ public class MainActivity extends AppCompatActivity{
 
                         @Override
                         public void processExecuted() {
-                            Toast.makeText(getApplicationContext(),"Finished Recording",Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(),"Finished Recording",Toast.LENGTH_SHORT).show();
+                            updateRecordState();
                         }
 
                     });

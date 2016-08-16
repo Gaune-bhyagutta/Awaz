@@ -197,5 +197,9 @@ public class AudioRecordFileDecibelFrequencyNoteGraph extends AudioRecordFile{
             }
         }
     }
+    @Override
+    protected void onPostExecute(Void Void) {
+        listener.processExecuted();
+    }
 
 }
