@@ -14,42 +14,36 @@ import com.awaj.R;
  */
 public class GuitarTunerMeterView extends View {
     Paint innerCircle, outerBaseCircle, needle, paintText;
-    float xc, yc, x2, y2, theta;
+    float x2, y2, theta;
     float radius;
 
     boolean drawnOnce = false;
-
-    int textSize;
-    int textXPos;
-    int textYPos;
-
     float noteFrequency = 184;
     float frequency = 189;
     float difference = noteFrequency - frequency;
 
-    String lowerNotes = "A A#";
-    String mainNote = "B";
-    String higherNotes = "C C#";
-
-    String currentNearestNote = "B";
-
+    /**
+     * Three Constructors
+     */
     public GuitarTunerMeterView(Context context) {
-        this(context,null);
+        this(context, null);
     }
 
     public GuitarTunerMeterView(Context context, AttributeSet attrs) {
-        this(context, attrs,0);
+        this(context, attrs, 0);
     }
 
     public GuitarTunerMeterView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-            innerCircle = new Paint();    //Paint Object
-            outerBaseCircle = new Paint();
-            needle = new Paint();
-            paintText = new Paint();
+        innerCircle = new Paint();    //Paint Object
+        outerBaseCircle = new Paint();
+        needle = new Paint();
+        paintText = new Paint();
     }
 
-
+    /**
+     * Draws custom view
+     */
     @Override
     protected void onDraw(Canvas canvas) {
         //super.onDraw(canvas);
@@ -57,8 +51,8 @@ public class GuitarTunerMeterView extends View {
         canvas.drawColor(getResources().getColor(R.color.colorPrimaryDark));
         int cgh = canvas.getHeight();
         int cgw = canvas.getWidth();
-        int cgh2 = cgh/2;
-        int cgw2 = cgw/2;
+        int cgh2 = cgh / 2;
+        int cgw2 = cgw / 2;
 
         /**Setup Paint objects*/
         innerCircle.setColor(getResources().getColor(R.color.colorPrimary));
@@ -71,7 +65,7 @@ public class GuitarTunerMeterView extends View {
         needle.setStrokeWidth(5);
 
         /**Draw a base of Outer Circle*/
-        canvas.drawCircle(cgw2,cgh,cgw2,outerBaseCircle);
+        canvas.drawCircle(cgw2, cgh, cgw2, outerBaseCircle);
         /**Draw The Rotating Needle*/
         if (!drawnOnce) {
             drawnOnce = true;
@@ -81,7 +75,7 @@ public class GuitarTunerMeterView extends View {
         y2 = cgh2 - (float) (radius * Math.sin(theta));
         canvas.drawLine(cgw2, cgh2, x2, y2, needle);
         /**Draw Inner Base Circle to overlap bottom half of needle*/
-        canvas.drawCircle(cgw2,cgh,cgw2/2, innerCircle);
+        canvas.drawCircle(cgw2, cgh, cgw2 / 2, innerCircle);
 
         /**Dynamic Needle*/
         if (difference < 0) {
@@ -93,10 +87,9 @@ public class GuitarTunerMeterView extends View {
                 theta += (float) (Math.PI / 180);
             }
         }
-
         invalidate();
 
-    }//End onDraw
+    }/**End onDraw*/
 
 //    public void drawPrimaryNotes(Canvas canvas) {
 //        textSize = 80;
@@ -136,44 +129,6 @@ public class GuitarTunerMeterView extends View {
 //        /**Rectangle to overlap the bottom half of cirle*/
 //        canvas.drawRect(0, yc, canvas.getWidth(), canvas.getHeight(), innerCircle);
 //    }
-
-//    public void drawNotesAndFreq(Canvas canvas) {
-//        /**Draw Current Nearest Note*/
-//        paintText.setColor(getResources().getColor(R.color.amber_accent));
-//        canvas.drawText(currentNearestNote, xc - xc / 10, yc - yc / 15, paintText);
-//
-//        /**Draw Current Frequency Here*/
-//        paintText.setColor(getResources().getColor(R.color.amber_primary_text));
-//        paintText.setTextSize(70);
-//        canvas.drawText("Hz...!", xc - xc / 10, yc + yc / 15, paintText);
-//    }
-
-//    public void setNotes(int index) {
-//        String[] Notes = {"A", "A#", "B", "C", "C#", "D", "D#", "E", "E#", "F", "F#", "G", "G#"};
-//        int first, second, third, fourth, fifth;
-//
-//        /**Default Position of indexes*/
-//        first = index - 2;
-//        second = index - 1;
-//        third = index;
-//        fourth = index + 1;
-//        fifth = index + 2;
-//        /**Tackling first two & Last two index positions*/
-//        if (index == 0) {
-//            first = 10;
-//            second = 11;
-//        } else if (index == 1) {
-//            first = 11;
-//            second = 0;
-//        } else if (index == 10) {
-//            fourth = 11;
-//            fifth = 0;
-//        } else if (index == 11) {
-//            fourth = 0;
-//            fifth = 1;
-//        }
-//        lowerNotes = Notes[first] + Notes[second];
-//        mainNote = Notes[third];
-//        higherNotes = Notes[fourth] + Notes[fifth];
-//    }
-}//End View
+}/**
+ * End View
+ */
