@@ -21,6 +21,7 @@ public class AudioPlayFrequencyDbGraph extends AudioPlayFrequencyDb{
     AudioPlayFrequencyDbGraphListener listener;
     float audioFloatsForFFT[];
     float audioFloatsForAmp[];
+    float[] fftOutput;
 
     public AudioPlayFrequencyDbGraph(AudioPlayFrequencyDbGraphListener listener){
         super(listener);
@@ -91,7 +92,7 @@ public class AudioPlayFrequencyDbGraph extends AudioPlayFrequencyDb{
                 audioTrack.write(audioData, 0, audioData.length);
 
                 float decibelValue = decibelCalculation.decibelCalculation(audioData);
-                float[] fftOutput = FftOutput.callMainFft(audioFloatsForFFT);
+                fftOutput = FftOutput.callMainFft(audioFloatsForFFT);
 
                 float frequency = FrequencyValue.getFundamentalFrequency(fftOutput);
                 int match = databaseHelper.matchFreq(frequency);
@@ -152,7 +153,7 @@ public class AudioPlayFrequencyDbGraph extends AudioPlayFrequencyDb{
 
     @Override
     protected void onProgressUpdate(String... values) {
-        listener.processExecuting(Float.valueOf(values[0]),values[1],Float.valueOf(values[2]),audioFloatsForFFT,audioFloatsForAmp);
+        listener.processExecuting(Float.valueOf(values[0]),values[1],Float.valueOf(values[2]),fftOutput,audioFloatsForAmp);
     }
     @Override
     protected void onPostExecute(Boolean aVoid) {

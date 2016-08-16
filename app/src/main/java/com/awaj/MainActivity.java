@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity{
     private static final int CHANNELS_CONFIGURATION = AudioFormat.CHANNEL_IN_MONO;
     private static final int AUDIO_ENCODING =AudioFormat.ENCODING_PCM_16BIT;
 
-    private static final int NO_OF_SAMPLES = 2048;
+    private static final int NO_OF_SAMPLES = 4096;
     public static final float RESOLUTION = SAMPLE_RATE_IN_HZ / NO_OF_SAMPLES;
 
     private static int MIN_BUFFER_SIZE_BYTES = NO_OF_SAMPLES*2;
