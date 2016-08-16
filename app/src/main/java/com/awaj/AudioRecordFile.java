@@ -46,8 +46,9 @@ public class AudioRecordFile extends AudioRecordMain {
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
-        listener.processExecuting();
+        //
+        // super.onPostExecute(aVoid);
+        listener.processExecuted();
     }
 
     @Override
