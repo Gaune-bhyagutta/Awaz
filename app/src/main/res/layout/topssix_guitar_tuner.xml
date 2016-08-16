@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <!--Activity Title -->
@@ -19,36 +19,55 @@
             android:layout_marginTop="1dp"
             android:background="@color/colorPrimary"
             app:title="@string/guitar_tuner"
-            app:titleTextColor="@color/white"/>
+            app:titleTextColor="@color/white" />
     </LinearLayout>
 
-    <!--<TextView-->
-        <!--android:id="@+id/musicNotesTV"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Musical Notes Here!" />-->
+    <!--Five primary Notes-->
+    <TextView
+        android:id="@+id/musicNotesTV"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@+id/appnameLL"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Musical Notes Here!"
+        android:typeface="monospace" />
 
-    <!--<LinearLayout-->
-        <!--android:id="@+id/meterLL"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@id/musicNotesTV"-->
-        <!--android:orientation="horizontal">-->
+    <!--Meter-->
+    <LinearLayout
+        android:id="@+id/meterLL"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/musicNotesTV"
+        android:layout_weight="7">
 
-    <!--</LinearLayout>-->
+        <com.awaj.activities.GuitarTuner.GuitarTunerMeterView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
-    <!--<TextView-->
-        <!--android:id="@+id/notesTV"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@id/meterLL"-->
-        <!--android:text="Notes Here" />-->
+    </LinearLayout>
 
-    <!--<TextView-->
-        <!--android:id="@+id/frequencyTV"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@id/notesTV"-->
-        <!--android:text="Frequency Here" />-->
+        <!--Nearest Note-->
+    <TextView
+        android:id="@+id/notesTV"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/meterLL"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Nearest Note Here"
+        android:typeface="monospace" />
 
-</RelativeLayout>
+
+    <!--Current Frequency-->
+    <TextView
+        android:id="@+id/frequencyTV"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/notesTV"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Current Frequency Here"
+        android:typeface="monospace" />
+
+</LinearLayout>

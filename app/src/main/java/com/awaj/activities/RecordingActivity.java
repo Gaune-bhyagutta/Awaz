@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -100,5 +101,18 @@ public class RecordingActivity extends AppCompatActivity {
             RecordingButton.setText("REC");
             RecordingButton.setBackgroundResource(R.drawable.redgradient);
         }
+    }
+
+    /**
+     * Adding Functionality to the Back Arrow button to go back to previous Activity
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

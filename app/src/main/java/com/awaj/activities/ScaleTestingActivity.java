@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.awaj.R;
@@ -43,10 +44,10 @@ public class ScaleTestingActivity extends AppCompatActivity {
 //        new vocalTestingView(this).inflate();
 
         /**Back Button within Toolbar*/
-//        toolbarObj = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbarObj);
-//        /**TODO:fix the back button*/
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbarObj = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbarObj);
+        /**TODO:fix the back button*/
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         /**Monitoring State Started*/
         stateClass.setRecoderingState(true);
@@ -121,7 +122,7 @@ public class ScaleTestingActivity extends AppCompatActivity {
         public void displayPrimaryNotes(Canvas canvas) {
             textSize = 80;
             textXPos = canvas.getWidth() / 4;
-            textYPos = canvas.getHeight()-canvas.getHeight() / 10;
+            textYPos = canvas.getHeight() - canvas.getHeight() / 10;
             radius = canvas.getWidth() / 2;
 
             /**First Two Notes*/
@@ -183,5 +184,18 @@ public class ScaleTestingActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         stateClass.setRecoderingState(false);
+    }
+
+    /**
+     * Adding Functionality to the Back Arrow button to go back to previous Activity
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -5,6 +5,7 @@ import android.util.Log;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 import android.widget.Button;
@@ -456,6 +457,17 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater ourMenuInflater = getMenuInflater();
         ourMenuInflater.inflate(R.menu.sample_menu, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    /**Adding Functionality to the Back Arrow button to go back to previous Activity*/
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void referenceToUIElements() {
