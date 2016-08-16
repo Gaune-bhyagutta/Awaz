@@ -470,8 +470,6 @@ public class MainActivity extends AppCompatActivity {
         homeIV = (ImageView) findViewById(R.id.home);
 //        listIV = (ImageView) findViewById(R.id.list);
     }
-
-
 }/***
  * End of MainActivity
  */

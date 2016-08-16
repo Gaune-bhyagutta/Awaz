@@ -41,6 +41,12 @@ public class AudioRecordFrequencyNote extends AudioRecordMain{
     }
 
     @Override
+    protected void onPostExecute(Void Void) {
+//        super.onPostExecute(Void);
+        listener.processExecuted();
+    }
+
+    @Override
     public void startRecord() {
        // super.startRecord();
         Log.d(TAG, "Thread - Start record");

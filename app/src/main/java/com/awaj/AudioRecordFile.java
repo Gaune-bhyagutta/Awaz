@@ -6,6 +6,8 @@ import android.media.AudioRecord;
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -24,11 +26,9 @@ public class AudioRecordFile extends AudioRecordMain {
     BufferedOutputStream bufferedOutputStream = null;
     DataOutputStream dataOutputStream = null;
 
-    AudioRecordFile(){
+    AudioRecordFile(){}
 
-    }
-
-    AudioRecordFile(int AUDIO_SOURCE, int SAMPLE_RATE_IN_HZ, int CHANNELS_CONFIGURATION,
+    public AudioRecordFile(int AUDIO_SOURCE, int SAMPLE_RATE_IN_HZ, int CHANNELS_CONFIGURATION,
                     int AUDIO_ENCODING, int NO_OF_SAMPLES,
                     AudioRecordFileListener listener) {
     /*    super(AUDIO_SOURCE, SAMPLE_RATE_IN_HZ, CHANNELS_CONFIGURATION, AUDIO_ENCODING, NO_OF_SAMPLES,
@@ -65,6 +65,13 @@ public class AudioRecordFile extends AudioRecordMain {
 
         folder = context.getExternalFilesDir("Awaj");
         filePcm = new File(folder,"Sound"+System.currentTimeMillis()+".pcm");
+        try {
+            outputStream = new FileOutputStream(filePcm);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        bufferedOutputStream = new BufferedOutputStream(outputStream);
+        dataOutputStream = new DataOutputStream(bufferedOutputStream);
 
         while(stateClass.getRecoderingState()){
 
