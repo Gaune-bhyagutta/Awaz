@@ -2,6 +2,7 @@ package com.awaj;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ public class ListFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.file_list_fragment, container, false);
        list = (ListView) view.findViewById(R.id.listView);
+        Log.d("VIVZ", "inside listFragment onCreateView");
         return view;
     }
 
@@ -33,16 +35,9 @@ public class ListFragment extends android.support.v4.app.Fragment {
             i = 0;
             return;
         }
+        Log.d("VIVZ", "inside listFragment onActivityCreated");
        nameList = new ArrayList<>();
-        //getNames();
-
-        File folder = getActivity().getExternalFilesDir("Awaj");
-        File file[] = folder.listFiles();
-        for (int i=0; i < file.length; i++){
-            nameList.add(file[i].getName());
-//            nameList.add(String.valueOf(i));
-        }
-
+        getNames();
         ArrayAdapter<String> arrayAdapter;
         arrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, nameList);
         // Set The Adapter
@@ -50,20 +45,20 @@ public class ListFragment extends android.support.v4.app.Fragment {
         list.setBackgroundColor(Color.parseColor("#888888"));
     }//End of onActivityCreated
 
-//    void getNames() {
-//        File folder = getActivity().getExternalFilesDir("Awaj");
-//        File file[] = folder.listFiles();
-//        for (int i=0; i < file.length; i++){
-//            nameList.add(file[i].getName());
-////            nameList.add(String.valueOf(i));
-//        }
-////        nameList.add("lorem ipsum");
-////        nameList.add("lorem ipsum");
-////        nameList.add("lorem ipsum");
-////        nameList.add("lorem ipsum");
-////        nameList.add("lorem ipsum");
-////        nameList.add("lorem ipsum");
-////        nameList.add("lorem ipsum");
-//    }
+    void getNames() {
+        File folder = getActivity().getExternalFilesDir("Awaj");
+        File file[] = folder.listFiles();
+        for (int i=0; i < file.length; i++){
+            nameList.add(file[i].getName());
+//            nameList.add(String.valueOf(i));
+        }
+//        nameList.add("lorem ipsum");
+//        nameList.add("lorem ipsum");
+//        nameList.add("lorem ipsum");
+//        nameList.add("lorem ipsum");
+//        nameList.add("lorem ipsum");
+//        nameList.add("lorem ipsum");
+//        nameList.add("lorem ipsum");
+    }
 }
 /**End of ListFragment Class*/

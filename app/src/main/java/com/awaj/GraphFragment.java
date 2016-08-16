@@ -25,7 +25,7 @@ public class GraphFragment extends Fragment {
      * 0-AMP/TIME 1-AMP/FREQ
      */
 
-    public static int GRAPH_DOMAIN_MODE = 0;
+    public static int GRAPH_DOMAIN_MODE ;
 
     //myGraphView myGraphView = new myGraphView(getActivity());
 
@@ -192,7 +192,7 @@ public class GraphFragment extends Fragment {
 
         public void frequencyAmplitudeGraph(Canvas canvas, Paint graphVisualizationPO) {
 
-            double heightNormalizer = 1;
+            double heightNormalizer = 5;
             int index = 0;
 
             float newX, newY;
@@ -222,6 +222,9 @@ public class GraphFragment extends Fragment {
             graphVisualizationPO.setColor(Color.parseColor("#ff0000"));
             graphVisualizationPO.setStrokeWidth(2);
             canvas.drawLine(0, horizontalBarHeight, canvas.getWidth(), horizontalBarHeight, graphVisualizationPO);
+
+
+
         }
     }
 

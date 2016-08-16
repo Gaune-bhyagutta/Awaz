@@ -31,6 +31,8 @@ import com.facebook.stetho.Stetho;
 public class MainActivity extends AppCompatActivity {
     Toolbar toolbarObj;
 
+    float[] ampValuesForGraph, freqValuesForGraph;
+
     StateClass stateClass = StateClass.getState();
 
     DatabaseHelper databaseHelper;
@@ -52,46 +54,32 @@ public class MainActivity extends AppCompatActivity {
     private static GraphFragment graphFragment = new GraphFragment();
     private static ListFragment listFragment = new ListFragment();
 
-    private static AudioRecordClass audioRecordClass;
-    private static AudioPlayClass audioPlayClass;
+
+    private static AudioRecordFileDecibelFrequencyNoteGraph audioRecordFileDecibelFrequencyNoteGraph;
+    private static AudioPlayClassMain audioPlayClassMain;
+
 
     private static int rec_btn_count = 0;
     private static int play_btn_count = 0;   //To Know Button was Pressed
-//    private static boolean isRecording = false;    //To Know RECORDING Or STOPPED
-//    private static boolean isPlaying = false;//To Know PLAYING or STOPPED
 
-    private static int playState = 0;   //TO Know RECORDING or PLAYING
+    int playState = 0;
 
     private final String TAG = MainActivity.class.getSimpleName();
 
     //START---Audio Record and Play Parameters-----
     // THE DEFINETIONS ARE DEFINED IN THE RESPECTIVE FUNCTION
-    private static final int AUDIO_SOURCE = setAudioSource(MediaRecorder.AudioSource.MIC);
-    private static final int SAMPLE_RATE_IN_HZ = setSampleRateInHz(22050);
-    private static final int CHANNELS_CONFIGURATION = setChannelsConfiguration(AudioFormat.CHANNEL_IN_MONO);
-    private static final int AUDIO_ENCODING = setAudioEncoding(AudioFormat.ENCODING_PCM_16BIT);
+    private static final int AUDIO_SOURCE = MediaRecorder.AudioSource.MIC;
+    private static final int SAMPLE_RATE_IN_HZ = 44100;
+    private static final int CHANNELS_CONFIGURATION = AudioFormat.CHANNEL_IN_MONO;
+    private static final int AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;
 
-    private static final int NO_OF_SAMPLES = setNoOfSamples(8192);
-    private static final float RESOLUTION = setResolution(SAMPLE_RATE_IN_HZ / NO_OF_SAMPLES);
+    private static final int NO_OF_SAMPLES = 4096;
+    public static final float RESOLUTION = SAMPLE_RATE_IN_HZ / NO_OF_SAMPLES;
 
-    public static int noOfSamples = getRecordBufferSize();
-    public static float resolution = SAMPLE_RATE_IN_HZ / noOfSamples;
+    private static int MIN_BUFFER_SIZE_BYTES = NO_OF_SAMPLES * 2;
 
-    private static int MIN_BUFFER_SIZE_BYTES = noOfSamples * 2;
-    /***
-     * private static final int MIN_BUFFER_SIZE_BYTES = setMinBufferSizeInBytes(NO_OF_SAMPLES*2);
-     * //END---Audio Record and Play Parameters-----
-     * <p>
-     * /**
-     * Objects
-     */
     Switch domainSwitch;
 
-    /**
-     * @throws
-     * @params: savedInstanceState
-     * @return:
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -112,8 +100,9 @@ public class MainActivity extends AppCompatActivity {
             throw e;
         }
         databaseHelper.getAllData();
+
         //frequency match test
-        int match = databaseHelper.matchFreq(184.5);
+        int match = databaseHelper.matchFreq(698.972);
         String note = databaseHelper.getNote(match);
 
         Log.d("VIVZ", "note=" + note + " match=" + match);
@@ -205,29 +194,31 @@ public class MainActivity extends AppCompatActivity {
         return MIN_BUFFER_SIZE_BYTES;
     }
 
-    public static void updateDecibel(float decibel) {
+
+    public static void updateDecibel(String decibel) {
         //The CALCULATED DECIBEL VALUE IN AudioPlayClass/AudioRecordClass is SENT to show in TEXTVIEW
-        decibelTV.setText(String.valueOf(decibel));
+        decibelTV.setText(decibel);
     }
 
-    public static void updateFrequncy(float frequency) {
+    public static void updateFrequncy(String frequency) {
         //The CALCULATED FREQUNCY VALUE IN AudioPlayClass/AudioRecordClass is SENT to show in TEXTVIEW
-        frequencyTV.setText(String.valueOf(frequency));
+        frequencyTV.setText(frequency);
     }
+
 
     public static void updateNotes(String notes) {
-        //The CALCULATED FREQUNCY VALUE IN AudioPlayClass/AudioRecordClass i SENT to show in TEXTVIEW
+        //The CALCULATED FREQUNCY VALUE IN AudioPlayClassMain/AudioRecordClass i SENT to show in TEXTVIEW
         notesTV.setText(String.valueOf(notes));
     }
 
     public static void updateRecordState() {
-//        rec.setText("RECORD");
-//        rec.setTextColor(Color.parseColor("#ffffff"));
-//        play.setEnabled(true);
-//        rec_btn_count = 0;
+        rec.setText("RECORD");
+        rec.setTextColor(Color.parseColor("#ffffff"));
+        play.setEnabled(true);
+        rec_btn_count = 0;
     }
 
-    public static void updatePlayState() {
+    public void updatePlayState() {
         rec.setTextColor(Color.parseColor("#ffffff"));
         play.setText("play");
         play.setTextColor(Color.parseColor("#00b900"));
@@ -236,74 +227,12 @@ public class MainActivity extends AppCompatActivity {
 
         //= false;
 
-//        timerStartObj.cancel();
-//        timerStartObj.SS = 0L;
-//        timerStartObj.MM = 0L;
-//        timerStartObj.HH = 0L;
-//        timerStartObj.MS = 0L;
+        timerStartObj.cancel();
+        timerStartObj.SS = 0L;
+        timerStartObj.MM = 0L;
+        timerStartObj.HH = 0L;
+        timerStartObj.MS = 0L;
     }
-
-
-    //START OF AUDIO RECORD-PLAY SECTION
-    public static int setAudioSource(int x) {
-        return x;
-    }
-
-    ;
-
-    public static int getAudioSource() {
-        return AUDIO_SOURCE;
-    }
-
-    public static int setSampleRateInHz(int x) {
-        return x;
-    }
-
-    public static int getSampleRateInHz() {
-        return SAMPLE_RATE_IN_HZ;
-    }
-
-    public static int setChannelsConfiguration(int x) {
-        return x;
-    }
-
-    public static int getChannelsConfiguration() {
-        return CHANNELS_CONFIGURATION;
-    }
-
-    public static int setAudioEncoding(int x) {
-        return x;
-    }
-
-    public static int getAudioEncoding() {
-        return AUDIO_ENCODING;
-    }
-
-    public static int setNoOfSamples(int x) {
-        return x;
-    }
-
-    public static int getNoOfSamples() {
-        return NO_OF_SAMPLES;
-    }
-
-    public static float setResolution(float x) {
-        return x;
-    }
-
-    public static float getResolution() {
-        return RESOLUTION;
-    }
-
-//    public static boolean getValueOfisRecording() {
-//        return isRecording;
-//    }
-//
-//    public static boolean getValueOfisPlaying() {
-//        return isPlaying;
-//    }
-
-    //END OF AUDIO RECORD-PLAY SECTION
 
 
     //START OF Graph Fragment Section
@@ -316,6 +245,7 @@ public class MainActivity extends AppCompatActivity {
             /**Frequency Mode*/
             graphFragment.updateGraph(fftOutput);
         }
+
     }
 
     //END OF Graph Fragment Section
@@ -329,13 +259,25 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    audioRecordClass = new AudioRecordClass(new AudioRecordInterface() {
+                    audioRecordFileDecibelFrequencyNoteGraph = new AudioRecordFileDecibelFrequencyNoteGraph(AUDIO_SOURCE, SAMPLE_RATE_IN_HZ, CHANNELS_CONFIGURATION, AUDIO_ENCODING,
+                            NO_OF_SAMPLES, new AudioRecordFileDecibelFrequencyNoteGraphListener() {
                         @Override
-                        public void processExecuting(float decibel, float frequency, String notes) {
+                        public void processExecuting(String decibel, String frequency, String note, float[] ampValues, float freqValues[]) {
+                            updateNotes(note);
                             updateFrequncy(frequency);
                             updateDecibel(decibel);
-                            updateNotes(notes);
+                            ampValuesForGraph = ampValues;
+                            freqValuesForGraph = freqValues;
+                            plotGraph(ampValues, freqValues);
+
                         }
+
+                        @Override
+                        public void processExecuted() {
+                            //Toast.makeText(getApplicationContext(),"Finished Recording",Toast.LENGTH_SHORT).show();
+                            updateRecordState();
+                        }
+
                     });
 
 
@@ -344,7 +286,8 @@ public class MainActivity extends AppCompatActivity {
                         /**Code to handle click of "RECORD" button*/
                         playState = 0;
                         stateClass.setRecoderingState(true);
-                        audioRecordClass.execute();
+
+                        audioRecordFileDecibelFrequencyNoteGraph.execute();
 
                         rec_btn_count = 1;
 
@@ -380,14 +323,41 @@ public class MainActivity extends AppCompatActivity {
             play.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    audioPlayClass = new AudioPlayClass(new AudioRecordInterface() {
+
+                    audioPlayClassMain = new AudioPlayFrequencyDbGraph(new AudioPlayFrequencyDbGraphListener() {
+
                         @Override
-                        public void processExecuting(float decibel, float frequency, String notes) {
-                            updateDecibel(decibel);
-                            updateFrequncy(frequency);
-                            updateNotes(notes);
+                        public void processExecuting(Float frequency, String note, Float db, float[] fftValues, float[] ampValues) {
+
+                            updateDecibel(String.valueOf(db));
+                            updateFrequncy(String.valueOf(frequency));
+                            updateNotes(note);
+                            ampValuesForGraph = ampValues;
+                            freqValuesForGraph = fftValues;
+                            plotGraph(ampValuesForGraph, freqValuesForGraph);
+                        }
+
+                        @Override
+                        public void processExecuting(Float frequency, String note, Float db) {
+
+                        }
+
+                        @Override
+                        public void processExecuting(Float frequency, String note) {
+
+                        }
+
+                        @Override
+                        public void processExecuting() {
+
+                        }
+
+                        @Override
+                        public void processExecuted() {
+                            updatePlayState();
                         }
                     });
+
                     if (play_btn_count == 0) {
                         playState = 1;
                         play_btn_count = 1;
@@ -399,7 +369,8 @@ public class MainActivity extends AppCompatActivity {
 
                         stateClass.setPlayingState(true);
 
-                        audioPlayClass.execute();
+                        audioPlayClassMain.execute();
+
 
                         play.setText("Stop");
                         play.setTextColor(Color.parseColor("#ff0000"));
@@ -459,15 +430,22 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    /**Adding Functionality to the Back Arrow button to go back to previous Activity*/
+    /**
+     * Adding Functionality to the Back Arrow button to go back to previous Activity
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void onPause() {
+        super.onPause();
+        stateClass.setRecoderingState(false);
     }
 
     public void referenceToUIElements() {
@@ -493,19 +471,7 @@ public class MainActivity extends AppCompatActivity {
 //        listIV = (ImageView) findViewById(R.id.list);
     }
 
-    /**
-     * End-Timer UI Setups
-     */
 
-    // Returns the minimum buffer size required for the successful creation of an AudioRecord object, in byte units.
-    public static int getRecordBufferSize() {
-        int minBufferSize = AudioRecord.getMinBufferSize(SAMPLE_RATE_IN_HZ,
-                CHANNELS_CONFIGURATION,
-                AUDIO_ENCODING);
-        return minBufferSize;
-    }
-    /**Start-Recording Logo*/
-    /**End-Recording Logo*/
 }/***
  * End of MainActivity
  */

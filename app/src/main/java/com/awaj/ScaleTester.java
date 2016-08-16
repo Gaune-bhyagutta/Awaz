@@ -15,7 +15,7 @@ public class ScaleTester {
                 i_max =i;
             }
         }
-        fundamentalFrequency= ((i_max)*MainActivity.getResolution()*(float)correction_factor);
+        fundamentalFrequency= ((i_max)*MainActivity.RESOLUTION*(float)correction_factor);
 
         return fundamentalFrequency;
     }

@@ -8,7 +8,7 @@ public class GuitarTuner {
         int[]  peakIndices = FrequencyValue.findLargest(amplitude,5);
         System.out.println("Amplitude peak Values");
         for(int i=0;i<peakIndices.length;i++) {
-            System.out.println(peakIndices[i] + " amplitude = "+ amplitude[peakIndices[i]] + " frequency "+ (peakIndices[i]*MainActivity.getResolution()));
+            System.out.println(peakIndices[i] + " amplitude = "+ amplitude[peakIndices[i]] + " frequency "+ (peakIndices[i]*MainActivity.RESOLUTION));
         }
         float fundamentalFrequency, maxAmplitude=0;
         float correctFactor = 1.082f;
@@ -27,7 +27,7 @@ public class GuitarTuner {
             }
 
         }
-        fundamentalFrequency= (i_max*MainActivity.getResolution())*correctFactor;
+        fundamentalFrequency= (i_max*MainActivity.RESOLUTION)*correctFactor;
         return fundamentalFrequency;
     }
 

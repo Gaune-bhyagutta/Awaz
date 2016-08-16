@@ -6,8 +6,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.media.AudioFormat;
+import android.media.MediaRecorder;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
-import com.awaj.AudioRecordClass;
+
+import com.awaj.AudioRecordFrequencyNote;
+import com.awaj.AudioRecordFrequencyNoteListener;
 import com.awaj.AudioRecordInterface;
 import com.awaj.R;
 import com.awaj.StateClass;
@@ -23,7 +37,8 @@ public class GuitarTuningActivity extends AppCompatActivity {
     static String decibelStr;
     static String noteStr;
     static String currentFrequencyStr = new String();
-    AudioRecordClass audioRecordClass;
+
+    AudioRecordFrequencyNote audioRecordFrequencyNote;
 
     TextView musicNotesTV, currentNoteTV, currentFrequencyTV;
 
@@ -37,6 +52,15 @@ public class GuitarTuningActivity extends AppCompatActivity {
      * State class
      */
     StateClass stateClass = StateClass.getState();
+
+    private static final int AUDIO_SOURCE = MediaRecorder.AudioSource.MIC;
+    private static final int SAMPLE_RATE_IN_HZ = 44100;
+    private static final int CHANNELS_CONFIGURATION = AudioFormat.CHANNEL_IN_MONO;
+    private static final int AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;
+
+    private static final int NO_OF_SAMPLES = 22050;
+    //private static final float RESOLUTION =SAMPLE_RATE_IN_HZ / NO_OF_SAMPLES;
+    // private static int MIN_BUFFER_SIZE_BYTES = NO_OF_SAMPLES*2;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,22 +82,27 @@ public class GuitarTuningActivity extends AppCompatActivity {
         currentNoteTV = (TextView) findViewById(R.id.currentNoteTV);
         currentFrequencyTV = (TextView) findViewById(R.id.currentFrequencyTV);
 
+
         /**Audio Streaming From Here*/
-        audioRecordClass = new AudioRecordClass(new AudioRecordInterface() {
+        audioRecordFrequencyNote = new AudioRecordFrequencyNote(AUDIO_SOURCE, SAMPLE_RATE_IN_HZ, CHANNELS_CONFIGURATION, AUDIO_ENCODING,
+                NO_OF_SAMPLES, new AudioRecordFrequencyNoteListener() {
+
             @Override
-            public void processExecuting(float decibel, float frequency, String notes) {
+            public void processExecuted() {
+                Toast.makeText(getApplicationContext(), "Finished Recording", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void processExecuting(String frequency, String notes) {
                 /**Updating the values along with typecasting*/
-                currentFrequencyStr = String.valueOf(frequency);
+                currentFrequencyStr = frequency;
                 if (currentFrequencyStr.length() >= 6) {
                     currentFrequencyStr = currentFrequencyStr.substring(0, 5) + "Hz";
-                }
-                else if(currentFrequencyStr.length()==5){
+                } else if (currentFrequencyStr.length() == 5) {
                     currentFrequencyStr = currentFrequencyStr.substring(0, 4) + "Hz";
-                }
-                else if(currentFrequencyStr.length()==4){
+                } else if (currentFrequencyStr.length() == 4) {
                     currentFrequencyStr = currentFrequencyStr.substring(0, 3) + "Hz";
                 }
-                decibelStr = String.valueOf(decibel) + "dB";
                 noteStr = notes;
 
                 /**LOG*/
@@ -85,7 +114,7 @@ public class GuitarTuningActivity extends AppCompatActivity {
                 currentFrequencyTV.setText(currentFrequencyStr);
             }
         });
-        audioRecordClass.execute();
+        audioRecordFrequencyNote.execute();
     }
 
     @Override
