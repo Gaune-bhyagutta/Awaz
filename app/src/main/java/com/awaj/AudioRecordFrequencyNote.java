@@ -180,5 +180,9 @@ public class AudioRecordFrequencyNote extends AudioRecordMain{
             }
         }
     }
+    @Override
+    protected void onPostExecute(Void Void) {
+        listener.processExecuted();
+    }
 
 }
