@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.awaj.activities.*;
 import com.awaj.menuPages.About;
@@ -19,7 +20,10 @@ import com.awaj.menuPages.Settings;
  */
 public class Home extends AppCompatActivity {
 
+    /**Buttons in Home Page*/
     Button Recorder, Monitor, Scaler, NoteGenerator, GuitarTuner, MainActivityLauncher;
+    /**Linear Layout to encapsulate above buttons*/
+    LinearLayout RecorderLL, MonitorLL, ScalerLL, NoteGeneratorLL, GuitarTunerLL, MainActivityLauncherLL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +37,28 @@ public class Home extends AppCompatActivity {
         GuitarTuner = (Button) findViewById(R.id.guitarTuner);
         MainActivityLauncher = (Button) findViewById(R.id.mainActivityLauncher);
 
+        RecorderLL = (LinearLayout) findViewById(R.id.RecorderLL);
+        MonitorLL = (LinearLayout) findViewById(R.id.MonitorLL);
+        ScalerLL = (LinearLayout) findViewById(R.id.vocalTesterLL);
+        NoteGeneratorLL = (LinearLayout) findViewById(R.id.noteGeneratorLL);
+        GuitarTunerLL = (LinearLayout) findViewById(R.id.guitarTunerLL);
+        MainActivityLauncherLL = (LinearLayout) findViewById(R.id.fourth);
+
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
+
+        Recorder.setOnLongClickListener(new View.OnLongClickListener(){
+            @Override
+            public boolean onLongClick(View view) {
+                return false;
+
+            }
+        });
     }
 
-    /**MENU OPTIONS in APPBAR*/
+    /**
+     * MENU OPTIONS in APPBAR
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater ourMenuInflater = getMenuInflater();
@@ -45,17 +66,15 @@ public class Home extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    public boolean onOptionsItemSelected (MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
 //        this.appendMenuItemText(item);
-        if(item.getItemId() == R.id.menu_Manual){
+        if (item.getItemId() == R.id.menu_Manual) {
 //            this.showManual();
-            startActivity(new Intent(Home.this,Manual.class));
-        }
-        else if(item.getItemId() == R.id.menu_about){
+            startActivity(new Intent(Home.this, Manual.class));
+        } else if (item.getItemId() == R.id.menu_about) {
 //            this.showAbout();
-            startActivity(new Intent(Home.this,About.class));
-        }
-        else if(item.getItemId() == R.id.menu_settings){
+            startActivity(new Intent(Home.this, About.class));
+        } else if (item.getItemId() == R.id.menu_settings) {
 //            this.showSettings();
             startActivity(new Intent(Home.this, Settings.class));
         }
@@ -103,4 +122,7 @@ public class Home extends AppCompatActivity {
     public void callMainActivity(View view) {
         startActivity(new Intent(Home.this, MainActivity.class));
     }
+    /**End of Methods that use Explicit Intents*/
+
+    Recorder
 }
