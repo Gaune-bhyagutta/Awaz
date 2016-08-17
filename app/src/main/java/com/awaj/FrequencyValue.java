@@ -3,19 +3,14 @@ package com.awaj;
 public class FrequencyValue {
 
     public static float getDownSampledFrequency (float[] amplitude){
-//        int[]  peakIndices = FrequencyValue.findLargest(amplitude,5);
-//        System.out.println("Amplitude peak Values");
-//        for(int i=0;i<peakIndices.length;i++) {
-//            System.out.println(peakIndices[i] + " amplitude = "+ amplitude[peakIndices[i]] + " frequency "+ (peakIndices[i]*MainActivity.resolution));
-//        }
-        float fundamentalFrequency, maxAmplitude=0;
-        float correctFactor = 1.082f;
-        //float correctFactor=1;
-        int i_max=0, length =amplitude.length/2;
 
+        float fundamentalFrequency, maxAmplitude=0;
+        double correctionFactor = 1.082f;
+        double i_max=0, length =amplitude.length/2;
         float[] harmonics1= downSample(amplitude,2);
         float[] harmonics2= downSample(amplitude,3);
         float[] sum=new float[amplitude.length];
+
         for(int i=0;i<length;i++){
             sum[i]=amplitude[i]*harmonics1[i]*harmonics2[i];
             if(sum[i]>maxAmplitude){
@@ -23,9 +18,11 @@ public class FrequencyValue {
                 i_max=i;
             }
         }
-        fundamentalFrequency= (i_max*(44100/amplitude.length))*correctFactor;
+        double frequency =((i_max)*((double)MainActivity.SAMPLE_RATE_IN_HZ/length)*correctionFactor);
+        fundamentalFrequency= (float)frequency;
         return fundamentalFrequency;
-    }
+
+    } /** End of getDownSampledFrequency */
 
     public static float[] downSample(float[] input, int downSamplingRate){
         int N= input.length/2;
@@ -40,31 +37,14 @@ public class FrequencyValue {
         }
         return downSampledSignal;
 
-    }
+    }/** End of downSample */
 
-    public static int[] findLargest(float[] array, int numberOfMaximumValues){
-        int length= array.length/2;
-        float max=0 , largest=100;
-        int i_max=0;
-        int[] indices= new int[numberOfMaximumValues];
-        for(int i=0;i<indices.length;i++){
-            for(int j=0;j<length;j++){
-                if(array[j]<largest && array[j]>max){
-                    max=array[j];
-                    i_max=j;
-                }
-            }
-            largest=max;
-            max =0;
-            indices[i]=i_max;
-        }
-        return indices;
-    }
 
     public static float getFundamentalFrequency(float[] amplitude) {
-        float fundamentalFrequency=0;
-        double correction_factor=1.082;
-        int i_max=0,i;
+        float fundamentalFrequency;
+        double length = amplitude.length;
+        double correctionFactor=1.082, i_max=0;
+        int i;
         float max=0;
         for(i=0;i<amplitude.length/2;i++){
             if(max < amplitude[i]){
@@ -72,7 +52,8 @@ public class FrequencyValue {
                 i_max =i;
             }
         }
-        fundamentalFrequency= ((i_max)*(44100/amplitude.length)*(float)correction_factor);
+        double frequency =((i_max)*((double)MainActivity.SAMPLE_RATE_IN_HZ/length)*correctionFactor);
+        fundamentalFrequency= (float)frequency;
         return fundamentalFrequency;
     }/** END OF getFundamentalFrequency**/
 
@@ -85,5 +66,23 @@ public class FrequencyValue {
             }
         }
         return max;
-    }
+    }/** End of findMaxValue */
 }
+//    public static int[] findLargest(float[] array, int numberOfMaximumValues){
+//        int length= array.length/2;
+//        float max=0 , largest=100;
+//        int i_max=0;
+//        int[] indices= new int[numberOfMaximumValues];
+//        for(int i=0;i<indices.length;i++){
+//            for(int j=0;j<length;j++){
+//                if(array[j]<largest && array[j]>max){
+//                    max=array[j];
+//                    i_max=j;
+//                }
+//            }
+//            largest=max;
+//            max =0;
+//            indices[i]=i_max;
+//        }
+//        return indices;
+//    }
