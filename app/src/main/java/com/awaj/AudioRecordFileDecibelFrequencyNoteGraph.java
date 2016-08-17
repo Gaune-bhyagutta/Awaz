@@ -154,6 +154,7 @@ public class AudioRecordFileDecibelFrequencyNoteGraph extends AudioRecordFile{
                 float frequency = FrequencyValue.getFundamentalFrequency(fftOutput);
 
                 databaseHelper = new DatabaseHelper(MyApplication.getAppContext());
+                databaseHelper.getAllData();
                 int match = databaseHelper.matchFreq(frequency);
                 String note = databaseHelper.getNote(match);
 
