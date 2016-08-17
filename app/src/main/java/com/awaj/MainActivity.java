@@ -51,9 +51,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static Button rec;
     private static Button play;
-    private static GraphFragment graphFragment = new GraphFragment();
-    private static ListFragment listFragment = new ListFragment();
-
 
     private static AudioRecordFileDecibelFrequencyNoteGraph audioRecordFileDecibelFrequencyNoteGraph;
     private static AudioPlayClassMain audioPlayClassMain;
@@ -62,7 +59,10 @@ public class MainActivity extends AppCompatActivity {
     private static int rec_btn_count = 0;
     private static int play_btn_count = 0;   //To Know Button was Pressed
 
-    int playState = 0;
+    private static GraphFragment graphFragment = new GraphFragment();
+    private static ListFragment listFragment = new ListFragment();
+
+    int playState =0;
 
     private final String TAG = MainActivity.class.getSimpleName();
 

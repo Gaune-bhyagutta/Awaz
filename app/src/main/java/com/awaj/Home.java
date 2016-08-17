@@ -123,6 +123,4 @@ public class Home extends AppCompatActivity {
         startActivity(new Intent(Home.this, MainActivity.class));
     }
     /**End of Methods that use Explicit Intents*/
-
-    Recorder
 }

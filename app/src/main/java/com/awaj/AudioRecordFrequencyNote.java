@@ -14,13 +14,13 @@ import java.io.OutputStream;
 /**
  * Created by amitgupta on 8/15/2016.
  */
-public class AudioRecordFrequencyNote extends AudioRecordMain{
+public class AudioRecordFrequencyNote extends AudioRecordMain {
 
-    public  AudioRecordFrequencyNoteListener listener;
+    public AudioRecordFrequencyNoteListener listener;
     DatabaseHelper databaseHelper;
 
     public AudioRecordFrequencyNote(int AUDIO_SOURCE, int SAMPLE_RATE_IN_HZ, int CHANNELS_CONFIGURATION, int AUDIO_ENCODING, int NO_OF_SAMPLES,
-                             AudioRecordFrequencyNoteListener listener) {
+                                    AudioRecordFrequencyNoteListener listener) {
         //super(AUDIO_SOURCE, SAMPLE_RATE_IN_HZ, CHANNELS_CONFIGURATION, AUDIO_ENCODING, NO_OF_SAMPLES, listener);
 
         this.listener = listener;
@@ -31,13 +31,13 @@ public class AudioRecordFrequencyNote extends AudioRecordMain{
         this.AUDIO_ENCODING = AUDIO_ENCODING;
         this.NO_OF_SAMPLES = NO_OF_SAMPLES;
 
-        MIN_BUFFERSIZE_IN_BYTES = NO_OF_SAMPLES *2;
+        MIN_BUFFERSIZE_IN_BYTES = NO_OF_SAMPLES * 2;
     }
 
     @Override
     protected void onProgressUpdate(String... values) {
         //super.onProgressUpdate(values);
-        listener.processExecuting(values[0],values[1]);
+        listener.processExecuting(values[0], values[1]);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class AudioRecordFrequencyNote extends AudioRecordMain{
 
     @Override
     public void startRecord() {
-       // super.startRecord();
+        // super.startRecord();
         Log.d(TAG, "Thread - Start record");
 //        /**RECORDING PROCESS:
 //            1.Create a file to store that data values that comes from the mic.
@@ -106,7 +106,7 @@ public class AudioRecordFrequencyNote extends AudioRecordMain{
             // Log.d(TAG, "State:"+String.valueOf(stateClass.getRecoderingState()));
 
 
-            while(stateClass.getRecoderingState()){
+            while (stateClass.getRecoderingState()) {
 
 
 //                /** numberOfShort=minBufferSize/2
@@ -115,12 +115,12 @@ public class AudioRecordFrequencyNote extends AudioRecordMain{
 //                 */
                 //Writes short values into short Array and returns numberOfShort
                 int numberOfShort = audioRecord.read(audioData, 0, MIN_BUFFERSIZE_IN_BYTES);
-                numberOfShort = MIN_BUFFERSIZE_IN_BYTES/2;
+                numberOfShort = MIN_BUFFERSIZE_IN_BYTES / 2;
                 //int numberOfShort = MIN_BUFFERSIZE_IN_BYTES/2;
-                int[] audioDataHalf = new int[audioData.length/2];
-                int[] audioInt = new int[audioData.length/2];
-                float[] audioFloatsForAmp = new float[audioData.length/2];
-                float[] audioFloatsForFFT= new float[audioData.length/2];
+                int[] audioDataHalf = new int[audioData.length / 2];
+                int[] audioInt = new int[audioData.length / 2];
+                float[] audioFloatsForAmp = new float[audioData.length / 2];
+                float[] audioFloatsForFFT = new float[audioData.length / 2];
 
                 //sending audioData to graph fragment
                 //graphFragment.updateRecordGraph(audioFloatsForFFT);
@@ -128,14 +128,14 @@ public class AudioRecordFrequencyNote extends AudioRecordMain{
 
 
                 DecibelCalculation decibelCalculation = new DecibelCalculation();
-                for(int i = 0; i < numberOfShort; i++){
+                for (int i = 0; i < numberOfShort; i++) {
                     //dataOutputStream.writeShort(audioData[i]); // Store in Sound.haha file as short-short-short--
                     audioDataHalf[i] = audioData[i];
-                    audioInt[i]=(int)audioData[i];
+                    audioInt[i] = (int) audioData[i];
                     /**This one is for FFT*/
                     audioFloatsForFFT[i] = (float) audioInt[i];
                     /**This one is for Amplitude Visualization*/
-                    audioFloatsForAmp[i]=(float)audioInt[i];
+                    audioFloatsForAmp[i] = (float) audioInt[i];
                 }
 
                 float[] fftOutput = FftOutput.callMainFft(audioFloatsForFFT);
@@ -143,18 +143,18 @@ public class AudioRecordFrequencyNote extends AudioRecordMain{
                 /**Fundamental Frequency*/
 
                 float frequency = FrequencyValue.getFundamentalFrequency(fftOutput);
-                MainActivity.plotGraph(audioFloatsForAmp,audioFloatsForFFT);
+                MainActivity.plotGraph(audioFloatsForAmp, audioFloatsForFFT);
 
                 databaseHelper = new DatabaseHelper(MyApplication.getAppContext());
                 int match = databaseHelper.matchFreq(frequency);
                 String note = databaseHelper.getNote(match);
 //                if(listener!=null)
 //                    listener.onDataLoaded(decibelValue,frequency,note);
-                publishProgress(String.valueOf(frequency),note);
+                publishProgress(String.valueOf(frequency), note);
 
 
             }
-            Log.d(TAG,"Here");
+            Log.d(TAG, "Here");
             audioRecord.stop();
         } finally {
             if (dataOutputStream != null) {
@@ -176,7 +176,6 @@ public class AudioRecordFrequencyNote extends AudioRecordMain{
                     outputStream.close();
 
 
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -186,5 +185,4 @@ public class AudioRecordFrequencyNote extends AudioRecordMain{
             }
         }
     }
-
 }
