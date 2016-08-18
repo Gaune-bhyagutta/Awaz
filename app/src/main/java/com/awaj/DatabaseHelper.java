@@ -188,7 +188,7 @@ import java.io.OutputStream;
              return 0;}
      }
 
-     public int getNearestMatch(float frequency ){
+     public int nearestMatch(float frequency ){
          int nearestMatch;
          nearestMatch =BinarySearch.searchNearestValue(freq, frequency);
          return nearestMatch;
