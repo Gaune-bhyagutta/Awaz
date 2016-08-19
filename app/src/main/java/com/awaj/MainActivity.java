@@ -197,11 +197,19 @@ public class MainActivity extends AppCompatActivity {
 
     public static void updateDecibel(String decibel) {
         //The CALCULATED DECIBEL VALUE IN AudioPlayClass/AudioRecordClass is SENT to show in TEXTVIEW
+        decibel = decibel.substring(0,4)+"dB";
         decibelTV.setText(decibel);
     }
 
     public static void updateFrequncy(String frequency) {
         //The CALCULATED FREQUNCY VALUE IN AudioPlayClass/AudioRecordClass is SENT to show in TEXTVIEW
+        if (frequency.length() >= 6) {
+            frequency = frequency.substring(0, 5) + "Hz";
+        } else if (frequency.length() == 5) {
+            frequency = frequency.substring(0, 4) + "Hz";
+        } else if (frequency.length() == 4) {
+            frequency = frequency.substring(0, 3) + "Hz";
+        }
         frequencyTV.setText(frequency);
     }
 
