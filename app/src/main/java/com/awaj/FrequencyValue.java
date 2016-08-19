@@ -2,6 +2,31 @@ package com.awaj;
 
 public class FrequencyValue {
 
+    /**
+     * @param: float[]
+     * @return: float
+     */
+    public static float getFundamentalFrequency(float[] amplitude) {
+        float fundamentalFrequency;
+        double length = amplitude.length;
+        double correctionFactor=1.082, i_max=0;
+        int i;
+        float max=0;
+        for(i=0;i<amplitude.length/2;i++){
+            if(max < amplitude[i]){
+                max=amplitude[i];
+                i_max =i;
+            }
+        }
+        double frequency =((i_max)*((double)MainActivity.SAMPLE_RATE_IN_HZ/length)*correctionFactor);
+        fundamentalFrequency= (float)frequency;
+        return fundamentalFrequency;
+    }/** END OF getFundamentalFrequency**/
+
+    /**
+     * @param: float[]
+     * @return: float
+     */
     public static float getDownSampledFrequency (float[] amplitude){
 
         float fundamentalFrequency, maxAmplitude=0;
@@ -24,6 +49,11 @@ public class FrequencyValue {
 
     } /** End of getDownSampledFrequency */
 
+
+    /**
+     * @param: float[], int
+     * @return: float[]
+     */
     public static float[] downSample(float[] input, int downSamplingRate){
         int N= input.length/2;
         float[] downSampledSignal = new float[N];
@@ -39,24 +69,10 @@ public class FrequencyValue {
 
     }/** End of downSample */
 
-
-    public static float getFundamentalFrequency(float[] amplitude) {
-        float fundamentalFrequency;
-        double length = amplitude.length;
-        double correctionFactor=1.082, i_max=0;
-        int i;
-        float max=0;
-        for(i=0;i<amplitude.length/2;i++){
-            if(max < amplitude[i]){
-                max=amplitude[i];
-                i_max =i;
-            }
-        }
-        double frequency =((i_max)*((double)MainActivity.SAMPLE_RATE_IN_HZ/length)*correctionFactor);
-        fundamentalFrequency= (float)frequency;
-        return fundamentalFrequency;
-    }/** END OF getFundamentalFrequency**/
-
+    /**
+     * @param: float[]
+     * @return: float
+     */
     public static float findMaxValue(float[] amplitude){
         int i;
         float max=0;

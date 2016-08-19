@@ -93,7 +93,7 @@ public class GuitarTuningActivity extends AppCompatActivity {
             }
 
             @Override
-            public void processExecuting(String frequency, String notes) {
+            public void processExecuting(String frequency, String notes, String nearestNote) {
                 /**Updating the values along with typecasting*/
                 currentFrequencyStr = frequency;
                 if (currentFrequencyStr.length() >= 6) {
@@ -103,7 +103,7 @@ public class GuitarTuningActivity extends AppCompatActivity {
                 } else if (currentFrequencyStr.length() == 4) {
                     currentFrequencyStr = currentFrequencyStr.substring(0, 3) + "Hz";
                 }
-                noteStr = notes;
+                noteStr = nearestNote;
 
                 /**LOG*/
                 //Log.d("VIVZ","Freq: "+currentFrequencyStr+" Notes: "+notes);
