@@ -35,6 +35,11 @@
         <activity android:name=".activities.GuitarTuningActivity"></activity>
         <activity android:name=".activities.FrequencyGeneratingActivity"></activity>
 
+        <activity android:name=".menuPages.About"></activity>
+        <activity android:name=".menuPages.Manual"></activity>
+        <activity android:name=".menuPages.Settings"></activity>
+
+
         <activity android:name="com.awaj.ListTabs"></activity>
     </application>
 

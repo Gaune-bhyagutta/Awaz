@@ -46,7 +46,7 @@
                 android:background="@drawable/one"
                 android:gravity="bottom|center_horizontal"
                 android:onClick="callAudioRecorder"
-                android:text="Rgit cord"
+                android:text="Record"
                 android:textAlignment="gravity"
                 android:textColor="#ffffff"
                 android:textStyle="bold"

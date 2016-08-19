@@ -3,6 +3,7 @@ package com.awaj;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,9 +21,13 @@ import com.awaj.menuPages.Settings;
  */
 public class Home extends AppCompatActivity {
 
-    /**Buttons in Home Page*/
+    /**
+     * Buttons in Home Page
+     */
     Button Recorder, Monitor, Scaler, NoteGenerator, GuitarTuner, MainActivityLauncher;
-    /**Linear Layout to encapsulate above buttons*/
+    /**
+     * Linear Layout to encapsulate above buttons
+     */
     LinearLayout RecorderLL, MonitorLL, ScalerLL, NoteGeneratorLL, GuitarTunerLL, MainActivityLauncherLL;
 
     @Override
@@ -44,10 +49,12 @@ public class Home extends AppCompatActivity {
         GuitarTunerLL = (LinearLayout) findViewById(R.id.guitarTunerLL);
         MainActivityLauncherLL = (LinearLayout) findViewById(R.id.fourth);
 
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        Recorder.setOnLongClickListener(new View.OnLongClickListener(){
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Recorder.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 return false;
@@ -57,13 +64,14 @@ public class Home extends AppCompatActivity {
     }
 
     /**
-     * MENU OPTIONS in APPBAR
+     * Menu options inflated in Appbar
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater ourMenuInflater = getMenuInflater();
         ourMenuInflater.inflate(R.menu.sample_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+//        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {

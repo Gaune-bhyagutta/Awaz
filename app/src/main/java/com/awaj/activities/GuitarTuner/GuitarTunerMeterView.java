@@ -12,7 +12,7 @@ import com.awaj.R;
 /**
  * Subclass for drawing the meter
  */
-public class GuitarTunerMeterView extends View {
+public class  GuitarTunerMeterView extends View {
     Paint innerCircle, outerBaseCircle, needle, paintText;
     float x2, y2, theta;
     float radius;

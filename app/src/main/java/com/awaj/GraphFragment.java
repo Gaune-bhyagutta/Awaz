@@ -1,15 +1,15 @@
 package com.awaj;
 
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.content.Context;
+import android.graphics.Canvas;
+import android.view.LayoutInflater;
 import android.widget.LinearLayout;
+import android.support.v4.app.Fragment;
 
 public class GraphFragment extends Fragment {
 
@@ -24,11 +24,8 @@ public class GraphFragment extends Fragment {
     /**
      * 0-AMP/TIME 1-AMP/FREQ
      */
-
-    public static int GRAPH_DOMAIN_MODE ;
-
+    public static int GRAPH_DOMAIN_MODE;
     //myGraphView myGraphView = new myGraphView(getActivity());
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,7 +41,6 @@ public class GraphFragment extends Fragment {
         // Log.d("VIVZ", "Linear Layout - "+linearLayout.getHeight());
     }
 
-
     public class myGraphView extends View {
 
         public myGraphView(Context context) {
@@ -54,33 +50,37 @@ public class GraphFragment extends Fragment {
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
-            canvas.drawColor(Color.BLACK);
+            canvas.drawColor(getResources().getColor(R.color.white));
 
             /**Visualization Paint Object*/
             Paint graphVisualizationPO = new Paint();
-            graphVisualizationPO.setColor(Color.parseColor("#ffffff"));
+            graphVisualizationPO.setColor(getResources().getColor(R.color.colorPrimaryLight));
             graphVisualizationPO.setStrokeWidth(1);
 
+            /**Thread Paint Object*/
+            Paint threadPaintObj = new Paint();
+            threadPaintObj.setColor(getResources().getColor(R.color.colorPrimaryDark));
+            threadPaintObj.setStrokeWidth(2);
 
 //            if (audioData == null) {
 //                audioData = new float[length];
 //            }
-
             /**ACTUAL PLOTS*/
-
             drawMeshLines(canvas);
             if (GRAPH_DOMAIN_MODE == 1) {
-                frequencyAmplitudeGraph(canvas, graphVisualizationPO);
+                frequencyAmplitudeGraph(canvas, graphVisualizationPO, threadPaintObj);
             } else {
-                timeAmplitudeGraph(canvas, graphVisualizationPO);
-
+                timeAmplitudeGraph(canvas, graphVisualizationPO, threadPaintObj);
             }
         }
 
         /**
-         * End of onDraw
+         * End of onDraw Method
          */
 
+        /**
+         * Draws Mesh/Graph Lines in the background
+         */
         public void drawMeshLines(Canvas canvas) {
             //Mesh Lines
             int cgh = canvas.getHeight();
@@ -91,13 +91,13 @@ public class GraphFragment extends Fragment {
             int i;
             /**Mesh Paint Object*/
             Paint meshObj = new Paint();
-            meshObj.setColor(Color.parseColor("#333333"));
+            meshObj.setColor(getResources().getColor(R.color.amber_secondary_text));
             meshObj.setStrokeWidth(1);
 
             /**Text Paint Object*/
             Paint textObj = new Paint();
             textObj.isAntiAlias();
-            textObj.setColor(Color.parseColor("#ff0000"));
+            textObj.setColor(getResources().getColor(R.color.amber_primary_text));
             textObj.setTextSize(20);
 
             //Horizontal Lines - Top Segment
@@ -144,7 +144,10 @@ public class GraphFragment extends Fragment {
             }
         }
 
-        public void timeAmplitudeGraph(Canvas canvas, Paint graphVisualizationPO) {
+        /**
+         * Time Domain Amplitude Graph
+         */
+        public void timeAmplitudeGraph(Canvas canvas, Paint graphVisualizationPO, Paint threadPaintObj) {
             double heightNormalizer = (canvas.getHeight() / 2) * 0.00003051757812;
             int index = 0;
 
@@ -153,7 +156,6 @@ public class GraphFragment extends Fragment {
             float X1 = 0;
             float Y1 = canvas.getHeight() / 2;
             float X2, Y2;
-
 
             for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
                 try {
@@ -165,23 +167,19 @@ public class GraphFragment extends Fragment {
                 X2 = X1;
                 Y2 = Y1 - graph_height;
 
-                if (GRAPH_VIZ_MODE == 0) {
-                    /**Wave View*/
-                    canvas.drawLine(X1, Y1, X2, Y2, graphVisualizationPO);
-                } else if (GRAPH_VIZ_MODE == 1) {
-                    /**Thread View*/
-                    newX = X2;
-                    newY = Y2;
-                    canvas.drawLine(oldX, oldY, newX, newY, graphVisualizationPO);
-                    oldX = newX;
-                    oldY = newY;
-                }
+                /**Draws inner Wave*/
+                canvas.drawLine(X1, Y1, X2, Y2, graphVisualizationPO);
+                /**Draws outer Thread*/
+                newX = X2;
+                newY = Y2;
+                canvas.drawLine(oldX, oldY, newX, newY, threadPaintObj);
+                oldX = newX;
+                oldY = newY;
 
                 index++;
-
                 postInvalidateDelayed(GRAPH_REFRESH_DELAY);
             }
-            /**Expt*/
+            /**Highest value indicator*/
             int maxValue = (int) (FrequencyValue.findMaxValue(audioData) * heightNormalizer);
             int horizontalBarHeight = (int) ((canvas.getHeight() / 2) - maxValue);
             graphVisualizationPO.setColor(Color.parseColor("#ff0000"));
@@ -189,8 +187,10 @@ public class GraphFragment extends Fragment {
             canvas.drawLine(0, horizontalBarHeight, canvas.getWidth(), horizontalBarHeight, graphVisualizationPO);
         }
 
-
-        public void frequencyAmplitudeGraph(Canvas canvas, Paint graphVisualizationPO) {
+        /**
+         * Frequency Domain Amplitude Graph
+         */
+        public void frequencyAmplitudeGraph(Canvas canvas, Paint graphVisualizationPO, Paint threadPaintObj) {
 
             double heightNormalizer = 5;
             int index = 0;
@@ -212,19 +212,24 @@ public class GraphFragment extends Fragment {
                 X2 = X1;
                 Y2 = Y1 - graph_height;
 
+                /**Draws inner Wave*/
                 canvas.drawLine(X1, Y1, X2, Y2, graphVisualizationPO);
+                /**Draws outer Thread*/
+                newX = X2;
+                newY = Y2;
+                canvas.drawLine(oldX, oldY, newX, newY, threadPaintObj);
+                oldX = newX;
+                oldY = newY;
 
                 index++;
                 postInvalidateDelayed(GRAPH_REFRESH_DELAY);
             }
+            /**Highest value indicator*/
             int maxValue = (int) (FrequencyValue.findMaxValue(audioData) * heightNormalizer);
             int horizontalBarHeight = (int) ((canvas.getHeight() / 2) - maxValue);
             graphVisualizationPO.setColor(Color.parseColor("#ff0000"));
             graphVisualizationPO.setStrokeWidth(2);
             canvas.drawLine(0, horizontalBarHeight, canvas.getWidth(), horizontalBarHeight, graphVisualizationPO);
-
-
-
         }
     }
 
