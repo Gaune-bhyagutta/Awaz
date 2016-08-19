@@ -1,24 +1,24 @@
 package com.awaj;
 
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 import android.widget.Button;
 import android.widget.Switch;
+import android.view.MenuItem;
 import android.content.Intent;
-import android.database.SQLException;
 import android.graphics.Color;
 import android.widget.TextView;
 import android.widget.ImageView;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
+import android.view.MenuInflater;
 import android.media.MediaRecorder;
+import android.database.SQLException;
 import android.widget.CompoundButton;
+import android.support.v7.widget.Toolbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private static GraphFragment graphFragment = new GraphFragment();
     private static ListFragment listFragment = new ListFragment();
 
-    int playState =0;
+    int playState = 0;
 
     private final String TAG = MainActivity.class.getSimpleName();
 
@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static void updateDecibel(String decibel) {
         //The CALCULATED DECIBEL VALUE IN AudioPlayClass/AudioRecordClass is SENT to show in TEXTVIEW
-        decibel = decibel.substring(0,4)+"dB";
+        decibel = decibel.substring(0, 4) + "dB";
         decibelTV.setText(decibel);
     }
 
@@ -245,19 +245,18 @@ public class MainActivity extends AppCompatActivity {
 
     //START OF Graph Fragment Section
     public static void plotGraph(float[] audioFloatsForAmp, float[] fftOutput) {
-
-        if (graphFragment.getGraphFragmentMode() == 0) {
-            /**Amplitude Mode*/
-            graphFragment.updateGraph(audioFloatsForAmp);
-        } else if (graphFragment.getGraphFragmentMode() == 1) {
-            /**Frequency Mode*/
-            graphFragment.updateGraph(fftOutput);
-        }
+//        if (graphFragment.getGraphFragmentMode() == 0) {
+//            /**Amplitude Mode*/
+//            graphFragment.updateGraph(audioFloatsForAmp);
+//        } else if (graphFragment.getGraphFragmentMode() == 1) {
+//            /**Frequency Mode*/
+//            graphFragment.updateGraph(fftOutput);
+//        }
+        graphFragment.updateGraph(audioFloatsForAmp, fftOutput);
 
     }
 
     //END OF Graph Fragment Section
-
     //Start-Functions in MainActivity
     //Start-record()
     public void record() {
@@ -277,7 +276,6 @@ public class MainActivity extends AppCompatActivity {
                             ampValuesForGraph = ampValues;
                             freqValuesForGraph = freqValues;
                             plotGraph(ampValues, freqValues);
-
                         }
 
                         @Override
@@ -285,9 +283,7 @@ public class MainActivity extends AppCompatActivity {
                             //Toast.makeText(getApplicationContext(),"Finished Recording",Toast.LENGTH_SHORT).show();
                             updateRecordState();
                         }
-
                     });
-
 
                     if (rec_btn_count == 0) {
 
@@ -326,7 +322,6 @@ public class MainActivity extends AppCompatActivity {
 
     //Start-play()
     public void play() {
-
         if (play != null) {
             play.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -426,7 +421,6 @@ public class MainActivity extends AppCompatActivity {
                     GraphFragment.GRAPH_DOMAIN_MODE = 0;
 //                    domainSwitch.setText("AMP");
                 }
-
             }
         });
     }

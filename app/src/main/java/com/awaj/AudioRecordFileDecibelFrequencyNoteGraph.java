@@ -14,8 +14,8 @@ import java.io.OutputStream;
 /**
  * Created by amitgupta on 8/15/2016.
  */
-public class AudioRecordFileDecibelFrequencyNoteGraph extends AudioRecordFile{
-    
+public class AudioRecordFileDecibelFrequencyNoteGraph extends AudioRecordFile {
+
     AudioRecordFileDecibelFrequencyNoteGraphListener listener;
     DatabaseHelper databaseHelper;
 
@@ -24,7 +24,7 @@ public class AudioRecordFileDecibelFrequencyNoteGraph extends AudioRecordFile{
     float[] fftOutput;
 
     AudioRecordFileDecibelFrequencyNoteGraph(int AUDIO_SOURCE, int SAMPLE_RATE_IN_HZ, int CHANNELS_CONFIGURATION, int AUDIO_ENCODING, int NO_OF_SAMPLES,
-                       AudioRecordFileDecibelFrequencyNoteGraphListener listener) {
+                                             AudioRecordFileDecibelFrequencyNoteGraphListener listener) {
         //super(AUDIO_SOURCE, SAMPLE_RATE_IN_HZ, CHANNELS_CONFIGURATION, AUDIO_ENCODING, NO_OF_SAMPLES, (AudioRecordMainListener) listener);
 
         this.listener = listener;
@@ -33,7 +33,7 @@ public class AudioRecordFileDecibelFrequencyNoteGraph extends AudioRecordFile{
         this.SAMPLE_RATE_IN_HZ = SAMPLE_RATE_IN_HZ;
         this.CHANNELS_CONFIGURATION = CHANNELS_CONFIGURATION;
         this.AUDIO_ENCODING = AUDIO_ENCODING;
-        this.NO_OF_SAMPLES = NO_OF_SAMPLES ;
+        this.NO_OF_SAMPLES = NO_OF_SAMPLES;
 
         MIN_BUFFERSIZE_IN_BYTES = NO_OF_SAMPLES * 2;
 
@@ -42,10 +42,12 @@ public class AudioRecordFileDecibelFrequencyNoteGraph extends AudioRecordFile{
     @Override
     protected void onProgressUpdate(String... values) {
         // super.onProgressUpdate(values);
-        listener.processExecuting(values[0],values[1],values[2],audioFloatsForAmp,fftOutput);
+        synchronized (fftOutput){
+        listener.processExecuting(values[0], values[1], values[2], audioFloatsForAmp, fftOutput);
+    }
     }
 
-    public void startRecord(){
+    public void startRecord() {
 
         Log.d(TAG, "Thread - Start record");
 //        /**RECORDING PROCESS:
@@ -69,9 +71,9 @@ public class AudioRecordFileDecibelFrequencyNoteGraph extends AudioRecordFile{
 //                ONE- as extension Sound.pcm
 //            15. AND MOST IMPORTANT THING TO REMEMBER :- OUR AMPLITUDE IS REPRESENTED BY 16 bit. SO WE USE SHORT
 //         */
-       // File filePcm = new File(Environment.getExternalStorageDirectory(),"Sound.pcm");
+        // File filePcm = new File(Environment.getExternalStorageDirectory(),"Sound.pcm");
         folder = context.getExternalFilesDir("Awaj");
-        filePcm = new File(folder,"Sound"+System.currentTimeMillis()+".pcm");
+        filePcm = new File(folder, "Sound" + System.currentTimeMillis() + ".pcm");
 
         OutputStream outputStream = null;
         BufferedOutputStream bufferedOutputStream = null;
@@ -88,7 +90,7 @@ public class AudioRecordFileDecibelFrequencyNoteGraph extends AudioRecordFile{
 
             /**Call the static class of Audio Record to get the Buffer size in Byte that can handle the Audio data values based on our SAMPLING RATE (44100 hz or frame per second in our case)*/
             //int MIN_BUFFERSIZE_IN_BYTES = getRecordBufferSize();//WE CAN FIX THE BUFFER SZIE BY OURSELVES
-           // MIN_BUFFERSIZE_IN_BYTES = MainActivity.getMIN_BUFFERSIZE_IN_BYTES();//FIXED THE BUFFER SZIE BY OURSELVES
+            // MIN_BUFFERSIZE_IN_BYTES = MainActivity.getMIN_BUFFERSIZE_IN_BYTES();//FIXED THE BUFFER SZIE BY OURSELVES
 
             // The array short that will store the Audio data that we get From the mic.
             short[] audioData = new short[MIN_BUFFERSIZE_IN_BYTES];
@@ -108,11 +110,11 @@ public class AudioRecordFileDecibelFrequencyNoteGraph extends AudioRecordFile{
             audioRecord.startRecording();//Start Recording Based on
 
             // it means while the user have  not pressed the RECORD-STOP Button
-           // Log.d(TAG, "State:"+String.valueOf(stateClass.getRecoderingState()));
+            // Log.d(TAG, "State:"+String.valueOf(stateClass.getRecoderingState()));
 //            folder = context.getExternalFilesDir("Awaj");
 //            filePcm = new File(folder,"Sound"+System.currentTimeMillis()+".pcm");
 
-            while(stateClass.getRecoderingState()){
+            while (stateClass.getRecoderingState()) {
 
 
 //                /** numberOfShort=minBufferSize/2
@@ -121,12 +123,12 @@ public class AudioRecordFileDecibelFrequencyNoteGraph extends AudioRecordFile{
 //                 */
                 //Writes short values into short Array and returns numberOfShort
                 int numberOfShort = audioRecord.read(audioData, 0, MIN_BUFFERSIZE_IN_BYTES);
-                numberOfShort = MIN_BUFFERSIZE_IN_BYTES/2;
+                numberOfShort = MIN_BUFFERSIZE_IN_BYTES / 2;
                 //int numberOfShort = MIN_BUFFERSIZE_IN_BYTES/2;
-                int[] audioDataHalf = new int[audioData.length/2];
-                int[] audioInt = new int[audioData.length/2];
-                audioFloatsForAmp = new float[audioData.length/2];
-                audioFloatsForFFT= new float[audioData.length/2];
+                int[] audioDataHalf = new int[audioData.length / 2];
+                int[] audioInt = new int[audioData.length / 2];
+                audioFloatsForAmp = new float[audioData.length / 2];
+                audioFloatsForFFT = new float[audioData.length / 2];
 
                 //sending audioData to graph fragment
                 //graphFragment.updateRecordGraph(audioFloatsForFFT);
@@ -134,16 +136,16 @@ public class AudioRecordFileDecibelFrequencyNoteGraph extends AudioRecordFile{
 
 
                 DecibelCalculation decibelCalculation = new DecibelCalculation();
-                for(int i = 0; i < numberOfShort; i++){
+                for (int i = 0; i < numberOfShort; i++) {
                     //dataOutputStream.writeShort(audioData[i]); // Store in Sound.haha file as short-short-short--
 
                     dataOutputStream.writeShort(audioData[i]);
                     audioDataHalf[i] = audioData[i];
-                    audioInt[i]=(int)audioData[i];
+                    audioInt[i] = (int) audioData[i];
                     /**This one is for FFT*/
                     audioFloatsForFFT[i] = (float) audioInt[i];
                     /**This one is for Amplitude Visualization*/
-                    audioFloatsForAmp[i]=(float)audioInt[i];
+                    audioFloatsForAmp[i] = (float) audioInt[i];
                 }
 
                 float decibelValue = decibelCalculation.decibelCalculation(audioData);
@@ -157,11 +159,11 @@ public class AudioRecordFileDecibelFrequencyNoteGraph extends AudioRecordFile{
                 int match = databaseHelper.matchFreq(frequency);
                 String note = databaseHelper.getNote(match);
 
-                publishProgress(String.valueOf(decibelValue),String.valueOf(frequency),note);
+                publishProgress(String.valueOf(decibelValue), String.valueOf(frequency), note);
 
 
             }
-            Log.d(TAG,"Here");
+            Log.d(TAG, "Here");
             audioRecord.stop();
 
         } catch (IOException e) {
@@ -187,7 +189,6 @@ public class AudioRecordFileDecibelFrequencyNoteGraph extends AudioRecordFile{
                     outputStream.close();
 
 
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -197,6 +198,7 @@ public class AudioRecordFileDecibelFrequencyNoteGraph extends AudioRecordFile{
             }
         }
     }
+
     @Override
     protected void onPostExecute(Void Void) {
         listener.processExecuted();

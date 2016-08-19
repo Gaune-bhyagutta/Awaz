@@ -143,7 +143,7 @@ public class AudioRecordFrequencyNote extends AudioRecordMain {
                 /**Fundamental Frequency*/
 
                 float frequency = FrequencyValue.getFundamentalFrequency(fftOutput);
-                MainActivity.plotGraph(audioFloatsForAmp, audioFloatsForFFT);
+                //MainActivity.plotGraph(audioFloatsForAmp, audioFloatsForFFT);
 
                 databaseHelper = new DatabaseHelper(MyApplication.getAppContext());
                 int match = databaseHelper.matchFreq(frequency);

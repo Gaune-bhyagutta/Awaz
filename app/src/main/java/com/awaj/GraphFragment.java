@@ -14,7 +14,8 @@ import android.support.v4.app.Fragment;
 public class GraphFragment extends Fragment {
 
     private float graph_height;
-    private float[] audioData = null;
+    private float[] audioDataTimeDomain = null;
+    private float[] audioDataFreqDomain = null;
 
     /**
      * 0-Wave 1-Thread
@@ -62,8 +63,8 @@ public class GraphFragment extends Fragment {
             threadPaintObj.setColor(getResources().getColor(R.color.colorPrimaryDark));
             threadPaintObj.setStrokeWidth(2);
 
-//            if (audioData == null) {
-//                audioData = new float[length];
+//            if (audioDataTimeDomain == null) {
+//                audioDataTimeDomain = new float[length];
 //            }
             /**ACTUAL PLOTS*/
             drawMeshLines(canvas);
@@ -159,8 +160,7 @@ public class GraphFragment extends Fragment {
 
             for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
                 try {
-                    graph_height = (float) (audioData[index] * heightNormalizer);
-
+                    graph_height = (float) (audioDataTimeDomain[index] * heightNormalizer);
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
@@ -180,7 +180,7 @@ public class GraphFragment extends Fragment {
                 postInvalidateDelayed(GRAPH_REFRESH_DELAY);
             }
             /**Highest value indicator*/
-            int maxValue = (int) (FrequencyValue.findMaxValue(audioData) * heightNormalizer);
+            int maxValue = (int) (FrequencyValue.findMaxValue(audioDataTimeDomain) * heightNormalizer);
             int horizontalBarHeight = (int) ((canvas.getHeight() / 2) - maxValue);
             graphVisualizationPO.setColor(Color.parseColor("#ff0000"));
             graphVisualizationPO.setStrokeWidth(2);
@@ -191,8 +191,7 @@ public class GraphFragment extends Fragment {
          * Frequency Domain Amplitude Graph
          */
         public void frequencyAmplitudeGraph(Canvas canvas, Paint graphVisualizationPO, Paint threadPaintObj) {
-
-            double heightNormalizer = 5;
+            double heightNormalizer = 1;
             int index = 0;
 
             float newX, newY;
@@ -201,10 +200,9 @@ public class GraphFragment extends Fragment {
             float Y1 = canvas.getHeight() / 2;
             float X2, Y2;
 
-
             for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
                 try {
-                    graph_height = (float) (audioData[index] * heightNormalizer);
+                    graph_height = (float) (audioDataFreqDomain[index] * heightNormalizer);
 
                 } catch (NullPointerException e) {
                     e.printStackTrace();
@@ -225,7 +223,7 @@ public class GraphFragment extends Fragment {
                 postInvalidateDelayed(GRAPH_REFRESH_DELAY);
             }
             /**Highest value indicator*/
-            int maxValue = (int) (FrequencyValue.findMaxValue(audioData) * heightNormalizer);
+            int maxValue = (int) (FrequencyValue.findMaxValue(audioDataFreqDomain) * heightNormalizer);
             int horizontalBarHeight = (int) ((canvas.getHeight() / 2) - maxValue);
             graphVisualizationPO.setColor(Color.parseColor("#ff0000"));
             graphVisualizationPO.setStrokeWidth(2);
@@ -236,12 +234,13 @@ public class GraphFragment extends Fragment {
     /**
      * End of myGraphView
      */
-    public void updateGraph(float[] data) {
-        audioData = data;
+    public void updateGraph(float[] data1,float[] data2) {
+        audioDataTimeDomain = data1;
+        audioDataFreqDomain = data2;
     }
 
     public void setMinBufferSizeInBytes(int size) {
-        audioData = new float[size];
+        audioDataTimeDomain = new float[size];
     }
 
     public int getGraphFragmentMode() {

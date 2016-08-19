@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.awaj.activities.*;
+import com.awaj.activities.toneGenerator.FrequencyGeneratingActivity;
 import com.awaj.menuPages.About;
 import com.awaj.menuPages.Manual;
 import com.awaj.menuPages.Settings;

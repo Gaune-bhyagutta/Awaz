@@ -33,7 +33,7 @@
         <activity android:name=".activities.ScaleTestingActivity"></activity>
         <activity android:name=".activities.NoteGeneratingActivity"></activity>
         <activity android:name=".activities.GuitarTuningActivity"></activity>
-        <activity android:name=".activities.FrequencyGeneratingActivity"></activity>
+        <activity android:name=".activities.toneGenerator.FrequencyGeneratingActivity"></activity>
 
         <activity android:name=".menuPages.About"></activity>
         <activity android:name=".menuPages.Manual"></activity>

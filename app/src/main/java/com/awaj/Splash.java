@@ -16,7 +16,7 @@ import android.widget.ImageView;
 /**
  * Created by keshavdulal on 04/08/16.
  */
-public class Splash extends AppCompatActivity{
+public class Splash extends AppCompatActivity {
     ImageView splashIcon;
 
     @Override
@@ -31,10 +31,10 @@ public class Splash extends AppCompatActivity{
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(Splash.this,Home.class));
+                startActivity(new Intent(Splash.this, Home.class));
                 finish();
             }
-        },1000);
+        }, 1000);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.awaj.toneGenerator;
+package com.awaj.activities.toneGenerator;
 
 /**
  * Created by amitgupta on 8/11/2016.
@@ -20,7 +20,7 @@ public class ToneGenerator {
     BufferedOutputStream bufferedOutputStream = null;
     DataOutputStream dataOutputStream = null;
 
-    public  void playWave(){
+    public void playWave() {
 
     }
 }
