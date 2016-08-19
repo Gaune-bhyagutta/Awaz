@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
     android:orientation="vertical">
 
     <!--Activity Title -->
@@ -19,24 +20,31 @@
             android:layout_marginTop="1dp"
             android:background="@color/colorPrimary"
             app:title="@string/note_generator"
-            app:titleTextColor="@color/white"/>
+            app:titleTextColor="@color/white" />
     </LinearLayout>
 
-    <HorizontalScrollView
-        android:id="@+id/horizontalScrollView"
+    <!--Notes generated Text View-->
+    <TextView
+        android:id="@+id/notesGeneratedTV"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_below="@id/appnameLL"/>
+        android:layout_below="@id/appnameLL"
+        android:gravity="center"
+        android:text="C, D, G Bm"
+        android:textSize="35sp" />
 
+
+    <!--Add Visualization Fragment here-->
     <LinearLayout
         android:id="@+id/graphFragmentLL"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="match_parent"
         android:layout_above="@+id/button"
         android:layout_alignParentStart="true"
-        android:orientation="horizontal">
-    </LinearLayout>
+        android:layout_below="@id/notesGeneratedTV"
+        android:orientation="horizontal"></LinearLayout>
 
+    <!--Button to start Monitoring-->
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
@@ -44,7 +52,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
-        android:text="Start"
+        android:layout_margin="5dp"
+        android:text="Start Monitoring"
         android:typeface="monospace" />
 
 </RelativeLayout>
