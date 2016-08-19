@@ -25,18 +25,21 @@ import com.awaj.AudioRecordFrequencyNoteListener;
 import com.awaj.AudioRecordInterface;
 import com.awaj.R;
 import com.awaj.StateClass;
+import com.awaj.activities.GuitarTuner.TuningActivityListener;
 
 /**
  * Created by keshavdulal on 08/08/16.
  */
-public class GuitarTuningActivity extends AppCompatActivity {
+public class GuitarTuningActivity extends AppCompatActivity{
     /**
      * Variables
      */
+    TuningActivityListener listener;
     Toolbar toolbarObj;
     static String decibelStr;
     static String noteStr;
     static String currentFrequencyStr = new String();
+    static String noteFrequencyStr = new String();
 
     AudioRecordFrequencyNote audioRecordFrequencyNote;
 
@@ -95,7 +98,14 @@ public class GuitarTuningActivity extends AppCompatActivity {
             @Override
             public void processExecuting(String frequency, String notes, String nearestNote, String nearestNoteFrequency) {
                 /**Updating the values along with typecasting*/
+                noteStr = nearestNote;
+                noteFrequencyStr = nearestNoteFrequency;
                 currentFrequencyStr = frequency;
+                float currentFreq = Float.valueOf(currentFrequencyStr);
+                float noteFrequency = Float.valueOf(noteFrequencyStr);
+                if(currentFreq !=0 && noteFrequency!=0){
+                    listener.sendData(currentFreq, noteFrequency);
+                }
                 if (currentFrequencyStr.length() >= 6) {
                     currentFrequencyStr = currentFrequencyStr.substring(0, 5) + "Hz";
                 } else if (currentFrequencyStr.length() == 5) {
@@ -103,7 +113,6 @@ public class GuitarTuningActivity extends AppCompatActivity {
                 } else if (currentFrequencyStr.length() == 4) {
                     currentFrequencyStr = currentFrequencyStr.substring(0, 3) + "Hz";
                 }
-                noteStr = nearestNote;
 
                 /**LOG*/
                 //Log.d("VIVZ","Freq: "+currentFrequencyStr+" Notes: "+notes);
@@ -112,6 +121,7 @@ public class GuitarTuningActivity extends AppCompatActivity {
                 musicNotesTV.setText(getFivePrimaryNotes(1));
                 currentNoteTV.setText(noteStr);
                 currentFrequencyTV.setText(currentFrequencyStr);
+
             }
         });
         audioRecordFrequencyNote.execute();

@@ -142,15 +142,15 @@ public class AudioRecordFrequencyNote extends AudioRecordMain{
 
                 /**Fundamental Frequency*/
 
-                float frequency = FrequencyValue.getFundamentalFrequency(fftOutput);
-                float frequency1 = frequency;
+                float frequency = FrequencyValue.getDownSampledFrequency(fftOutput);
+//                float downSampledFrequency = FrequencyValue.getDownSampledFrequency(fftOutput);
 //                MainActivity.plotGraph(audioFloatsForAmp,audioFloatsForFFT);
 
                 databaseHelper = new DatabaseHelper(MyApplication.getAppContext());
                 databaseHelper.getAllData();
                 int match = databaseHelper.matchFreq(frequency);
                 String note = databaseHelper.getNote(match);
-                int nearestMatch = databaseHelper.nearestMatch(frequency1);
+                int nearestMatch = databaseHelper.nearestMatch(frequency);
                 String nearestNote = databaseHelper.getNote(nearestMatch);
                 float nearestNoteFrequency = databaseHelper.getNoteFrequency(nearestMatch);
 //                if(listener!=null)

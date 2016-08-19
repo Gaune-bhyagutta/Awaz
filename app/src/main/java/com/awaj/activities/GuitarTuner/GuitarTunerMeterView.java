@@ -8,17 +8,27 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.awaj.R;
+import com.awaj.activities.GuitarTuningActivity;
 
 /**
  * Subclass for drawing the meter
  */
-public class GuitarTunerMeterView extends View {
+public class GuitarTunerMeterView extends View implements TuningActivityListener{
     Paint innerCircle, outerBaseCircle, needle, paintText;
     float x2, y2, theta;
     float radius;
 
     boolean drawnOnce = false;
-    static float currentFrequency=186, currentNoteFrequency=184, noteMinFrequency= 179 ,noteMaxFrequency=189;
+    static float currentFrequency =0;
+    static float currentNoteFrequency=0;
+
+    @Override
+    public void sendData(float currentFreq, float noteFreq) {
+        currentFrequency =  currentFreq;
+        currentNoteFrequency= noteFreq;
+    }
+
+    static float noteMinFrequency= currentNoteFrequency-2 ,noteMaxFrequency=currentNoteFrequency+2;
     static float difference = 0;
     static float unit = noteMaxFrequency-noteMinFrequency;
 
@@ -41,13 +51,17 @@ public class GuitarTunerMeterView extends View {
         paintText = new Paint();
     }
 
+
     /**
      * Draws custom view
      */
     @Override
     protected void onDraw(Canvas canvas) {
         //super.onDraw(canvas);
+
+
         /**Setting up Variables*/
+
         canvas.drawColor(getResources().getColor(R.color.colorPrimaryDark));
         float cgh = canvas.getHeight();
         float cgw = canvas.getWidth();
@@ -100,6 +114,7 @@ public class GuitarTunerMeterView extends View {
         invalidate();
 
     }/**End onDraw*/
+
 
 //    public void drawPrimaryNotes(Canvas canvas) {
 //        textSize = 80;
