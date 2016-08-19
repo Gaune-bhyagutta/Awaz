@@ -6,7 +6,7 @@ package com.awaj;
 
 public class FftOutput {
 
-    final static int MAX_AMPLITUDE_VALUE = 32768;
+    final static float MAX_AMPLITUDE_VALUE = 32768.0f;
     /**
      * @param: float[], float[]
      * @return: void
@@ -160,7 +160,7 @@ public class FftOutput {
      **  dividing each amplitude value by the Maximum amplitude value*/
     private static void normalize(float[] input){
         for(int i=0;i<input.length;i++){
-            input[i]=(float)(input[i]/MAX_AMPLITUDE_VALUE);
+            input[i]=(input[i]/MAX_AMPLITUDE_VALUE);
         }
 
     } /** End of normalize */

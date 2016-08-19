@@ -79,15 +79,22 @@ public class GuitarTunerMeterView extends View {
 
         /**Dynamic Needle*/
         difference =currentNoteFrequency - currentFrequency;
+//        if(difference<0){
+//            if(theta>((Math.PI/2)+(Math.PI/unit*difference))) {
+//                theta -= (float) (Math.PI / 180);
+//            }
+//        }
+//        else if(difference>0){
+//            if(theta<((Math.PI/2)+(Math.PI/unit*difference))) {
+//                theta += (float) (Math.PI / 180);
+//            }
+//        }
+
         if(difference<0){
-            if(theta>((Math.PI/2)+(Math.PI/unit*difference))) {
-                theta -= (float) (Math.PI / 180);
-            }
+            theta = (float) ((Math.PI/2) + (Math.PI/unit*difference));
         }
         else if(difference>0){
-            if(theta<((Math.PI/2)+(Math.PI/unit*difference))) {
-                theta += (float) (Math.PI / 180);
-            }
+            theta = (float) ((Math.PI/2)+(Math.PI/unit*difference));
         }
 
         invalidate();

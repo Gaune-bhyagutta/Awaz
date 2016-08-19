@@ -93,7 +93,7 @@ public class GuitarTuningActivity extends AppCompatActivity {
             }
 
             @Override
-            public void processExecuting(String frequency, String notes, String nearestNote) {
+            public void processExecuting(String frequency, String notes, String nearestNote, String nearestNoteFrequency) {
                 /**Updating the values along with typecasting*/
                 currentFrequencyStr = frequency;
                 if (currentFrequencyStr.length() >= 6) {

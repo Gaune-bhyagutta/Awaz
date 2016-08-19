@@ -37,7 +37,7 @@ public class AudioRecordFrequencyNote extends AudioRecordMain{
     @Override
     protected void onProgressUpdate(String... values) {
         //super.onProgressUpdate(values);
-        listener.processExecuting(values[0],values[1], values[2]);
+        listener.processExecuting(values[0],values[1], values[2], values[3]);
     }
 
     @Override
@@ -152,9 +152,10 @@ public class AudioRecordFrequencyNote extends AudioRecordMain{
                 String note = databaseHelper.getNote(match);
                 int nearestMatch = databaseHelper.nearestMatch(frequency1);
                 String nearestNote = databaseHelper.getNote(nearestMatch);
+                float nearestNoteFrequency = databaseHelper.getNoteFrequency(nearestMatch);
 //                if(listener!=null)
 //                    listener.onDataLoaded(decibelValue,frequency,note);
-                publishProgress(String.valueOf(frequency),note, nearestNote);
+                publishProgress(String.valueOf(frequency),note, nearestNote, String.valueOf(nearestNoteFrequency));
 
 
             }
