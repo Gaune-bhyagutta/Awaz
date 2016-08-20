@@ -113,7 +113,7 @@ public class Home extends AppCompatActivity {
     }
 
     public void callScaleTester(View view) {
-//        startActivity(new Intent(Home.this, ScaleTestingActivity.class));
+        startActivity(new Intent(Home.this, ScaleTestingActivity.class));
     }
 
     public void callNoteGenerator(View view) {

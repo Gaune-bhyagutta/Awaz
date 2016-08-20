@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
     android:orientation="vertical">
 
     <!--Activity Title -->
@@ -22,30 +23,79 @@
             app:titleTextColor="@color/white" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/primaryNotes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="PRIMARY NOTES"
-        android:textSize="40dp"
-        android:typeface="monospace">
-
-    </TextView>
-
+    <!--Rest of the content-->
     <LinearLayout
-        android:id="@+id/vocalTester"
+        android:id="@+id/subParentLL"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <!--primary notes-->
+        <TextView
+            android:id="@+id/primaryNotes"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:textSize="50sp"
+            android:text="PRIMARY NOTES"
+            android:typeface="monospace"
+            android:layout_weight="2"/>
 
+        <!--current frequency textview-->
+        <TextView
+            android:id="@+id/currentFrequency"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="182Hz"
+            android:textSize="50sp"
+            android:typeface="monospace"
+            android:layout_weight="2"/>
+
+        <!--Graph fragment-->
+        <LinearLayout
+            android:id="@+id/vocalTester"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/colorPrimaryLight"
+            android:orientation="horizontal"
+            android:layout_weight="10">
+
+        </LinearLayout>
+
+        <!--Frequency Levels-->
+        <LinearLayout
+            android:id="@+id/freqLevelsRL"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_below="@+id/frequencyTV"
+            android:layout_margin="5dp"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <!--Low Mid & high-->
+            <TextView
+                android:id="@+id/lowFreqTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Low"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/midFreqTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Mid"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/highFreqTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="High"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/currentFrequency"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="182Hz"
-        android:textSize="50dp"
-        android:typeface="monospace"></TextView>
-
 </LinearLayout>

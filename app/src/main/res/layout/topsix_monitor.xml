@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:padding="@dimen/root_layout_padding">
+    android:orientation="vertical">
 
     <!--Activity Title -->
     <LinearLayout
@@ -20,23 +19,24 @@
             android:layout_marginTop="1dp"
             android:background="@color/colorPrimary"
             app:title="@string/audio_monitor"
-            app:titleTextColor="@color/white"/>
+            app:titleTextColor="@color/white" />
     </LinearLayout>
 
-    <!--Graph Fragment -->
+    <!--Graph Fragment Amplitude -->
     <LinearLayout
         android:id="@+id/timeFragmentLL"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="4"
-        android:background="@color/a"
+        android:background="@color/colorPrimaryLight"
         android:orientation="vertical"></LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@color/colorPrimaryDark">
 
         <TextView
             android:id="@+id/decibelTV"
@@ -60,13 +60,13 @@
     </LinearLayout>
 
 
-    <!--Graph Fragment -->
+    <!--Graph Fragment Frequency -->
     <LinearLayout
         android:id="@+id/freqFragmentLL"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="4"
-        android:background="@color/a"
+        android:background="@color/colorPrimaryLight"
         android:orientation="vertical"></LinearLayout>
 
 </LinearLayout>
