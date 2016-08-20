@@ -140,6 +140,11 @@ public class GraphFragment extends Fragment {
                     yPosDown = yPosDown + factor;
                     yPosUp = yPosUp - factor;
                 }
+                /**Draw Legends for Time Domain Graph*/
+            xPos= cgw-meshDim*6;
+            canvas.drawText("LEGENDS",xPos,meshDim,textObj);
+            canvas.drawText("X-Axis: Time",xPos,meshDim*2,textObj);
+            canvas.drawText("Y-Axis: Amplitude (dB)",xPos,meshDim*3,textObj);
             } else if (GRAPH_DOMAIN_MODE == 1) {
                 /**Freq Labels*/
 
@@ -165,7 +170,7 @@ public class GraphFragment extends Fragment {
                 int maxmFreq = 8;               /**in KHz*/
 
                 xPos = 0;
-                int xIncrement = cgw/noOfHorUnits;
+                int xIncrement = cgw / noOfHorUnits;
                 yPos = cgh - meshDim + 20;      /**Remains constant*/
 
                 for (i = 0; i < noOfHorUnits; i++) {
@@ -173,6 +178,11 @@ public class GraphFragment extends Fragment {
                     canvas.drawText(Integer.toString(minmFreq++), xPos, yPos, textObj);
                     xPos += xIncrement;
                 }
+                /**Draw Legends for Freq Domain Graph*/
+                xPos= cgw-meshDim*6;
+                canvas.drawText("LEGENDS",xPos,meshDim,textObj);
+                canvas.drawText("X-Axis: Frequency (KHz)",xPos,meshDim*2,textObj);
+                canvas.drawText("Y-Axis: Amplitude (dB)",xPos,meshDim*3,textObj);
             }
         }
 
