@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@drawable/greengradient"
+        android:background="@color/colorPrimaryDark"
         android:orientation="horizontal">
 
         <TextView
@@ -38,7 +38,8 @@
             android:layout_gravity="center_vertical"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textAlignment="gravity"
-            android:gravity="center|bottom"/>
+            android:gravity="center|bottom"
+            android:background="@drawable/greengradient"/>
     </LinearLayout>
 
     <!--TIMER -->
@@ -47,16 +48,13 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/red_divider"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/timerTV"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="1dp"
-            android:layout_marginTop="1dp"
-            android:background="@color/red_primary_light"
+            android:background="@color/colorPrimaryDark"
             android:gravity="center"
             android:textColor="#fff"
             android:textSize="15sp" />
@@ -69,23 +67,24 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="10"
-        android:background="@color/d"
+        android:background="@color/colorPrimaryDark"
         android:orientation="vertical">
 
     </LinearLayout>
 
+    <!--Recording Button-->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/d">
+        android:background="@color/colorPrimaryDark">
 
         <Button
             android:id="@+id/recButton"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/redgradient"
-            android:text="Rec"
+            android:text="Record"
             android:onClick="recButtonClicked"/>
     </LinearLayout>
 

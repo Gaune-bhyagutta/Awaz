@@ -77,7 +77,7 @@ public class RecordingActivity extends AppCompatActivity {
         /**Default Configs in UI*/
         RecordingStateTV.setBackgroundResource(R.drawable.greengradient);
         RecordingStateTV.setText("Ready to Record");
-        RecordingButton.setText("REC");
+        RecordingButton.setText("RECORD");
         RecordingButton.setBackgroundResource(R.drawable.redgradient);
 
         /**Timer UI Setups*/
