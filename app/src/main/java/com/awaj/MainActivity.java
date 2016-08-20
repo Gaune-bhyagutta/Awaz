@@ -245,15 +245,7 @@ public class MainActivity extends AppCompatActivity {
 
     //START OF Graph Fragment Section
     public static void plotGraph(float[] audioFloatsForAmp, float[] fftOutput) {
-//        if (graphFragment.getGraphFragmentMode() == 0) {
-//            /**Amplitude Mode*/
-//            graphFragment.updateGraph(audioFloatsForAmp);
-//        } else if (graphFragment.getGraphFragmentMode() == 1) {
-//            /**Frequency Mode*/
-//            graphFragment.updateGraph(fftOutput);
-//        }
         graphFragment.updateGraph(audioFloatsForAmp, fftOutput);
-
     }
 
     //END OF Graph Fragment Section
@@ -303,6 +295,7 @@ public class MainActivity extends AppCompatActivity {
 
 //                        timerTV.setText("00:00:00");
                         timerStartObj.start();
+                        recLogo.setVisibility(View.VISIBLE);
                     } else if (rec_btn_count == 1) {
                         /**Code to handle click of "Rec-STOP" button*/
                         stateClass.setRecoderingState(false);

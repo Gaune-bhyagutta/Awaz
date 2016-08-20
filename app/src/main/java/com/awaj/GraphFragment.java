@@ -1,5 +1,6 @@
 package com.awaj;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,9 +91,12 @@ public class GraphFragment extends Fragment {
             int cgw2 = cgw / 2;
             int meshDim = cgh / 30;
             int i;
+
+            int minmdB = -90;
+            int maxmdB = 0;
             /**Mesh Paint Object*/
             Paint meshObj = new Paint();
-            meshObj.setColor(getResources().getColor(R.color.amber_secondary_text));
+            meshObj.setColor(getResources().getColor(R.color.divider));
             meshObj.setStrokeWidth(1);
 
             /**Text Paint Object*/
@@ -121,26 +125,53 @@ public class GraphFragment extends Fragment {
 
             if (GRAPH_DOMAIN_MODE == 0) {
                 /**AMP*/
+                /**Vertical Labels*/
+                int noOfVertUnits = 9;
+                int dbIncrement = -90;
+                int factor = cgh2 / noOfVertUnits;
+                int xPos = 0;
+                int yPosUp = cgh2;
+                int yPosDown = cgh2;
+                for (i = 0; i < noOfVertUnits; i++) {
+                    /** in Y-Axis only*/
+                    canvas.drawText(Integer.toString(dbIncrement), xPos, yPosUp, textObj);
+                    canvas.drawText(Integer.toString(dbIncrement), xPos, yPosDown, textObj);
+                    dbIncrement += 10;
+                    yPosDown = yPosDown + factor;
+                    yPosUp = yPosUp - factor;
+                }
             } else if (GRAPH_DOMAIN_MODE == 1) {
                 /**Freq Labels*/
+
                 /**BASELINE*/
-                canvas.drawLine(0, cgh2, cgw, cgh2, textObj);
+                canvas.drawLine(0, cgh - meshDim, cgw, cgh - meshDim, textObj);
 
                 /**Vertical Labels*/
-                float dbIncrement = 0;
-                float yDecrement = 0;
-                for (i = 0; i < cgh2; i++) {
-                    canvas.drawText(Float.toString(dbIncrement), 0, cgh2, textObj);
+                int noOfVertUnits = 9;
+                int dbIncrement = -90;
+                int yDecrement = cgh / noOfVertUnits;
+                int xPos = 0;
+                int yPos = cgh - meshDim;
+                for (i = 0; i < noOfVertUnits; i++) {
+                    /** in Y-Axis only*/
+                    canvas.drawText(Integer.toString(dbIncrement), xPos, yPos, textObj);
+                    dbIncrement += 10;
+                    yPos = yPos - yDecrement;
                 }
 
                 /**Horizontal Labels*/
-                float freqValue = 0;
-                float xIncrement = 0;
-                for (i = 0; i < cgw; i++) {
-                    /**Move in X-Axis only*/
-                    canvas.drawText(Float.toString(freqValue), xIncrement, cgh2 + 20, textObj);
-                    freqValue += 0.5;
-                    xIncrement += meshDim * 2;
+                int noOfHorUnits = 8;
+                int minmFreq = 0;
+                int maxmFreq = 8;               /**in KHz*/
+
+                xPos = 0;
+                int xIncrement = cgw/noOfHorUnits;
+                yPos = cgh - meshDim + 20;      /**Remains constant*/
+
+                for (i = 0; i < noOfHorUnits; i++) {
+                    /** in X-Axis only*/
+                    canvas.drawText(Integer.toString(minmFreq++), xPos, yPos, textObj);
+                    xPos += xIncrement;
                 }
             }
         }
@@ -151,14 +182,15 @@ public class GraphFragment extends Fragment {
         public void timeAmplitudeGraph(Canvas canvas, Paint graphVisualizationPO, Paint threadPaintObj) {
             double heightNormalizer = (canvas.getHeight() / 2) * 0.00003051757812;
             int index = 0;
+            int meshDim = canvas.getHeight() / 30;
 
             float newX, newY;
-            float oldX = 0, oldY = canvas.getHeight() / 2;
-            float X1 = 0;
+            float oldX = meshDim, oldY = canvas.getHeight() / 2;
+            float X1 = meshDim;
             float Y1 = canvas.getHeight() / 2;
             float X2, Y2;
 
-            for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
+            for (X1 = meshDim; X1 <= canvas.getWidth(); X1++) {
                 try {
                     graph_height = (float) (audioDataTimeDomain[index] * heightNormalizer);
                 } catch (NullPointerException e) {
@@ -184,23 +216,24 @@ public class GraphFragment extends Fragment {
             int horizontalBarHeight = (int) ((canvas.getHeight() / 2) - maxValue);
             graphVisualizationPO.setColor(Color.parseColor("#ff0000"));
             graphVisualizationPO.setStrokeWidth(2);
-            canvas.drawLine(0, horizontalBarHeight, canvas.getWidth(), horizontalBarHeight, graphVisualizationPO);
+            canvas.drawLine(meshDim - meshDim / 10, horizontalBarHeight, canvas.getWidth(), horizontalBarHeight, graphVisualizationPO);
         }
 
         /**
          * Frequency Domain Amplitude Graph
          */
         public void frequencyAmplitudeGraph(Canvas canvas, Paint graphVisualizationPO, Paint threadPaintObj) {
-            double heightNormalizer = 1;
+            double heightNormalizer = 5;
             int index = 0;
+            int meshDim = canvas.getHeight() / 30;
 
             float newX, newY;
-            float oldX = 0, oldY = canvas.getHeight() / 2;
-            float X1 = 0;
-            float Y1 = canvas.getHeight() / 2;
+            float oldX = meshDim, oldY = canvas.getHeight() - meshDim;
+            float X1 = meshDim;
+            float Y1 = canvas.getHeight() - meshDim;
             float X2, Y2;
 
-            for (X1 = 0; X1 <= canvas.getWidth(); X1++) {
+            for (X1 = meshDim; X1 <= canvas.getWidth(); X1++) {
                 try {
                     graph_height = (float) (audioDataFreqDomain[index] * heightNormalizer);
 
@@ -224,17 +257,17 @@ public class GraphFragment extends Fragment {
             }
             /**Highest value indicator*/
             int maxValue = (int) (FrequencyValue.findMaxValue(audioDataFreqDomain) * heightNormalizer);
-            int horizontalBarHeight = (int) ((canvas.getHeight() / 2) - maxValue);
-            graphVisualizationPO.setColor(Color.parseColor("#ff0000"));
+            int horizontalBarHeight = (int) ((canvas.getHeight() - meshDim) - maxValue);
+            graphVisualizationPO.setColor(getResources().getColor(R.color.colorAccent));
             graphVisualizationPO.setStrokeWidth(2);
-            canvas.drawLine(0, horizontalBarHeight, canvas.getWidth(), horizontalBarHeight, graphVisualizationPO);
+            canvas.drawLine(meshDim - meshDim / 10, horizontalBarHeight, canvas.getWidth(), horizontalBarHeight, graphVisualizationPO);
         }
     }
 
     /**
      * End of myGraphView
      */
-    public void updateGraph(float[] data1,float[] data2) {
+    public void updateGraph(float[] data1, float[] data2) {
         audioDataTimeDomain = data1;
         audioDataFreqDomain = data2;
     }
