@@ -46,7 +46,7 @@
 
     <!--Button to start Monitoring-->
     <Button
-        android:id="@+id/button"
+        android:id="@+id/monitorButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -54,6 +54,7 @@
         android:layout_alignParentStart="true"
         android:layout_margin="5dp"
         android:text="Start Monitoring"
-        android:typeface="monospace" />
+        android:typeface="monospace"
+        android:textStyle="bold"/>
 
 </RelativeLayout>
