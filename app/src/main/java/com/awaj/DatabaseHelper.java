@@ -30,10 +30,10 @@ import java.io.OutputStream;
         private Context context;
         private static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
         private SQLiteDatabase myDatabase;
-        double freq[]= new double[107];
-        double min_freq[]=new double[107];
-        double max_freq[]=new double[107];
-        String note[] = new String[107];
+        double freq[]= new double[72];
+        double min_freq[]=new double[72];
+        double max_freq[]=new double[72];
+        String note[] = new String[72];
 
         DatabaseHelper(Context context) {
             //calling the super class constructor
@@ -144,22 +144,22 @@ import java.io.OutputStream;
 
        public int matchFreq(double frequency){
            //Log.d("VIVZ"," freq="+frequency);
-
+           int length = freq.length;
            int i=0,match=200;
-           if(frequency<=max_freq[54] && frequency>=min_freq[54]){
-               match = 54;
+           if(frequency<=max_freq[length/2] && frequency>=min_freq[length/2]){
+               match = length/2;
            }
-           else if(frequency<freq[54]){
-               for (i=0;i<54;i++){
+           else if(frequency<freq[length/2]){
+               for (i=0;i<length/2;i++){
                    if(frequency<=max_freq[i] && frequency>=min_freq[i]){
                        match = i;
                        break;
                    }
                }
            }
-           else if (frequency>freq[54]){
+           else if (frequency>freq[length/2]){
 
-               for (i=54;i<107;i++){
+               for (i=length/2;i<length;i++){
 
                    if(frequency<=max_freq[i] && frequency>=min_freq[i]){
                        match = i;
@@ -179,6 +179,20 @@ import java.io.OutputStream;
                 return "none";
             }
         }
+
+     public float getNoteFrequency (int nearestMatch){
+         if (nearestMatch<200){
+             return (float) freq[nearestMatch];
+         }
+         else{
+             return 0;}
+     }
+
+     public int nearestMatch(float frequency ){
+         int nearestMatch;
+         nearestMatch =BinarySearch.searchNearestValue(freq, frequency);
+         return nearestMatch;
+     }
 
  }
 

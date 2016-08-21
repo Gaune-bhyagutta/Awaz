@@ -101,11 +101,11 @@ public class MainActivity extends AppCompatActivity {
         }
         databaseHelper.getAllData();
 
-        //frequency match test
-        int match = databaseHelper.matchFreq(698.972);
-        String note = databaseHelper.getNote(match);
-
-        Log.d("VIVZ", "note=" + note + " match=" + match);
+//        //frequency match test
+//        int match = databaseHelper.matchFreq(698.972);
+//        String note = databaseHelper.getNote(match);
+//
+//        Log.d("VIVZ", "note=" + note + " match=" + match);
 
         //end of database part
 
@@ -261,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
                     audioRecordFileDecibelFrequencyNoteGraph = new AudioRecordFileDecibelFrequencyNoteGraph(AUDIO_SOURCE, SAMPLE_RATE_IN_HZ, CHANNELS_CONFIGURATION, AUDIO_ENCODING,
                             NO_OF_SAMPLES, new AudioRecordFileDecibelFrequencyNoteGraphListener() {
                         @Override
-                        public void processExecuting(String decibel, String frequency, String note, float[] ampValues, float freqValues[]) {
+                        public void processExecuting(String decibel, String frequency, String note, float[] ampValues, float[] freqValues) {
                             updateNotes(note);
                             updateFrequncy(frequency);
                             updateDecibel(decibel);

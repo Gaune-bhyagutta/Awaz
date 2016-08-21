@@ -21,7 +21,7 @@ public class AudioRecordFileDecibelFrequencyNoteGraph extends AudioRecordFile {
 
     float[] audioFloatsForAmp;
     float[] audioFloatsForFFT;
-    float[] fftOutput;
+    float[] fftOutput , fftOutput1;
 
     public AudioRecordFileDecibelFrequencyNoteGraph(int AUDIO_SOURCE, int SAMPLE_RATE_IN_HZ, int CHANNELS_CONFIGURATION, int AUDIO_ENCODING, int NO_OF_SAMPLES,
                                              AudioRecordFileDecibelFrequencyNoteGraphListener listener) {
@@ -149,11 +149,12 @@ public class AudioRecordFileDecibelFrequencyNoteGraph extends AudioRecordFile {
                 }
 
                 float decibelValue = decibelCalculation.decibelCalculation(audioData);
-                fftOutput = FftOutput.callMainFft(audioFloatsForFFT);
+                fftOutput1 = FftOutput.callMainFft(audioFloatsForFFT);
+                fftOutput = fftOutput1;
 
                 /**Fundamental Frequency*/
 
-                float frequency = FrequencyValue.getFundamentalFrequency(fftOutput);
+                float frequency = FrequencyValue.getFundamentalFrequency(fftOutput1);
 
                 databaseHelper = new DatabaseHelper(MyApplication.getAppContext());
                 databaseHelper.getAllData();

@@ -128,13 +128,13 @@ public class FftOutput {
      * @param: float[]
      * @return:  void
      */
-    /** Low pass filter for frequency */
+    /** Low pass filter for frequency - Blackman Window*/
 
     private static void windowing(float[] input){
         float w[]=new float[input.length];
         for(int i=0; i<input.length; i++){
-            w[i] = (float)(0.42 - 0.5 * Math.cos(2* Math.PI * i / (w.length - 1)) + 0.08 * Math.cos(4 * Math.PI * i / (w.length - 1)));
-            input[i]*=w[i];
+                w[i] = (float)(0.42 - 0.5 * Math.cos(2* Math.PI * i / (w.length - 1)) + 0.08 * Math.cos(4 * Math.PI * i / (w.length - 1)));
+                input[i]*=w[i];
         }
     } /** End of Windowing */
 

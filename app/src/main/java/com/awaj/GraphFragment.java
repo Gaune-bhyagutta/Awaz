@@ -230,7 +230,6 @@ public class GraphFragment extends Fragment {
             graphVisualizationPO.setStrokeWidth(2);
             canvas.drawLine(meshDim - meshDim / 10, horizontalBarHeight, canvas.getWidth(), horizontalBarHeight, graphVisualizationPO);
         }
-
         /**
          * Frequency Domain Amplitude Graph
          */

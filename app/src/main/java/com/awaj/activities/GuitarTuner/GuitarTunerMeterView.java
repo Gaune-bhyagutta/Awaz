@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.awaj.R;
+import com.awaj.activities.GuitarTuningActivity;
 
 /**
  * Subclass for drawing the meter
@@ -17,10 +18,15 @@ public class  GuitarTunerMeterView extends View {
     float x2, y2, theta;
     float radius;
 
+    GuitarTuningActivity guitarTuningActivity ;
+
     boolean drawnOnce = false;
-    float noteFrequency = 184;
-    float frequency = 189;
-    float difference = noteFrequency - frequency;
+    static float currentFrequency =0;
+    static float currentNoteFrequency=0;
+
+    static float noteMinFrequency= currentNoteFrequency-2 ,noteMaxFrequency=currentNoteFrequency+2;
+    static float difference = 0;
+    static float unit = noteMaxFrequency-noteMinFrequency;
 
     /**
      * Three Constructors
@@ -41,18 +47,22 @@ public class  GuitarTunerMeterView extends View {
         paintText = new Paint();
     }
 
+
     /**
      * Draws custom view
      */
     @Override
     protected void onDraw(Canvas canvas) {
         //super.onDraw(canvas);
+
+
         /**Setting up Variables*/
+
         canvas.drawColor(getResources().getColor(R.color.colorPrimaryDark));
-        int cgh = canvas.getHeight();
-        int cgw = canvas.getWidth();
-        int cgh2 = cgh / 2;
-        int cgw2 = cgw / 2;
+        float cgh = canvas.getHeight();
+        float cgw = canvas.getWidth();
+        float cgh2 = cgh / 2;
+        float cgw2 = cgw / 2;
 
         /**Setup Paint objects*/
         innerCircle.setColor(getResources().getColor(R.color.colorPrimary));
@@ -71,25 +81,43 @@ public class  GuitarTunerMeterView extends View {
             drawnOnce = true;
             theta = (float) (Math.PI / 2);
         }
-        x2 = cgw2 + (float) (radius * Math.cos(theta));
-        y2 = cgh2 - (float) (radius * Math.sin(theta));
-        canvas.drawLine(cgw2, cgh2, x2, y2, needle);
+        x2 = cgw2 + (float) (cgw2 * Math.cos(theta));
+        y2 = cgh - (float) (cgw2 * Math.sin(theta));
+        canvas.drawLine(cgw2, cgh, x2, y2, needle);
         /**Draw Inner Base Circle to overlap bottom half of needle*/
         canvas.drawCircle(cgw2, cgh, cgw2 / 2, innerCircle);
 
+        guitarTuningActivity = new GuitarTuningActivity(new TuningActivityListener() {
+            @Override
+            public void sendData(float currentFreq, float noteFreq) {
+                currentNoteFrequency = noteFreq;
+                currentFrequency = currentFreq;
+            }
+        });
         /**Dynamic Needle*/
-        if (difference < 0) {
-            if (theta > Math.PI / 4) {
-                theta -= (float) (Math.PI / 180);
-            }
-        } else if (difference > 0) {
-            if (theta < Math.PI * 3 / 2) {
-                theta += (float) (Math.PI / 180);
-            }
+        difference =currentNoteFrequency - currentFrequency;
+//        if(difference<0){
+//            if(theta>((Math.PI/2)+(Math.PI/unit*difference))) {
+//                theta -= (float) (Math.PI / 180);
+//            }
+//        }
+//        else if(difference>0){
+//            if(theta<((Math.PI/2)+(Math.PI/unit*difference))) {
+//                theta += (float) (Math.PI / 180);
+//            }
+//        }
+
+        if(difference<0){
+            theta = (float) ((Math.PI/2) + (Math.PI/unit*difference));
         }
+        else if(difference>0){
+            theta = (float) ((Math.PI/2)+(Math.PI/unit*difference));
+        }
+
         invalidate();
 
     }/**End onDraw*/
+
 
 //    public void drawPrimaryNotes(Canvas canvas) {
 //        textSize = 80;

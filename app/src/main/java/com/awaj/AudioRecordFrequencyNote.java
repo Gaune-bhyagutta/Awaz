@@ -37,7 +37,7 @@ public class AudioRecordFrequencyNote extends AudioRecordMain {
     @Override
     protected void onProgressUpdate(String... values) {
         //super.onProgressUpdate(values);
-        listener.processExecuting(values[0], values[1]);
+        listener.processExecuting(values[0], values[1], values[2], values[3]);
     }
 
     @Override
@@ -141,18 +141,20 @@ public class AudioRecordFrequencyNote extends AudioRecordMain {
                 float[] fftOutput = FftOutput.callMainFft(audioFloatsForFFT);
 
                 /**Fundamental Frequency*/
-
-                float frequency = FrequencyValue.getFundamentalFrequency(fftOutput);
-                //MainActivity.plotGraph(audioFloatsForAmp, audioFloatsForFFT);
+                float frequency = FrequencyValue.getDownSampledFrequency(fftOutput);
+//                float downSampledFrequency = FrequencyValue.getDownSampledFrequency(fftOutput);
+//                MainActivity.plotGraph(audioFloatsForAmp,audioFloatsForFFT);
 
                 databaseHelper = new DatabaseHelper(MyApplication.getAppContext());
+                databaseHelper.getAllData();
                 int match = databaseHelper.matchFreq(frequency);
                 String note = databaseHelper.getNote(match);
+                int nearestMatch = databaseHelper.nearestMatch(frequency);
+                String nearestNote = databaseHelper.getNote(nearestMatch);
+                float nearestNoteFrequency = databaseHelper.getNoteFrequency(nearestMatch);
 //                if(listener!=null)
 //                    listener.onDataLoaded(decibelValue,frequency,note);
-                publishProgress(String.valueOf(frequency), note);
-
-
+                publishProgress(String.valueOf(frequency), note, nearestNote, String.valueOf(nearestNoteFrequency));
             }
             Log.d(TAG, "Here");
             audioRecord.stop();

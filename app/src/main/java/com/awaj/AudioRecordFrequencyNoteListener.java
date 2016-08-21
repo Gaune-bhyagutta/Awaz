@@ -5,6 +5,6 @@ package com.awaj;
  */
 public interface AudioRecordFrequencyNoteListener {
 
-    void processExecuting(String frequency,String note);
+    void processExecuting(String frequency,String note, String nearestNote, String nearestNoteFrequency);
     void processExecuted();
 }
