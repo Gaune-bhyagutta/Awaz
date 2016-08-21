@@ -34,7 +34,12 @@ public class GuitarTuningActivity extends AppCompatActivity{
     /**
      * Variables
      */
-    TuningActivityListener listener;
+    TuningActivityListener listener = new TuningActivityListener() {
+        @Override
+        public void sendData(float currentFreq, float noteFreq) {
+
+        }
+    };
     Toolbar toolbarObj;
     static String decibelStr;
     static String noteStr;
@@ -46,6 +51,13 @@ public class GuitarTuningActivity extends AppCompatActivity{
     TextView musicNotesTV, currentNoteTV, currentFrequencyTV;
 
 
+    public  GuitarTuningActivity(){
+
+    }
+
+    public GuitarTuningActivity(TuningActivityListener listener){
+        this.listener = listener;
+    }
     String lowerNotes = "A A#";
     String mainNote = "B";
     String higherNotes = "C C#";
