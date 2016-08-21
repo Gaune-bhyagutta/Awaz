@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     //START---Audio Record and Play Parameters-----
     // THE DEFINETIONS ARE DEFINED IN THE RESPECTIVE FUNCTION
     private static final int AUDIO_SOURCE = MediaRecorder.AudioSource.MIC;
-    private static final int SAMPLE_RATE_IN_HZ = 44100;
+    public static final int SAMPLE_RATE_IN_HZ = 44100;
     private static final int CHANNELS_CONFIGURATION = AudioFormat.CHANNEL_IN_MONO;
     private static final int AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;
 

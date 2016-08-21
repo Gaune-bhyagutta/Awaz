@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.awaj.AudioPlayClassMain;
 import com.awaj.AudioRecordFile;
+import com.awaj.AudioRecordFileDecibelFrequencyNoteGraph;
+import com.awaj.AudioRecordFileDecibelFrequencyNoteGraphListener;
 import com.awaj.AudioRecordFileListener;
 import com.awaj.GraphFragment;
 import com.awaj.MainActivity;
@@ -42,11 +44,16 @@ public class RecordingActivity extends AppCompatActivity {
      * Graph Fragment
      */
     private static GraphFragment graphFragment = new GraphFragment();
+    AudioRecordFileDecibelFrequencyNoteGraph recObj;
 
-    /**Object For Recording*/
+    /**
+     * Object For Recording
+     */
     AudioRecordFile myAudioRecordFile;
     StateClass myStateClass = StateClass.getState();
-    /**Object for playback*/
+    /**
+     * Object for playback
+     */
     AudioPlayClassMain myAudioPlayClassMain;
 
     //START---Audio Record and Play Parameters-----
@@ -60,6 +67,7 @@ public class RecordingActivity extends AppCompatActivity {
     public static final float RESOLUTION = SAMPLE_RATE_IN_HZ / NO_OF_SAMPLES;
 
     private static int MIN_BUFFER_SIZE_BYTES = NO_OF_SAMPLES * 2;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,11 +93,14 @@ public class RecordingActivity extends AppCompatActivity {
         timerTV.setText("00:00:00");
 
         /**Start-GRAPH FRAGMENT*/
-//        FragmentManager myFragmentManager = getSupportFragmentManager();
-//        FragmentTransaction myFragmentTransaction = myFragmentManager.beginTransaction();
-//        myFragmentTransaction.add(R.id.graphFragmentLL, graphFragment, " ");
-//        myFragmentTransaction.commit();
+        FragmentManager myFragmentManager = getSupportFragmentManager();
+        FragmentTransaction myFragmentTransaction = myFragmentManager.beginTransaction();
+        myFragmentTransaction.add(R.id.graphFragmentLLinRecorder, graphFragment, " ");
+        myFragmentTransaction.commit();
 
+        //Setting To be made before Recording,Playing and Graph Plotting
+        graphFragment.setMinBufferSizeInBytes(MIN_BUFFER_SIZE_BYTES);
+        GraphFragment.GRAPH_DOMAIN_MODE = 0;
     }
 
     public void recButtonClicked(View view) {
@@ -110,22 +121,18 @@ public class RecordingActivity extends AppCompatActivity {
             RecordingButton.setBackgroundResource(R.drawable.greengradient);
 
             /**Start Recording*/
-            myAudioRecordFile = new AudioRecordFile(AUDIO_SOURCE,
-                    SAMPLE_RATE_IN_HZ,
-                    CHANNELS_CONFIGURATION,
-                    AUDIO_ENCODING,
-                    NO_OF_SAMPLES,new AudioRecordFileListener() {
+            recObj = new AudioRecordFileDecibelFrequencyNoteGraph(AUDIO_SOURCE, SAMPLE_RATE_IN_HZ, CHANNELS_CONFIGURATION, AUDIO_ENCODING, NO_OF_SAMPLES, new AudioRecordFileDecibelFrequencyNoteGraphListener() {
                 @Override
-                public void processExecuting() {
-                    /**todo: Add UI changes here*/
+                public void processExecuted() {
+
                 }
 
                 @Override
-                public void processExecuted() {
-                    /**todo:after recording completion*/
+                public void processExecuting(String decibel, String frequency, String note, float[] ampValues, float[] freqValues) {
+                    plotGraph(ampValues, freqValues);
                 }
             });
-            myAudioRecordFile.execute();
+            recObj.execute();
         }
         /**Is not Recording*/
         else {
@@ -142,7 +149,6 @@ public class RecordingActivity extends AppCompatActivity {
             RecordingButton.setText("REC");
             RecordingButton.setBackgroundResource(R.drawable.redgradient);
             /***/
-
         }
     }
 
@@ -163,5 +169,12 @@ public class RecordingActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         myStateClass.setRecoderingState(false);
+    }
+
+    /**
+     * Plots the graph in graph fragment
+     */
+    public static void plotGraph(float[] audioFloatsForAmp, float[] fftOutput) {
+        graphFragment.updateGraph(audioFloatsForAmp, fftOutput);
     }
 }

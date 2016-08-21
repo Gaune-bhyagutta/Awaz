@@ -1,14 +1,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- This group uses the default category. -->
     <group android:id="@+id/menuGroup_Main">
-        <item
-            android:id="@+id/menu_Manual"
-            android:orderInCategory="5"
-            android:title="Manual" />
-        <item
-            android:id="@+id/menu_settings"
-            android:orderInCategory="5"
-            android:title="Settings" />
+        <!--<item-->
+            <!--android:id="@+id/menu_Manual"-->
+            <!--android:orderInCategory="5"-->
+            <!--android:title="Manual" />-->
+        <!--<item-->
+            <!--android:id="@+id/menu_settings"-->
+            <!--android:orderInCategory="5"-->
+            <!--android:title="Settings" />-->
         <item
             android:id="@+id/menu_about"
             android:orderInCategory="10"

@@ -23,7 +23,7 @@ public class AudioRecordFileDecibelFrequencyNoteGraph extends AudioRecordFile {
     float[] audioFloatsForFFT;
     float[] fftOutput;
 
-    AudioRecordFileDecibelFrequencyNoteGraph(int AUDIO_SOURCE, int SAMPLE_RATE_IN_HZ, int CHANNELS_CONFIGURATION, int AUDIO_ENCODING, int NO_OF_SAMPLES,
+    public AudioRecordFileDecibelFrequencyNoteGraph(int AUDIO_SOURCE, int SAMPLE_RATE_IN_HZ, int CHANNELS_CONFIGURATION, int AUDIO_ENCODING, int NO_OF_SAMPLES,
                                              AudioRecordFileDecibelFrequencyNoteGraphListener listener) {
         //super(AUDIO_SOURCE, SAMPLE_RATE_IN_HZ, CHANNELS_CONFIGURATION, AUDIO_ENCODING, NO_OF_SAMPLES, (AudioRecordMainListener) listener);
 

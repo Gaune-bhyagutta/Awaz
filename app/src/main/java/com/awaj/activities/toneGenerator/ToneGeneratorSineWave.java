@@ -15,7 +15,7 @@ public class ToneGeneratorSineWave extends ToneGenerator {
 
     File file = new File(Environment.getExternalStorageDirectory(), "SineWave.pcm");
 
-    ToneGeneratorSineWave() {
+    ToneGeneratorSineWave(int freq) {
         try {
             file.createNewFile();
             // Mechanism to store fetch data from mic and store it.
@@ -23,7 +23,7 @@ public class ToneGeneratorSineWave extends ToneGenerator {
             bufferedOutputStream = new BufferedOutputStream(outputStream);
             dataOutputStream = new DataOutputStream(bufferedOutputStream);
 
-            for (double theta = 0; theta < 1000000; theta = theta + 0.10) {
+            for (double theta = 0; theta < 1000000; theta = theta + freq) {
                 dataOutputStream.writeShort((int) (5000 * Math.cos(theta)));
             }
         } catch (IOException e) {

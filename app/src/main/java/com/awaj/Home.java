@@ -76,16 +76,9 @@ public class Home extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-//        this.appendMenuItemText(item);
-        if (item.getItemId() == R.id.menu_Manual) {
-//            this.showManual();
-            startActivity(new Intent(Home.this, Manual.class));
-        } else if (item.getItemId() == R.id.menu_about) {
+        if (item.getItemId() == R.id.menu_about) {
 //            this.showAbout();
             startActivity(new Intent(Home.this, About.class));
-        } else if (item.getItemId() == R.id.menu_settings) {
-//            this.showSettings();
-            startActivity(new Intent(Home.this, Settings.class));
         }
         return super.onOptionsItemSelected(item);
     }

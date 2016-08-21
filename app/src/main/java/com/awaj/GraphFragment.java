@@ -27,6 +27,8 @@ public class GraphFragment extends Fragment {
      * 0-AMP/TIME 1-AMP/FREQ
      */
     public static int GRAPH_DOMAIN_MODE;
+    public static boolean TIME_DOMAIN;
+    public static boolean FREQ_DOMAIN;
     //myGraphView myGraphView = new myGraphView(getActivity());
 
     @Override
@@ -69,9 +71,9 @@ public class GraphFragment extends Fragment {
 //            }
             /**ACTUAL PLOTS*/
             drawMeshLines(canvas);
-            if (GRAPH_DOMAIN_MODE == 1) {
+            if (GRAPH_DOMAIN_MODE == 1 || FREQ_DOMAIN) {
                 frequencyAmplitudeGraph(canvas, graphVisualizationPO, threadPaintObj);
-            } else {
+            } else if (GRAPH_DOMAIN_MODE == 0 || TIME_DOMAIN) {
                 timeAmplitudeGraph(canvas, graphVisualizationPO, threadPaintObj);
             }
         }
@@ -141,10 +143,10 @@ public class GraphFragment extends Fragment {
                     yPosUp = yPosUp - factor;
                 }
                 /**Draw Legends for Time Domain Graph*/
-            xPos= cgw-meshDim*6;
-            canvas.drawText("LEGENDS",xPos,meshDim,textObj);
-            canvas.drawText("X-Axis: Time",xPos,meshDim*2,textObj);
-            canvas.drawText("Y-Axis: Amplitude (dB)",xPos,meshDim*3,textObj);
+                xPos = cgw - meshDim * 6;
+                canvas.drawText("LEGENDS", xPos, meshDim, textObj);
+                canvas.drawText("X-Axis: Time", xPos, meshDim * 2, textObj);
+                canvas.drawText("Y-Axis: Amplitude (dB)", xPos, meshDim * 3, textObj);
             } else if (GRAPH_DOMAIN_MODE == 1) {
                 /**Freq Labels*/
 
@@ -165,11 +167,11 @@ public class GraphFragment extends Fragment {
                 }
 
                 /**Horizontal Labels*/
-                int noOfHorUnits = 8;
+                int noOfHorUnits = 11;
                 int minmFreq = 0;
                 int maxmFreq = 8;               /**in KHz*/
 
-                xPos = 0;
+                xPos = meshDim;
                 int xIncrement = cgw / noOfHorUnits;
                 yPos = cgh - meshDim + 20;      /**Remains constant*/
 
@@ -179,10 +181,10 @@ public class GraphFragment extends Fragment {
                     xPos += xIncrement;
                 }
                 /**Draw Legends for Freq Domain Graph*/
-                xPos= cgw-meshDim*6;
-                canvas.drawText("LEGENDS",xPos,meshDim,textObj);
-                canvas.drawText("X-Axis: Frequency (KHz)",xPos,meshDim*2,textObj);
-                canvas.drawText("Y-Axis: Amplitude (dB)",xPos,meshDim*3,textObj);
+                xPos = cgw - meshDim * 6;
+                canvas.drawText("LEGENDS", xPos, meshDim, textObj);
+                canvas.drawText("X-Axis: Frequency (KHz)", xPos, meshDim * 2, textObj);
+                canvas.drawText("Y-Axis: Amplitude (dB)", xPos, meshDim * 3, textObj);
             }
         }
 
@@ -233,9 +235,10 @@ public class GraphFragment extends Fragment {
          * Frequency Domain Amplitude Graph
          */
         public void frequencyAmplitudeGraph(Canvas canvas, Paint graphVisualizationPO, Paint threadPaintObj) {
-            double heightNormalizer = 5;
             int index = 0;
             int meshDim = canvas.getHeight() / 30;
+//            double heightNormalizer = (canvas.getHeight()-meshDim)/90;
+            double heightNormalizer = 1;
 
             float newX, newY;
             float oldX = meshDim, oldY = canvas.getHeight() - meshDim;
@@ -246,7 +249,6 @@ public class GraphFragment extends Fragment {
             for (X1 = meshDim; X1 <= canvas.getWidth(); X1++) {
                 try {
                     graph_height = (float) (audioDataFreqDomain[index] * heightNormalizer);
-
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
