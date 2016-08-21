@@ -9,7 +9,7 @@ public class FrequencyValue {
     public static float getFundamentalFrequency(float[] amplitude) {
         float fundamentalFrequency;
         double length = amplitude.length;
-        double correctionFactor=1.082, i_max=0;
+        double i_max=0;
         int i;
         float max=0;
         for(i=0;i<amplitude.length/2;i++){
@@ -30,14 +30,16 @@ public class FrequencyValue {
     public static float getDownSampledFrequency (float[] amplitude){
 
         float fundamentalFrequency, maxAmplitude=0;
-        double correctionFactor = 1.082f;
+        double correctionFactor = 1;
         double i_max=0, length =amplitude.length;
         float[] harmonics1= downSample(amplitude,2);
         float[] harmonics2= downSample(amplitude,3);
+        float[] harmonics3 = downSample(amplitude, 4);
+        float[] harmonics4 = downSample(amplitude, 5);
         float[] sum=new float[amplitude.length];
 
         for(int i=0;i<length/2;i++){
-            sum[i]=amplitude[i]*harmonics1[i]*harmonics2[i];
+            sum[i]=amplitude[i]*harmonics1[i]*harmonics2[i]*harmonics3[i]*harmonics4[i];
             if(sum[i]>maxAmplitude){
                 maxAmplitude=sum[i];
                 i_max=i;
