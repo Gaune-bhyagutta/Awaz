@@ -24,6 +24,7 @@ public class FftOutput {
         fftReverse(real,length,noOfStages);// function for reversing bit position in the given data
 
         /** FFT calculation part */
+        n=0;
         fftPoint = 1;
 
         /** First loop that runs till the fft noOfStages */
@@ -33,18 +34,18 @@ public class FftOutput {
 
             /** loop to calculate the corresponding twiddle factor values for each noOfStages */
             for (int j=0; j < n; j++) {
-                cosPart = (float)Math.cos(alpha/fftPoint*j);
-                sinPart = (float)Math.sin(alpha/fftPoint*j);
+                cosPart = (float)Math.cos(alpha*j/fftPoint);
+                sinPart = (float)Math.sin(alpha*j/fftPoint);
                 /** multiplication of values */
                 for (int k=j; k < length; k=k+fftPoint) {
                     multiplierReal = cosPart*real[k+n] - sinPart*imag[k+n];
                     multiplierImag= sinPart*real[k+n] + cosPart*imag[k+n];
-                    /** even part multiplication */
-                    real[k] = real[k] + multiplierReal;
-                    imag[k] = imag[k] + multiplierImag;
                     /** odd part multiplication */
                     real[k+n] = real[k] - multiplierReal;
                     imag[k+n] = imag[k] - multiplierImag;
+                    /** even part multiplication */
+                    real[k] = real[k] + multiplierReal;
+                    imag[k] = imag[k] + multiplierImag;
                 }
             }
         }
@@ -132,12 +133,8 @@ public class FftOutput {
     private static void windowing(float[] input){
         float w[]=new float[input.length];
         for(int i=0; i<input.length; i++){
-            if(i>=0&&i<800) {
-                w[i]=1;
-            }
-            else{
-                w[i]=0;}
-            input[i]*=w[i];
+                w[i] = (float)(0.42 - 0.5 * Math.cos(2* Math.PI * i / (w.length - 1)) + 0.08 * Math.cos(4 * Math.PI * i / (w.length - 1)));
+                input[i]*=w[i];
         }
     } /** End of Windowing */
 
@@ -171,6 +168,7 @@ public class FftOutput {
      */
     public static float[] callMainFft(float[] input){
         normalize(input);
+        windowing(input);
         float[] fftInputReal = makePowerOf2(input);
         float[] fftInputImag = new float[fftInputReal.length];
         for(int i=0;i<fftInputReal.length;i++){
@@ -178,7 +176,6 @@ public class FftOutput {
         }
         fft(fftInputReal, fftInputImag);
         float[] fftOutput= absoluteValue(fftInputReal,fftInputImag);
-//        windowing(fftOutput);
         return fftOutput;
     }/** End of callMainFft */
 }
