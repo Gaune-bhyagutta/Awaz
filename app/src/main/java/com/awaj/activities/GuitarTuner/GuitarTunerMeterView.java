@@ -13,20 +13,16 @@ import com.awaj.activities.GuitarTuningActivity;
 /**
  * Subclass for drawing the meter
  */
-public class GuitarTunerMeterView extends View implements TuningActivityListener{
+public class GuitarTunerMeterView extends View {
     Paint innerCircle, outerBaseCircle, needle, paintText;
     float x2, y2, theta;
     float radius;
 
+    GuitarTuningActivity guitarTuningActivity ;
+
     boolean drawnOnce = false;
     static float currentFrequency =0;
     static float currentNoteFrequency=0;
-
-    @Override
-    public void sendData(float currentFreq, float noteFreq) {
-        currentFrequency =  currentFreq;
-        currentNoteFrequency= noteFreq;
-    }
 
     static float noteMinFrequency= currentNoteFrequency-2 ,noteMaxFrequency=currentNoteFrequency+2;
     static float difference = 0;
@@ -91,6 +87,13 @@ public class GuitarTunerMeterView extends View implements TuningActivityListener
         /**Draw Inner Base Circle to overlap bottom half of needle*/
         canvas.drawCircle(cgw2, cgh, cgw2 / 2, innerCircle);
 
+        guitarTuningActivity = new GuitarTuningActivity(new TuningActivityListener() {
+            @Override
+            public void sendData(float currentFreq, float noteFreq) {
+                currentNoteFrequency = noteFreq;
+                currentFrequency = currentFreq;
+            }
+        });
         /**Dynamic Needle*/
         difference =currentNoteFrequency - currentFrequency;
 //        if(difference<0){
