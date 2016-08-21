@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     //START---Audio Record and Play Parameters-----
     // THE DEFINETIONS ARE DEFINED IN THE RESPECTIVE FUNCTION
     private static final int AUDIO_SOURCE = MediaRecorder.AudioSource.MIC;
-    public static final int SAMPLE_RATE_IN_HZ = 44100;
+    public static final int SAMPLE_RATE_IN_HZ = 22050;
     private static final int CHANNELS_CONFIGURATION = AudioFormat.CHANNEL_IN_MONO;
     private static final int AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;
 
@@ -262,7 +262,7 @@ public class MainActivity extends AppCompatActivity {
                     audioRecordFileDecibelFrequencyNoteGraph = new AudioRecordFileDecibelFrequencyNoteGraph(AUDIO_SOURCE, SAMPLE_RATE_IN_HZ, CHANNELS_CONFIGURATION, AUDIO_ENCODING,
                             NO_OF_SAMPLES, new AudioRecordFileDecibelFrequencyNoteGraphListener() {
                         @Override
-                        public void processExecuting(String decibel, String frequency, String note, float[] ampValues, float freqValues[]) {
+                        public void processExecuting(String decibel, String frequency, String note, float[] ampValues, float[] freqValues) {
                             updateNotes(note);
                             updateFrequncy(frequency);
                             updateDecibel(decibel);

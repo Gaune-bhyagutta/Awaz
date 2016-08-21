@@ -18,7 +18,7 @@ public class FrequencyValue {
                 i_max =i;
             }
         }
-        double frequency =((i_max)*((double)MainActivity.SAMPLE_RATE_IN_HZ/length)*correctionFactor);
+        double frequency =((i_max)*((double)MainActivity.SAMPLE_RATE_IN_HZ/length));
         fundamentalFrequency= (float)frequency;
         return fundamentalFrequency;
     }/** END OF getFundamentalFrequency**/
@@ -31,12 +31,12 @@ public class FrequencyValue {
 
         float fundamentalFrequency, maxAmplitude=0;
         double correctionFactor = 1.082f;
-        double i_max=0, length =amplitude.length/2;
+        double i_max=0, length =amplitude.length;
         float[] harmonics1= downSample(amplitude,2);
         float[] harmonics2= downSample(amplitude,3);
         float[] sum=new float[amplitude.length];
 
-        for(int i=0;i<length;i++){
+        for(int i=0;i<length/2;i++){
             sum[i]=amplitude[i]*harmonics1[i]*harmonics2[i];
             if(sum[i]>maxAmplitude){
                 maxAmplitude=sum[i];

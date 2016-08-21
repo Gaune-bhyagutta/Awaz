@@ -178,7 +178,7 @@ public class FftOutput {
         }
         fft(fftInputReal, fftInputImag);
         float[] fftOutput= absoluteValue(fftInputReal,fftInputImag);
-        windowing(fftOutput);
+//        windowing(fftOutput);
         return fftOutput;
     }/** End of callMainFft */
 }

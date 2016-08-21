@@ -192,7 +192,7 @@ public class GraphFragment extends Fragment {
 
         public void frequencyAmplitudeGraph(Canvas canvas, Paint graphVisualizationPO) {
 
-            double heightNormalizer = 1;
+            double heightNormalizer = 3;
             int index = 0;
 
             float newX, newY;
