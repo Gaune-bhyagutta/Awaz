@@ -69,11 +69,11 @@ public class MainActivity extends AppCompatActivity {
     //START---Audio Record and Play Parameters-----
     // THE DEFINETIONS ARE DEFINED IN THE RESPECTIVE FUNCTION
     private static final int AUDIO_SOURCE = MediaRecorder.AudioSource.MIC;
-    public static final int SAMPLE_RATE_IN_HZ = 44100;
+    public static final int SAMPLE_RATE_IN_HZ = 22050;
     private static final int CHANNELS_CONFIGURATION = AudioFormat.CHANNEL_IN_MONO;
     private static final int AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;
 
-    private static final int NO_OF_SAMPLES = 4096;
+    private static final int NO_OF_SAMPLES = 22050;
     public static final float RESOLUTION = SAMPLE_RATE_IN_HZ / NO_OF_SAMPLES;
 
     private static int MIN_BUFFER_SIZE_BYTES = NO_OF_SAMPLES * 2;
