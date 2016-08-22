@@ -29,3 +29,6 @@ Unless required by applicable law or agreed to in writing, software distributed 
 
 #QR Code to Google Slides
 ![Alt text](https://goo.gl/DGjFM3.qr)
+
+#Link to APK File
+https://goo.gl/Zsrc37
