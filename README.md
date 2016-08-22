@@ -26,7 +26,6 @@ Unless required by applicable law or agreed to in writing, software distributed 
 
 #Presentation Slides
 <p>https://goo.gl/DGjFM3
-<p>https://docs.google.com/presentation/d/1dkuvHgzcI_v7nq9U9gXwaCkfOuxr2-0cVtYlOSnGwwA/edit#slide=id.gcb9a0b074_1_213
 
-#QR Code
-![Alt text](https://goo.gl/DGjFM3.qr "Optional title")
+#QR Code to Google Slides
+![Alt text](https://goo.gl/DGjFM3.qr)
