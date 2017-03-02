@@ -1,23 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.keshavdulal.a14_simple_drawing">
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.awaj">
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
+        android:name="com.awaj.MyApplication"
         android:allowBackup="true"
-        android:icon="@drawable/sww"
+        android:icon="@drawable/awazicon"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name">
+        android:theme="@style/AppTheme"
+        android:largeHeap="true">
+
+        <activity android:name="com.awaj.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.awaj.MainActivity"
+            android:label="@string/app_name">
+        </activity>
+
+        <activity android:name=".Home"></activity>
+        <activity android:name=".activities.RecordingActivity"></activity>
+        <activity android:name=".activities.MonitoringActivity"></activity>
+        <activity android:name=".activities.ScaleTestingActivity"></activity>
+        <activity android:name=".activities.NoteGeneratingActivity"></activity>
+        <activity android:name=".activities.GuitarTuningActivity"></activity>
+        <activity android:name=".activities.toneGenerator.FrequencyGeneratingActivity"></activity>
+
+        <activity android:name=".menuPages.About"></activity>
+        <activity android:name=".menuPages.Manual"></activity>
+        <activity android:name=".menuPages.Settings"></activity>
+
+
+        <activity android:name="com.awaj.ListTabs"></activity>
     </application>
+
+
     </manifest>

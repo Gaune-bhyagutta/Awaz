@@ -1,5 +1,7 @@
+/*
 package com.example.keshavdulal.a14_simple_drawing;
 
+import android.database.SQLException;
 import android.graphics.Color;
 import android.media.AudioFormat;
 import android.media.AudioManager;
@@ -17,6 +19,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.awaj.DatabaseHelper;
+import com.facebook.stetho.Stetho;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -44,9 +49,34 @@ public class MainActivity extends AppCompatActivity {
     public static int playState = 0;
     public static int recordValueToGraph;
     public static int playValueToGraph;
+
+
+    DatabaseHelper databaseHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //database part
+        Stetho.initializeWithDefaults(this);
+        databaseHelper = new DatabaseHelper(this);
+
+
+        try{
+            databaseHelper.createDatabase();
+        }catch (IOException e){
+            throw new Error("Unable to create database");
+        }
+        try {
+            databaseHelper.openDatabase();
+        }catch (SQLException e){
+            throw e;
+        }
+        databaseHelper.getAllData();
+        double freqTest =20.7;
+        int match = databaseHelper.matchFreq(freqTest);
+        Log.d("VIVZ", "match="+match);
+
         setContentView(R.layout.activity_main);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -136,7 +166,8 @@ public class MainActivity extends AppCompatActivity {
         }
         public void startRecord(){
             Log.d("VIVZ", "Thread - Start record");
-        /**RECORDING PROCESS:
+        */
+/**RECORDING PROCESS:
             1.Create a file to store that data values that comes from the mic.
             2. Fix the bufferSize and AudioRecord Object.(Will be later in detail later).
             3.In java the data comes in the form of bytes-bytes-bytes-and so on.
@@ -156,7 +187,8 @@ public class MainActivity extends AppCompatActivity {
                 respectively, the extension does not matter at all . To show that I have created Three File
                 ONE- as extension Sound.pcm
             15. AND MOST IMPORTANT THING TO REMEMBER :- OUR AMPLITUDE IS REPRESENTED BY 16 bit. SO WE USE SHORT
-         */
+         *//*
+
 
             File filePcm = new File(Environment.getExternalStorageDirectory(),"Sound.pcm");
 
@@ -171,7 +203,9 @@ public class MainActivity extends AppCompatActivity {
                 bufferedOutputStream = new BufferedOutputStream(outputStream);
                 dataOutputStream = new DataOutputStream(bufferedOutputStream);
 
-            /**Call the static class of Audio Record to get the Buffer size in Byte that can handle the Audio data values based on our SAMPLING RATE (44100 hz or frame per second in our case)*/
+            */
+/**Call the static class of Audio Record to get the Buffer size in Byte that can handle the Audio data values based on our SAMPLING RATE (44100 hz or frame per second in our case)*//*
+
                 int minBufferSize = getRecordBufferSize();
 
                 // The array short that will store the Audio data that we get From the mic.
@@ -185,8 +219,10 @@ public class MainActivity extends AppCompatActivity {
                         AudioFormat.ENCODING_PCM_16BIT,
                         minBufferSize);
 
-            /** object of the AudioRecord class calls the startRecording() function so that every is ready and the data can be fetch from mic-buffer-our array of short(audioData)
-             */
+            */
+/** object of the AudioRecord class calls the startRecording() function so that every is ready and the data can be fetch from mic-buffer-our array of short(audioData)
+             *//*
+
                 //setting the size of the audioData array for graph fragment
                 graphFragment.setRecordBufferSize(minBufferSize);
                 audioRecord.startRecording();
@@ -194,10 +230,12 @@ public class MainActivity extends AppCompatActivity {
                 // it means while the user have  not pressed the STOP Button
                 while(isRecording){
 
-                /** numberOfShort=minBufferSize/2
+                */
+/** numberOfShort=minBufferSize/2
                    Actually what is happening is the minBufferSize(8 bit Buffer) is being converted to numberOfShort(16 bit buffer)
                    AND THE MOST IMPORTANT PART IS HERE:- The actual value is being store here in the audioData array.
-                 */
+                 *//*
+
                     int numberOfShort = audioRecord.read(audioData, 0, minBufferSize);
                     //sending audioData to graph fragment
                     graphFragment.updateRecordGraph(audioData);
@@ -211,7 +249,9 @@ public class MainActivity extends AppCompatActivity {
 
 
                 }
-                /** FFT calculation part - WAS HERE **/
+                */
+/** FFT calculation part - WAS HERE **//*
+
                 audioRecord.stop();
 
                 System.out.println("Audio Data: "+ Arrays.toString(audioData));
@@ -255,13 +295,15 @@ public class MainActivity extends AppCompatActivity {
             Log.d("VIVZ", "onPost execute stop recording");
         }
 
-        /**public void stopRecord(){
+        */
+/**public void stopRecord(){
             recording = false;
         }
-        */
+        *//*
+
     }
 
-    public class AudioPlayClass extends AsyncTask<Void,Void,Boolean>{
+    public class AudioPlayClassMain extends AsyncTask<Void,Void,Boolean>{
         Boolean sucessfull;
         @Override
         protected Boolean doInBackground(Void... voids) {
@@ -383,4 +425,11 @@ public class MainActivity extends AppCompatActivity {
                 AudioFormat.ENCODING_PCM_16BIT);
         return minBufferSize;
     }
+    public  void getAllData(long freq){
+        //String s1 = databaseAdapter.getAllData();
+        //String sub1 = s1.substring(0,s1.indexOf(" "));
+        //String sub2 = s1.substring(s1.indexOf(" ")+1);
+
+    }
 }//End of MainActivity
+*/

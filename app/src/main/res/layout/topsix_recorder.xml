@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <!--Activity Title -->
+    <LinearLayout
+        android:id="@+id/appnameLL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/colorPrimary"
+            app:title="@string/audio_record"
+            app:titleTextColor="@color/white"/>
+    </LinearLayout>
+
+    <!--Recording State Representer-->
+    <LinearLayout
+        android:id="@+id/recStateLL"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/colorPrimaryDark"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/recStateTV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textAlignment="gravity"
+            android:gravity="center|bottom"
+            android:background="@drawable/greengradient"/>
+    </LinearLayout>
+
+    <!--TIMER -->
+    <LinearLayout
+        android:id="@+id/timerLL"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/timerTV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:textColor="#fff"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <!--Graph Fragment-->
+    <LinearLayout
+        android:id="@+id/graphFragmentLLinRecorder"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:background="@color/colorPrimaryLight"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+    <!--Recording Button-->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/colorPrimaryDark">
+
+        <Button
+            android:id="@+id/recButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/redgradient"
+            android:text="Record"
+            android:onClick="recButtonClicked"/>
+    </LinearLayout>
+
+
+</LinearLayout>

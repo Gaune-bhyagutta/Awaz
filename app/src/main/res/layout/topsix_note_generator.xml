@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    android:orientation="vertical">
+
+    <!--Activity Title -->
+    <LinearLayout
+        android:id="@+id/appnameLL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/colorPrimary"
+            app:title="@string/note_generator"
+            app:titleTextColor="@color/white" />
+    </LinearLayout>
+
+    <!--Notes generated Text View-->
+    <TextView
+        android:id="@+id/notesGeneratedTV"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@id/appnameLL"
+        android:gravity="center"
+        android:text="C, D, G Bm"
+        android:textSize="35sp" />
+
+
+    <!--Add Visualization Fragment here-->
+    <LinearLayout
+        android:id="@+id/graphFragmentLL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/button"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/notesGeneratedTV"
+        android:orientation="horizontal"></LinearLayout>
+
+    <!--Button to start Monitoring-->
+    <Button
+        android:id="@+id/monitorButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="5dp"
+        android:text="Start Monitoring"
+        android:typeface="monospace"
+        android:textStyle="bold"/>
+
+</RelativeLayout>

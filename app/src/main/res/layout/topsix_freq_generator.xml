@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    android:orientation="vertical">
+
+    <!--Activity Title -->
+    <LinearLayout
+        android:id="@+id/appnameLL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/colorPrimary"
+            app:title="@string/tone_generator"
+            app:titleTextColor="@color/white" />
+    </LinearLayout>
+
+    <!--Current Frequency-->
+    <TextView
+        android:id="@+id/currFrequencyTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/appnameLL"
+
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
+        android:gravity="center"
+        android:text="333Hz"
+        android:textSize="100sp" />
+
+    <!--Volume-->
+    <TextView
+        android:id="@+id/volumeTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/currFrequencyTV"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:text="Volume"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <!--Volume Levels-->
+    <LinearLayout
+        android:id="@+id/volLevelsRL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/volumeTV"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+
+        <!--Low Mid & High-->
+        <TextView
+            android:id="@+id/lowTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Low"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/midTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Mid"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/highTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="High"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+    <!--Volume Seek Bar-->
+    <SeekBar
+        android:id="@+id/volumeSeekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/volLevelsRL"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp" />
+
+    <!--Frequency-->
+    <TextView
+        android:id="@+id/frequencyTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/volumeSeekbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:text="Frequency"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <!--Frequency Levels-->
+    <LinearLayout
+        android:id="@+id/freqLevelsRL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/frequencyTV"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+
+        <!--Low Mid & high-->
+        <TextView
+            android:id="@+id/lowFreqTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Low"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/midFreqTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Mid"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/highFreqTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="High"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+    <!--Frequency Seekbar-->
+    <SeekBar
+        android:id="@+id/freqSeekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/freqLevelsRL"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp" />
+
+</RelativeLayout>

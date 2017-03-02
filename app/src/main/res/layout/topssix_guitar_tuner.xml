@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--Activity Title -->
+    <LinearLayout
+        android:id="@+id/appnameLL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/colorPrimary"
+            app:title="@string/guitar_tuner"
+            app:titleTextColor="@color/white" />
+    </LinearLayout>
+
+    <!--Five primary Notes-->
+    <TextView
+        android:id="@+id/musicNotesTV"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@+id/appnameLL"
+        android:layout_weight="1"
+        android:background="@color/colorPrimaryDark"
+        android:gravity="center"
+        android:text="Musical Notes Here!"
+        android:textSize="45sp"
+        android:typeface="monospace" />
+
+    <!--Meter-->
+    <LinearLayout
+        android:id="@+id/meterLL"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/musicNotesTV"
+        android:layout_weight="7">
+
+        <com.awaj.activities.GuitarTuner.GuitarTunerMeterView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <!--Nearest Note-->
+    <TextView
+        android:id="@+id/currentNoteTV"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/meterLL"
+        android:layout_weight="1"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:text="C#"
+        android:textSize="50sp"
+        android:typeface="monospace" />
+
+
+    <!--Current Frequency-->
+    <TextView
+        android:id="@+id/currentFrequencyTV"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/notesTV"
+        android:layout_weight="1"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:text="180Hz"
+        android:textSize="40sp"
+        android:typeface="monospace" />
+
+</LinearLayout>
